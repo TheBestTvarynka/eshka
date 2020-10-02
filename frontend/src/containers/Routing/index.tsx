@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import PrivateRoute from '../PrivateRoute';
+import MainPage from '../MainPage';
 
 const Routing: FC = () => {
 
@@ -8,7 +9,7 @@ const Routing: FC = () => {
     <div>
       <Switch>
         <PrivateRoute exact path="/" component={() => <span>Landing page</span>} />
-        <PrivateRoute exact path="/home" component={() => <span>Home page</span>} />
+        <PrivateRoute exact path="/home" component={MainPage} />
         <Route path="/*" component={() => <span>Error</span>} />
       </Switch>
     </div>
