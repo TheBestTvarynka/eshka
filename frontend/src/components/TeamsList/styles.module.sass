@@ -1,4 +1,33 @@
 
 .teams
   width: 100%
-  background: #d1d7f9
+  background: #e7eafb
+  overflow: auto
+
+.team
+  width: calc(100% - 1em)
+  display: flex
+  flex-direction: column
+  justify-content: flex-start
+  align-items: flex-start
+  padding-left: 1em
+  padding-top: 0.5em
+  padding-bottom: 0.5em
+
+  &.simple
+    border-bottom: 3px solid #e7eafb
+
+  &.selected
+    border-bottom: 3px solid #342c52
+
+  &:hover
+    cursor: pointer
+    border-bottom: 3px solid #7461b9
+    background: #cccfde
+
+  & .title
+    font-weight: bold
+    font-size: 15px
+
+  & .members_count
+    font-size: 10px
