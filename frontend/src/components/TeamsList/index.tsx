@@ -15,7 +15,6 @@ const teamsMock = [
 const TeamsList = () => {
   return (
     <div className={styles.teams}>
-      {/*<span>Teams</span>*/}
       {teamsMock.map((team, index) => (
         <div className={`${styles.team} ${index === selectedTeam ? styles.selected : styles.simple}`} key={team.id}>
           <span className={styles.title}>{team.title}</span>

@@ -1,6 +1,10 @@
 
 .teams
-  width: 100%
+  width: calc(100% - 0.5em)
+  margin-left: 0.5em
+  margin-top: 0.5em
+  margin-bottom: 0.5em
+  border-radius: 0.5em
   background: #dad1f2
   overflow: auto
 
@@ -13,6 +17,9 @@
   padding-left: 1em
   padding-top: 0.5em
   padding-bottom: 0.5em
+  -webkit-transition: all 0.2s
+  -moz-transition: all 0.2s
+  transition: all 0.2s
 
   &.simple
     border-bottom: 3px solid #dad1f2

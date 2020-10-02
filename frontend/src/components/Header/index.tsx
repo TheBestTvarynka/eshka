@@ -13,7 +13,7 @@ const Header: FC = () => {
       </div>
       <div className={styles.header_group}>
         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-             width="30" height="30"
+             width="25" height="25"
              viewBox="0 0 172 172"
              style={{"fill": "#000000"}}>
           <g fill="none" fillRule="nonzero" stroke="none" strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDasharray="" strokeDashoffset="0" fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none" style={{mixBlendMode: "normal"}}>
@@ -24,7 +24,7 @@ const Header: FC = () => {
           </g>
         </svg>
         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-             width="30" height="30"
+             width="25" height="25"
              viewBox="0 0 172 172"
              style={{"fill": "#000000"}}>
           <g fill="none" fillRule="nonzero" stroke="none" strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDasharray="" strokeDashoffset="0" fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none" style={{mixBlendMode: "normal"}}>
@@ -35,7 +35,7 @@ const Header: FC = () => {
           </g>
         </svg>
         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-             width="30" height="30"
+             width="25" height="25"
              viewBox="0 0 172 172"
              style={{"fill": "#000000"}}>
           <g fill="none" fillRule="nonzero" stroke="none" strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDasharray="" strokeDashoffset="0" fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none" style={{mixBlendMode: "normal"}}>
