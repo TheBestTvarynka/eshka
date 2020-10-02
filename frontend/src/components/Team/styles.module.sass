@@ -40,8 +40,13 @@
   overflow: auto
 
   & .list_title
+    width: calc(100% - 1em)
+    border-bottom: 2px solid #bfb8d6
     font-weight: bold
     margin-bottom: 0.5em
+    padding-bottom: 0.5em
+    padding-left: 0.5em
+    padding-right: 0.5em
 
 .list_item
   width: 100%
@@ -77,6 +82,14 @@
     margin-bottom: 1em
     padding-top: 0.5em
     padding-bottom: 0.5em
+    display: flex
+    align-items: center
+    justify-content: center
+
+    & span
+      margin-left: 5px
+    & img
+      height: 15px
 
   & .blue
     background: #8589de
