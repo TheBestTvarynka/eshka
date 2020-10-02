@@ -9,7 +9,7 @@ const Header: FC = () => {
              alt="Logo"
              className={styles.logo}
         />
-        <span>Eshka</span>
+        <span className={styles.app_name}>Eshka</span>
       </div>
       <div className={styles.header_group}>
         <img src="https://img.icons8.com/flat_round/64/000000/plus.png" alt="Add"/>
