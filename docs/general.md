@@ -1,8 +1,10 @@
-# Short description os our project
+# Short description of this project
 
 ## Technologies
 backend: Java, Spring
+
 frontend: TypeScript, React.js (with Redux, React-Saga)
+
 database: Postgres
 
 ## Database schema
