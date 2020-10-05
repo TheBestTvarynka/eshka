@@ -9,12 +9,16 @@
 
 .login_page
   height: 70vh
+  width: 60%
   display: grid
-  border-radius: 2em
+  border-radius: 1em
   grid-template-columns: 50% 50%
   grid-gap: 0
   background: white
   box-shadow: 0 10px 12px -4px grey
+
+.register_page
+  height: 90vh
 
 .column
   display: flex
@@ -25,8 +29,9 @@
 .additional_info
   color: #f4f9fb
   background: #50437f
-  border-radius: 2em 0 0 2em
-  padding-top: 1em
+  border-radius: 1em 0 0 1em
+  padding-left: 0.5em
+  padding-right: 0.5em
 
   & a
     color: #f4f9fb
@@ -43,17 +48,19 @@
     font-size: 25px
 
 .login_column
-  padding: 3em 2em 0 2em
+  overflow: auto
+  padding: 2em 2em 0 2em
   align-items: flex-start
   background: #fbfbff
-  border-radius: 0 2em 2em 0
+  border-radius: 0 1em 1em 0
   color: #50437f
 
   .error
     color: #a23128
-    margin-top: 0.25em
-    margin-left: 0.25em
+    //margin-top: 0.25em
+    //margin-left: 0.25em
     font-style: italic
+    font-size: 15px
 
   & span
     width: 100%
@@ -61,11 +68,11 @@
     font-size: 25px
 
   & label
-    margin-top: 1.5em
+    margin-top: 1em
 
   & button
     align-self: center
-    margin-top: 1.5em
+    margin-top: 1em
     background: #50437f
     color: #f4f9fb
     border: none
@@ -81,15 +88,5 @@
       cursor: pointer
       background: #7668af
 
-  & input
-    width: calc(100% - 1em)
-    margin-top: 0.5em
-    border-radius: 3px
-    border: 3px solid transparent
-    background: #bfb8d6
-    padding: 0.5em 0 0.5em 0.5em
-    color: #50437f
-    font-size: 16px
-
-    &:focus
-      border-bottom: 3px solid #50437f
+.link
+  text-decoration: underline

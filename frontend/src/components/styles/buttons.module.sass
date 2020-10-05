@@ -1,0 +1,135 @@
+.button
+  position: relative
+  font-size: 15px
+  transition: color 0.5s, transform 0.2s, background-color 0.2s
+  outline: none
+  border-radius: 3px
+  padding: 0.5em 1em 0.5em 1em
+  border-color: transparent
+
+  &:hover
+    transition: opacity 0.3s, background-color 0.3s, border-color 0.3s
+
+.red
+  border: 2px solid rgb(200, 80, 80)
+  color: rgb(200, 80, 80)
+
+  &:hover
+    color: darken(red, 10%)
+    background: #cc6162
+    border-color: #cc6162
+
+.green
+  border: 2px solid rgb(80, 200, 80)
+  color: rgb(80, 200, 80)
+
+  &:hover
+    color: darken(green, 10%)
+    background: #61cc62
+    border-color: #61cc62
+
+.grey
+  border: 2px solid rgb(120, 120, 120)
+  color: rgb(120, 120, 120)
+
+  &:hover
+    color: #f4f9fb
+    border-color: rgb(80, 80, 80)
+    background: rgb(80, 80, 80)
+
+.animated_border_button
+  border-radius: 2px
+  cursor: pointer
+  transition: all 0.3s ease
+  position: relative
+  display: inline-block
+  outline: none
+  align-self: center
+  background: #bfb8d6
+  color: #342c52
+  line-height: 30px
+  padding: 0 1em 0 1em
+  border: none
+
+  & span
+    position: relative
+    display: block
+    width: 100%
+    height: 100%
+  & span:hover
+    color: #bfb8d6
+  & span:before, & span:after
+    position: absolute
+    content: ""
+    left: -1em
+    bottom: 0
+    background: #bfb8d6
+    transition: all 0.3s ease
+  & span:before
+    width: 2px
+    height: 0
+  & span:after
+    width: 0
+    height: 2px
+  & span:hover:before
+    height: 100%
+  & span:hover:after
+    width: calc(100% + 2em)
+
+  &:before, &:after
+    position: absolute
+    content: ""
+    right: 0
+    top: 0
+    background: #bfb8d6
+    //background: rgba(2,126,251,1)
+    transition: all 0.3s ease
+
+  &:before
+    height: 0
+    width: 2px
+
+  &:after
+    width: 0
+    height: 2px
+
+  &:hover
+    background: transparent
+    box-shadow: none
+  &:hover:before
+    height: 100%
+  &:hover:after
+    width: 100%
+
+.button_simple
+  border: none
+  width: 90%
+  border-radius: 5px
+  margin-bottom: 1em
+  padding-top: 0.5em
+  padding-bottom: 0.5em
+  display: flex
+  align-items: center
+  justify-content: center
+  & span
+    margin-left: 5px
+  & img
+    height: 15px
+
+.blue_simple
+  background: #8589de
+  &:hover
+    cursor: pointer
+    background: #5f629f
+
+.green_simple
+  background: #67b454
+  &:hover
+    cursor: pointer
+    background: #478928
+
+.red_simple
+  background: #b46c5e
+  &:hover
+    cursor: pointer
+    background: #a23128

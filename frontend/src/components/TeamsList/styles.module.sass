@@ -1,14 +1,15 @@
 
-.teams
+.list
   width: calc(100% - 0.5em)
   margin-left: 0.5em
   margin-top: 0.5em
   margin-bottom: 0.5em
   border-radius: 0.5em
-  background: #dad1f2
+  background: #50437f
   overflow: auto
+  box-shadow: 0 10px 12px -4px grey
 
-.team
+.item
   width: calc(100% - 1em)
   display: flex
   flex-direction: column
@@ -22,16 +23,19 @@
   transition: all 0.2s
 
   &.simple
-    border-bottom: 3px solid #dad1f2
+    border-bottom: 3px solid #50437f
+    color: #f4f9fb
 
   &.selected
     border-bottom: 3px solid #342c52
     background: #bfb8d6
+    color: #342c52
 
   &:hover
     cursor: pointer
     border-bottom: 3px solid #7461b9
     background: #bfb8d6
+    color: #50437f
 
   & .title
     font-weight: bold
@@ -39,3 +43,9 @@
 
   & .members_count
     font-size: 10px
+
+.button_container
+  margin-top: 1em
+  width: 100%
+  display: inline-flex
+  justify-content: center
