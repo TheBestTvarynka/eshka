@@ -8,8 +8,8 @@ import com.eshka.exception.UserAlreadyExist;
 import com.eshka.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+//import org.springframework.security.core.userdetails.UserDetailsService;
+//import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,15 +18,16 @@ import java.util.Collections;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
+//public class UserService implements UserDetailsService {
+public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public User loadUserByUsername(String s) {
-        return userRepository.findByUsername(s).orElseThrow(
-                () -> new UsernameNotFoundException("-"));
-    }
+//    @Override
+//    public User loadUserByUsername(String s) {
+//        return userRepository.findByUsername(s).orElseThrow(
+//                () -> new UsernameNotFoundException("-"));
+//    }
 
     public void createNewUser(UserDTO userDTO) {
         if(userRepository.findByUsername(userDTO.getUsername()).isPresent()){
