@@ -22,6 +22,8 @@ public class User {
     @Column(name = "full_name", nullable = false)
     private String fullName;
 
+    private String email;
+
     private String username;
 
     private String password;

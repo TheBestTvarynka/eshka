@@ -1,6 +1,7 @@
 package com.eshka.controller;
 
 import com.eshka.dto.auth.LoginDTO;
+import com.eshka.dto.auth.AfterLoginDTO;
 import com.eshka.dto.auth.RegisterDTO;
 import com.eshka.dto.request.UserDTO;
 import com.eshka.service.AuthService;
@@ -20,7 +21,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<UserDTO> login(@RequestBody LoginDTO credentials) {
+    public ResponseEntity<AfterLoginDTO> login(@RequestBody LoginDTO credentials) {
         return this.authService.login(credentials);
     }
 

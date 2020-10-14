@@ -50,7 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.sessionManagement(cust -> cust.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        http.cors().and()
+		.sessionManagement(cust -> cust.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(cust -> cust.contentSecurityPolicy(
                         "script-src 'self'; object-src 'none'; base-uri 'self'"))
                 .csrf(AbstractHttpConfigurer::disable)
