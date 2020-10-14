@@ -1,7 +1,7 @@
 package com.eshka.service;
 
 
-import com.eshka.dto.request.UserDTO;
+import com.eshka.dto.request.UserLoginDTO;
 import com.eshka.entity.User;
 import com.eshka.entity.enums.Role;
 import com.eshka.exception.UserAlreadyExist;
@@ -13,37 +13,28 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-
 @Log4j2
 @Service
 @RequiredArgsConstructor
-//public class UserService implements UserDetailsService {
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-//    @Override
-//    public User loadUserByUsername(String s) {
-//        return userRepository.findByUsername(s).orElseThrow(
-//                () -> new UsernameNotFoundException("-"));
-//    }
-
-    public void createNewUser(UserDTO userDTO) {
-        if(userRepository.findByUsername(userDTO.getUsername()).isPresent()){
+    public void createNewUser(UserLoginDTO userLoginDTO) {
+        if(userRepository.findByUsername(userLoginDTO.getUsername()).isPresent()){
             throw new UserAlreadyExist("user already exist");
         }
 
-        User user = buildNewUserFromDTO(userDTO);
+        User user = buildNewUserFromDTO(userLoginDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         log.info("crate new user - {}", user);
         userRepository.save(user);
     }
 
-    private User buildNewUserFromDTO(UserDTO userDTO) {
+    private User buildNewUserFromDTO(UserLoginDTO userLoginDTO) {
         return User.builder()
-                .username(userDTO.getUsername())
-                .password(userDTO.getPassword())
+                .username(userLoginDTO.getUsername())
+                .password(userLoginDTO.getPassword())
                 .active(true)
                 .role(Role.USER.name())
                 .build();

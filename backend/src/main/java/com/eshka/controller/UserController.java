@@ -1,8 +1,9 @@
 package com.eshka.controller;
 
-import com.eshka.dto.request.UserDTO;
+import com.eshka.dto.request.UserLoginDTO;
 import com.eshka.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,8 +14,13 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/registration")
-    public void createNewUser(@RequestBody UserDTO userDTO) {
-        userService.createNewUser(userDTO);
+    public void createNewUser(@RequestBody UserLoginDTO userLoginDTO) {
+        userService.createNewUser(userLoginDTO);
+    }
+
+    @GetMapping("/test")
+    public String test() {
+        return "Allow!";
     }
 
 }

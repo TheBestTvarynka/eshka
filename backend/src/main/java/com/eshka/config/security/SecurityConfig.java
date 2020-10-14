@@ -1,7 +1,6 @@
 package com.eshka.config.security;
 
 import com.eshka.repository.UserSessionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -29,12 +28,6 @@ import java.io.IOException;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthCookieFilter authCookieFilter;
     private final CustomLogoutSuccessHandler logoutSuccessHandler;
-//    private PasswordEncoder passwordEncoder;
-//
-//    @Autowired
-//    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-//        this.passwordEncoder = passwordEncoder;
-//    }
 
     public SecurityConfig(UserSessionRepository sessionRepository) {
         this.authCookieFilter = new AuthCookieFilter(sessionRepository);
@@ -62,6 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "script-src 'self'; object-src 'none'; base-uri 'self'"))
                 .csrf(AbstractHttpConfigurer::disable)
                 .logout(cust -> {
+                    cust.logoutUrl("/auth/logout");
                     cust.addLogoutHandler(new HeaderWriterLogoutHandler(
                             new ClearSiteDataHeaderWriter(Directive.ALL)));
                     cust.logoutSuccessHandler(this.logoutSuccessHandler);

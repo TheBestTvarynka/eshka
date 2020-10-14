@@ -2,6 +2,7 @@ package com.eshka.controller;
 
 import com.eshka.dto.auth.LoginDTO;
 import com.eshka.dto.auth.RegisterDTO;
+import com.eshka.dto.request.UserDTO;
 import com.eshka.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> login(@RequestBody LoginDTO credentials) {
+    public ResponseEntity<UserDTO> login(@RequestBody LoginDTO credentials) {
         return this.authService.login(credentials);
     }
 

@@ -4,6 +4,7 @@ import com.eshka.config.security.AppProperties;
 import com.eshka.config.security.AuthCookieFilter;
 import com.eshka.dto.auth.LoginDTO;
 import com.eshka.dto.auth.RegisterDTO;
+import com.eshka.dto.request.UserDTO;
 import com.eshka.entity.User;
 import com.eshka.entity.UserSession;
 import com.eshka.entity.enums.Role;
@@ -31,10 +32,11 @@ public class AuthService {
     private final TokenService tokenService;
     private final AppProperties appProperties;
 
-    public ResponseEntity<String> login(LoginDTO credentials) {
+    public ResponseEntity<UserDTO> login(LoginDTO credentials) {
         Optional<User> userOptional = userRepository.findByUsername(credentials.getUsername());
         if (userOptional.isEmpty()) {
-            return new ResponseEntity<>("user with this username not found", HttpStatus.NOT_FOUND);
+//            return new ResponseEntity<>("user with this username not found", HttpStatus.NOT_FOUND);
+            return null;
         }
         User user = userOptional.get();
         if (passwordEncoder.matches(credentials.getPassword(), user.getPassword())) {
@@ -57,9 +59,10 @@ public class AuthService {
                     .secure(this.appProperties.isSecureCookie())
                     .build();
             return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
-                    .body(user.getRole());
+                    .body(UserDTO.fromUser(user));
         }
-        return new ResponseEntity<>("wrong password", HttpStatus.BAD_REQUEST);
+//        return new ResponseEntity<>("wrong password", HttpStatus.BAD_REQUEST);
+        return null;
     }
 
     public ResponseEntity<String> register(RegisterDTO registerData) {
