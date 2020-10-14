@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping("/test")
     public String test() {
-        return "Allow!";
+        return "{\"message\":\"Allow!\"";
     }
 
 }

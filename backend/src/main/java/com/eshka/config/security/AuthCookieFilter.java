@@ -20,7 +20,7 @@ import org.springframework.web.filter.GenericFilterBean;
 
 @Log4j2
 public class AuthCookieFilter extends GenericFilterBean {
-    public final static String COOKIE_NAME = "authentication";
+    public final static String COOKIE_NAME = "Authentication";
 
     private UserSessionRepository sessionRepository;
 
@@ -34,6 +34,7 @@ public class AuthCookieFilter extends GenericFilterBean {
         log.info("in AuthCookieFilter.doFilter");
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String sessionId = extractAuthenticationCookie(httpServletRequest);
+        log.info(sessionId);
         if (sessionId != null) {
             Optional<UserSession> session = sessionRepository.findById(sessionId);
             session.ifPresent(userSession ->
