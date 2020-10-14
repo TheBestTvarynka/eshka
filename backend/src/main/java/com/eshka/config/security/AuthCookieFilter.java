@@ -9,12 +9,16 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.eshka.entity.UserSession;
 import com.eshka.repository.UserSessionRepository;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
+@Log4j2
 public class AuthCookieFilter extends GenericFilterBean {
     public final static String COOKIE_NAME = "authentication";
 
@@ -27,6 +31,7 @@ public class AuthCookieFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
+        log.info("in AuthCookieFilter.doFilter");
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String sessionId = extractAuthenticationCookie(httpServletRequest);
         if (sessionId != null) {

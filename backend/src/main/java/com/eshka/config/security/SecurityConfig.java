@@ -1,7 +1,9 @@
 package com.eshka.config.security;
 
 import com.eshka.repository.UserSessionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -23,9 +25,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthCookieFilter authCookieFilter;
     private final CustomLogoutSuccessHandler logoutSuccessHandler;
+//    private PasswordEncoder passwordEncoder;
+//
+//    @Autowired
+//    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+//        this.passwordEncoder = passwordEncoder;
+//    }
 
     public SecurityConfig(UserSessionRepository sessionRepository) {
         this.authCookieFilter = new AuthCookieFilter(sessionRepository);

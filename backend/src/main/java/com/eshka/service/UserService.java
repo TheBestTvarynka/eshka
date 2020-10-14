@@ -45,7 +45,7 @@ public class UserService {
                 .username(userDTO.getUsername())
                 .password(userDTO.getPassword())
                 .active(true)
-                .roles(Collections.singleton(Role.USER))
+                .role(Role.USER.name())
                 .build();
     }
 }

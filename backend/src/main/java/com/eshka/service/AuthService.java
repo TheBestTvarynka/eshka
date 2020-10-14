@@ -37,7 +37,7 @@ public class AuthService {
             return new ResponseEntity<>("user with this username not found", HttpStatus.NOT_FOUND);
         }
         User user = userOptional.get();
-        if (user.getPassword().equals(passwordEncoder.encode(credentials.getPassword()))) {
+        if (passwordEncoder.matches(credentials.getPassword(), user.getPassword())) {
             String sessionId = this.tokenService.createToken();
             Date expirationDate = new Date();
             expirationDate.setTime(expirationDate.getTime() + appProperties.getCookieMaxAge().getSeconds() * 1000L);
