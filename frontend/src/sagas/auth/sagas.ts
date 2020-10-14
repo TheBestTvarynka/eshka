@@ -5,8 +5,10 @@ import {
   logoutRoutine
 } from './routines';
 import apiClient from '../../helpers/webApi.helper';
+import Cookies from 'js-cookie';
 
 function* login(action: any) {
+  // Cookies.set('Authentication', '001og05pd1gr2dy-m9yvuvfybgdf0');
   console.log('in login saga');
   console.log(action);
   const credentials = action.payload;
@@ -14,7 +16,17 @@ function* login(action: any) {
   try {
     const res = yield apiClient.post({ endpoint: '/auth/login', body: credentials });
     console.log(res);
-    yield put(loginRoutine.success(res));
+    const parsedData = yield res.json();
+    console.log(parsedData);
+    console.log(parsedData.sessionId);
+
+    Cookies.set('Authentication', parsedData.sessionId);
+    yield put(loginRoutine.success({
+      fullName: parsedData.fullName,
+      username: parsedData.username,
+      email: parsedData.email,
+      role: 'USER'
+    }));
   } catch (error) {
     console.log('Error with Login');
     console.log(error);
@@ -22,6 +34,8 @@ function* login(action: any) {
   try {
     const res = yield apiClient.get({ endpoint: '/test' });
     console.log(res);
+    const parsedData = yield res.text();
+    console.log(parsedData);
   } catch(error) {
     console.log('Error with test');
     console.log(error);
