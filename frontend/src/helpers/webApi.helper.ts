@@ -2,6 +2,7 @@
 export interface IRequestArgs {
   method?: string;
   endpoint: string;
+  credentials?: string;
   args?: { [key: string]: string };
   body?: object;
 }
@@ -26,6 +27,7 @@ function getFetchArgs(args: IRequestArgs): RequestInit {
   return {
     method: args.method,
     headers,
+    credentials: args.credentials as RequestCredentials,
     // signal: args.ct,
     body: JSON.stringify(args.body)
   };
@@ -44,9 +46,10 @@ export async function throwIfResponseFailed(res: Response) {
 }
 
 export async function callWebApi(args: IRequestArgs) {
+  args.credentials = 'include';
   const res = await fetch(getFetchUrl(args), getFetchArgs(args));
   await throwIfResponseFailed(res);
-  return await res.json();
+  return res;
 }
 
 const apiClient = {
