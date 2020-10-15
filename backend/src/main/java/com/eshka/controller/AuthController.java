@@ -3,7 +3,6 @@ package com.eshka.controller;
 import com.eshka.dto.auth.LoginDTO;
 import com.eshka.dto.auth.AfterLoginDTO;
 import com.eshka.dto.auth.RegisterDTO;
-import com.eshka.dto.request.UserDTO;
 import com.eshka.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +26,8 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<String> register(@RequestBody RegisterDTO registerData) {
-        return this.authService.register(registerData);
+    public void register(@RequestBody RegisterDTO registerData) {
+        this.authService.register(registerData);
     }
 
 }
