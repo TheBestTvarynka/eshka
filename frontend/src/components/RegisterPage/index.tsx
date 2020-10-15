@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { registerRoutine } from '../../sagas/auth/routines';
+import { IAppState} from '../../models/appState';
 import styles from '../LoginPage/styles.module.sass';
 import inputs from '../styles/inputs.module.sass';
 import { Link } from 'react-router-dom';
@@ -38,7 +41,12 @@ const validatePasswords = (pass1: string,
   setError('');
 };
 
-const RegisterPage = () => {
+export interface IRegisterProps {
+  isLoading: boolean;
+  register(registerData: any): void;
+}
+
+const RegisterPage: React.FC<IRegisterProps> = ({ isLoading, register }) => {
   const [name, setName] = useState<string>('');
   const [nameError, setNameError] = useState<string>('');
 
@@ -55,6 +63,7 @@ const RegisterPage = () => {
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     console.log({ email, password, name, username });
+    register({ email, password, fullName: name, username });
   };
 
   return (
@@ -102,4 +111,12 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+const mapStateToProps = (appState: IAppState) => ({
+  isLoading: appState.auth?.isLoading
+});
+
+const mapDispatchToProps = {
+  register: registerRoutine
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterPage);

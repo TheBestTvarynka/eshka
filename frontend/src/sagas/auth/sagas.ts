@@ -38,8 +38,8 @@ function* register(action: any) {
   console.log(resisterData);
   try {
     const res = yield apiClient.post({ endpoint: '/auth/register', body: resisterData });
-    console.log(res);
-    yield put(registerRoutine.success(res));
+    // console.log(res);
+    // yield put(registerRoutine.success(res));
   } catch (error) {
     console.log('Error with register');
     console.log(error);
@@ -62,15 +62,6 @@ function* loadUserData() {
     console.log('Error with fetching user data');
     console.log(error);
   }
-  /*
-  yield put(loadUserRoutine.success({
-    id: '1',
-    fullName: 'Mark Tims',
-    username: 'laptop',
-    email: 'test@gmail.com',
-    role: Role.USER
-  }));
- */
 }
 
 export default function* authSagas() {
