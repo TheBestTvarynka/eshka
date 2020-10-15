@@ -1,7 +1,8 @@
 import {
   loginRoutine,
   registerRoutine,
-  logoutRoutine
+  logoutRoutine,
+  loadUserRoutine
 } from '../../sagas/auth/routines';
 import { IAuthState, IAppState } from '../../models/appState';
 
@@ -10,11 +11,12 @@ const initAuthState: IAuthState = {
 }
 
 const authReducer = (state: IAppState['auth'] = initAuthState, { type, payload }: any) => {
+  console.log(type);
+  console.log(payload);
   if (type === loginRoutine.SUCCESS) {
     return {
-      ...state,
       isLoading: false,
-      ...payload
+      user: { ...payload }
     }
   }
   if (type === registerRoutine.SUCCESS) {
@@ -25,6 +27,13 @@ const authReducer = (state: IAppState['auth'] = initAuthState, { type, payload }
   }
   if (type === logoutRoutine.SUCCESS) {
     return {
+      user: undefined,
+      isLoading: false
+    }
+  }
+  if (type === loadUserRoutine.SUCCESS) {
+    return {
+      user: payload,
       isLoading: false
     }
   }

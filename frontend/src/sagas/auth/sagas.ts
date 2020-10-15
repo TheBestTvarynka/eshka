@@ -2,15 +2,14 @@ import { all, put, takeEvery } from 'redux-saga/effects';
 import {
   loginRoutine,
   registerRoutine,
-  logoutRoutine
+  logoutRoutine,
+  loadUserRoutine
 } from './routines';
 import apiClient from '../../helpers/webApi.helper';
-import Cookies from 'js-cookie';
+import authProvider from '../../helpers/auth.helper';
+import { Role } from '../../models/user';
 
 function* login(action: any) {
-  // Cookies.set('Authentication', '001og05pd1gr2dy-m9yvuvfybgdf0');
-  console.log('in login saga');
-  console.log(action);
   const credentials = action.payload;
   console.log(credentials);
   try {
@@ -20,7 +19,8 @@ function* login(action: any) {
     console.log(parsedData);
     console.log(parsedData.sessionId);
 
-    Cookies.set('Authentication', parsedData.sessionId);
+    authProvider.setToken(parsedData.sessionId);
+
     yield put(loginRoutine.success({
       fullName: parsedData.fullName,
       username: parsedData.username,
@@ -29,15 +29,6 @@ function* login(action: any) {
     }));
   } catch (error) {
     console.log('Error with Login');
-    console.log(error);
-  }
-  try {
-    const res = yield apiClient.get({ endpoint: '/test' });
-    console.log(res);
-    const parsedData = yield res.text();
-    console.log(parsedData);
-  } catch(error) {
-    console.log('Error with test');
     console.log(error);
   }
 }
@@ -59,10 +50,34 @@ function* logout() {
 
 }
 
+function* loadUserData() {
+  console.log('In load user saga');
+  try {
+    const res = yield apiClient.get({ endpoint: '/user' });
+    console.log(res);
+    const parsedData = yield res.json();
+    console.log(parsedData);
+    yield put(loadUserRoutine.success(parsedData));
+  } catch(error) {
+    console.log('Error with fetching user data');
+    console.log(error);
+  }
+  /*
+  yield put(loadUserRoutine.success({
+    id: '1',
+    fullName: 'Mark Tims',
+    username: 'laptop',
+    email: 'test@gmail.com',
+    role: Role.USER
+  }));
+ */
+}
+
 export default function* authSagas() {
   yield all([
     yield takeEvery(loginRoutine.TRIGGER, login),
     yield takeEvery(registerRoutine.TRIGGER, register),
-    yield takeEvery(logoutRoutine.TRIGGER, logout)
+    yield takeEvery(logoutRoutine.TRIGGER, logout),
+    yield takeEvery(loadUserRoutine.TRIGGER, loadUserData)
   ]);
 }

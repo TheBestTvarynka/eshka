@@ -68,7 +68,7 @@ const LoginPage: React.FC<ILoginProps> = ({ id, isLoading, login }) => {
 };
 
 const mapStateToProps = (appState: IAppState) => ({
-  id: appState.auth?.id,
+  id: appState.auth?.user?.id,
   isLoading: appState.auth?.isLoading
 });
 

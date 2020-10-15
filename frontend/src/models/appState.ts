@@ -1,12 +1,8 @@
-import { Role } from "./user";
+import { IUser } from './user';
 
 export interface IAuthState {
-  id?: string;
-  fullName?: string;
-  username?: string;
-  role?: Role;
-  logo?: string;
-  isLoading: boolean;
+  user?: IUser,
+  isLoading: boolean
 }
 
 export interface IAppState {
