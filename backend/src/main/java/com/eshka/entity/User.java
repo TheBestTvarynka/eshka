@@ -1,6 +1,7 @@
 package com.eshka.entity;
 
 //import com.eshka.entity.enums.Role;
+import com.eshka.entity.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +35,9 @@ public class User {
 //    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
 //    @Enumerated(EnumType.STRING)
 //    private Set<Role> roles;
-    private String role;
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private List<UserSession> sessions;
