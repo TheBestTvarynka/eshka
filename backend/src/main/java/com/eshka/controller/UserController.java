@@ -1,20 +1,21 @@
 package com.eshka.controller;
 
 import com.eshka.dto.request.UserDTO;
+import com.eshka.entity.User;
 import com.eshka.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/registration")
-    public void createNewUser(@RequestBody UserDTO userDTO) {
-        userService.createNewUser(userDTO);
+    @GetMapping
+    public UserDTO getUserData(@AuthenticationPrincipal User user) {
+        return userService.buildUserDtoFromUser(user);
     }
 
 }

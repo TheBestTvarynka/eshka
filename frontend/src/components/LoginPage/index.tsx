@@ -1,28 +1,38 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { loginRoutine } from '../../sagas/auth/routines';
+import { IAppState} from '../../models/appState';
 import styles from './styles.module.sass';
 import inputs from '../styles/inputs.module.sass';
 
-const emailRegex = /^\S+@\S+\.\S+$/;
+export interface ILoginProps {
+  id?: string;
+  isLoading: boolean;
+  login(loginData: any): void;
+}
 
-const LoginPage = () => {
-  const [emailError, setEmailError] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
+const usernameRegex = /^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/;
+
+const LoginPage: React.FC<ILoginProps> = ({ id, isLoading, login }) => {
+  const [usernameError, setUsernameError] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const handleEmailChange = (e:  React.ChangeEvent<HTMLInputElement>) => {
+  const handleUsernameChange = (e:  React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (emailRegex.test(value)) {
-      setEmail(value);
-      setEmailError('');
+    if (usernameRegex.test(value)) {
+      setUsername(value);
+      setUsernameError('');
     } else {
-      setEmailError('Email not valid');
+      setUsernameError('Username not valid');
     }
   };
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleLogin = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    console.log({ email, password });
+    console.log({ email: username, password });
+    login({ username, password });
   };
 
   return (
@@ -41,19 +51,29 @@ const LoginPage = () => {
         <form className={`${styles.column} ${styles.login_column}`}>
           <span>Login into Eshka</span>
           <label>Email</label>
-          <input className={inputs.input_standard} placeholder="exmaple@email.com"
-                 onChange={handleEmailChange}
+          <input className={inputs.input_standard} placeholder="cap_map"
+                 onChange={handleUsernameChange}
           />
-          {emailError && <label className={styles.error}>{emailError}</label>}
+          {usernameError && <label className={styles.error}>{usernameError}</label>}
           <label>Password</label>
           <input className={inputs.input_standard} type="password"
                  onChange={event => setPassword(event.target.value)}
           />
-          <button onClick={handleSubmit}>Sign in</button>
+          <button onClick={handleLogin}>Sign in</button>
+          {isLoading && <span>Loading...</span>}
         </form>
       </div>
     </div>
   );
 };
 
-export default LoginPage;
+const mapStateToProps = (appState: IAppState) => ({
+  id: appState.auth?.user?.id,
+  isLoading: appState.auth?.isLoading
+});
+
+const mapDispatchToProps = {
+  login: loginRoutine
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

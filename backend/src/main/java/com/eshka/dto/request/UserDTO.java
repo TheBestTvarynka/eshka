@@ -1,15 +1,27 @@
 package com.eshka.dto.request;
 
+import com.eshka.entity.User;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
+    private String id;
+    private String fullName;
     private String username;
-    private String password;
+    private String email;
+    private String role;
+
+    public static UserDTO fromUser(User user) {
+        UserDTO dto = new UserDTO();
+        dto.setId(user.getUserId().toString());
+        dto.setFullName(user.getFullName());
+        dto.setEmail(user.getEmail());
+        dto.setUsername(user.getUsername());
+        dto.setRole(user.getRole().name());
+        return dto;
+    }
 }
