@@ -13,11 +13,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/test")
-    public String test() {
-        return "{\"message\":\"Allow!\"";
-    }
-
     @GetMapping
     public UserDTO getUserData(@AuthenticationPrincipal User user) {
         return userService.buildUserDtoFromUser(user);
