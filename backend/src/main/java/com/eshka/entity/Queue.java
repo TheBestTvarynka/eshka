@@ -1,9 +1,10 @@
 package com.eshka.entity;
 
-import lombok.Data;
-import java.utils.Data;
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -12,10 +13,10 @@ public class Queue {
     private long id;
     private String title;
     private String description;
-    private Data creation_date;
-    private Data closing_date;
-    private Data start_date;
-    private Data end_date;
-    private long maker_id;
-    private long subject_id;
+    private LocalDateTime creationDate;
+    private LocalDateTime closingDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private long makerId;
+    private long subjectId;
 }
