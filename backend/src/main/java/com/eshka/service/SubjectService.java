@@ -17,4 +17,11 @@ public class SubjectService {
     public Subject createNewSubject(Subject subject) {
         return subjectRepository.save(subject);
     }
+
+    public Subject editSubject(Subject subject) {
+        Subject oldSubject = subjectRepository.findById(subject.getId()).orElseThrow();
+        oldSubject.setTitle(subject.getTitle());
+        oldSubject.setDescription(subject.getDescription());
+        return subjectRepository.save(oldSubject);
+    }
 }

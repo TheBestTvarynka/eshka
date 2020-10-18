@@ -34,4 +34,12 @@ public class SubjectController {
         return new ResponseEntity<>(mapper.subjectToSubjectResponse(subjectService.createNewSubject(subject)),
                 HttpStatus.CREATED);
     }
+
+    @ApiOperation("edit subject")
+    @PutMapping
+    public ResponseEntity<SubjectResponse> editSubject(@RequestBody SubjectRequest request) {
+        Subject subject = mapper.subjectRequestToSubject(request);
+        return new ResponseEntity<>(mapper.subjectToSubjectResponse(subjectService.editSubject(subject)),
+                HttpStatus.CREATED);
+    }
 }
