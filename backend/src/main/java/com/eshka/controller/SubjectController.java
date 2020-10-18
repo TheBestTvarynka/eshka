@@ -40,7 +40,7 @@ public class SubjectController {
     public ResponseEntity<SubjectResponse> editSubject(@RequestBody SubjectRequest request) {
         Subject subject = mapper.subjectRequestToSubject(request);
         return new ResponseEntity<>(mapper.subjectToSubjectResponse(subjectService.editSubject(subject)),
-                HttpStatus.CREATED);
+                HttpStatus.OK);
     }
 
     @ApiOperation("delete subject by id")

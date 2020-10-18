@@ -1,6 +1,7 @@
 package com.eshka.service;
 
 import com.eshka.entity.Subject;
+import com.eshka.exception.SubjectNotFoundException;
 import com.eshka.repository.SubjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,8 @@ public class SubjectService {
     }
 
     public Subject editSubject(Subject subject) {
-        Subject oldSubject = subjectRepository.findById(subject.getId()).orElseThrow();
+        Subject oldSubject = subjectRepository.findById(subject.getId()).orElseThrow(
+                () -> new SubjectNotFoundException("subject not found"));
         oldSubject.setTitle(subject.getTitle());
         oldSubject.setDescription(subject.getDescription());
         return subjectRepository.save(oldSubject);
