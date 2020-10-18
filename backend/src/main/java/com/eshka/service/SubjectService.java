@@ -24,4 +24,8 @@ public class SubjectService {
         oldSubject.setDescription(subject.getDescription());
         return subjectRepository.save(oldSubject);
     }
+
+    public void deleteById(long id) {
+        subjectRepository.deleteById(id);
+    }
 }

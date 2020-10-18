@@ -42,4 +42,11 @@ public class SubjectController {
         return new ResponseEntity<>(mapper.subjectToSubjectResponse(subjectService.editSubject(subject)),
                 HttpStatus.CREATED);
     }
+
+    @ApiOperation("delete subject by id")
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteSubject(@PathVariable(name = "id") String id) {
+        subjectService.deleteById(Long.parseLong(id));
+    }
 }
