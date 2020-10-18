@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class SubjectService {
-    private SubjectRepository subjectRepository;
+    private final SubjectRepository subjectRepository;
 
     public Subject findById(long id) {
         return subjectRepository.findById(id).orElseThrow();
