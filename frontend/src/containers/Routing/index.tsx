@@ -6,6 +6,7 @@ import MainPage from '../MainPage';
 import LoginPage from '../../components/LoginPage';
 import RegisterPage from '../../components/RegisterPage';
 import SubjectPage from '../SubjectPage';
+import QueuePage from '../../components/QueuePage';
 
 const Routing: FC = () => {
 
@@ -17,6 +18,7 @@ const Routing: FC = () => {
         <PrivateRoute exact path="/" component={() => <span>Landing page</span>} />
         <PrivateRoute exact path="/home" component={MainPage} />
         <PrivateRoute exact path="/subject/:id" component={SubjectPage} />
+        <PrivateRoute exact path="/queue/:id" component={QueuePage} />
         <Route path="/*" component={() => <span>Error</span>} />
       </Switch>
     </>
