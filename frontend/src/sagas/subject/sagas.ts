@@ -1,6 +1,7 @@
 import { all, put, call, takeEvery } from 'redux-saga/effects';
 import {
   updateSubjectRoutine,
+  deleteSubjectRoutine,
   loadAllSubjectsRoutine,
   loadSubjectRoutine
 } from './routines';
@@ -56,10 +57,30 @@ function* loadSubject(action: any) {
   }
 }
 
+function* deleteSubject(action: any) {
+  console.log(action.payload);
+  const { id, subjectId } = action.payload;
+  console.log({ id });
+  if (!id) {
+    return;
+  }
+  try {
+    yield apiClient.delete({ endpoint: `/subject/${id}` });
+    yield call(loadAllSubjects);
+    if (id === subjectId) {
+      yield put(loadSubjectRoutine.success(undefined));
+    }
+  } catch(error) {
+    console.log('Error with subject deleting');
+    console.log(error);
+  }
+}
+
 export default function* subjectSaga() {
   yield all([
     yield takeEvery(updateSubjectRoutine.TRIGGER, updateSubject),
     yield takeEvery(loadAllSubjectsRoutine.TRIGGER, loadAllSubjects),
-    yield takeEvery(loadSubjectRoutine.TRIGGER, loadSubject)
+    yield takeEvery(loadSubjectRoutine.TRIGGER, loadSubject),
+    yield takeEvery(deleteSubjectRoutine.TRIGGER, deleteSubject)
   ]);
 }

@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {
   updateSubjectRoutine,
+  deleteSubjectRoutine,
   loadAllSubjectsRoutine,
   loadSubjectRoutine
 } from '../../sagas/subject/routines';
 import CreateSubjectWindow from '../../components/CreateSubjectWindow';
+import ConfirmationWindow from '../../components/ConfirmationWindow';
 import Loader from '../../components/Loader';
 import listStyles from '../../components/TeamsList/styles.module.sass';
 import containers from '../../components/styles/containers.module.sass';
@@ -28,10 +30,11 @@ const openedQueues = [
 ] as IQueueShort[];
 
 const SubjectPage: React.FC<ISubjectPageProps> = ({
-  subject, subjects, isSubjectLoading, update, loadAll, load
+  subject, subjects, isSubjectLoading, update, deleteSubject, loadAll, load
 }) => {
   const [selected, setSelected] = useState<number | undefined>(subject?.id);
   const [cs, setCS] = useState<boolean>(false);
+  const [ds, setDS] = useState<boolean>(false);
   const [edit, setEdit] = useState<boolean>(false);
 
   useEffect(() => {
@@ -94,6 +97,9 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
                   }}
           >Edit subject</button>
           <button className={`${buttons.button_simple} ${buttons.green_simple}`}>Create queue</button>
+          <button className={`${buttons.button_simple} ${buttons.red_simple}`}
+                  onClick={() => setDS(true)}
+          >Delete subject</button>
         </div>
       </div>
       {cs && <CreateSubjectWindow
@@ -103,6 +109,16 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
           setCS(false);
         }}
         onClose={() => setCS(false)} />}
+      {ds && <ConfirmationWindow title="Confirm deletion"
+                                 question="Delete this subject?"
+                                 cancelValue="Cancel"
+                                 submitValue="Delete"
+                                 onSubmit={() => {
+                                   deleteSubject({ id: subject?.id, subjectId: subject?.id });
+                                   setDS(false);
+                                 }}
+                                 onCancel={() => setDS(false)}
+      />}
     </div>
   );
 };
@@ -115,6 +131,7 @@ const mapStateToProps = (appState: IAppState) => ({
 
 const mapDispatchToProps = {
   update: updateSubjectRoutine,
+  deleteSubject: deleteSubjectRoutine,
   loadAll: loadAllSubjectsRoutine,
   load: loadSubjectRoutine
 }
