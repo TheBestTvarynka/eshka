@@ -7,7 +7,6 @@ import {
 } from './routines';
 import apiClient from '../../helpers/webApi.helper';
 import authProvider from '../../helpers/auth.helper';
-import { Role } from '../../models/user';
 
 function* login(action: any) {
   const credentials = action.payload;

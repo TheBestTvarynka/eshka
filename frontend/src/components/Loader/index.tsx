@@ -7,12 +7,20 @@ export interface ILoaderProps {
   color?: string;
 }
 
-const Loader: React.FC<ILoaderProps> = ({ isLoading, component: Component }) => {
+// const Loader: React.FC<ILoaderProps> = ({ isLoading, component: Component }) => {
+//   return (
+//     <div className={styles.loader_wrapper}>
+//       {isLoading
+//       ? <div className={styles.loader} />
+//       : <Component />}
+//     </div>
+//   );
+// };
+
+const Loader = () => {
   return (
     <div className={styles.loader_wrapper}>
-      {isLoading
-      ? <div className={styles.loader} />
-      : <Component />}
+      <div className={styles.loader} />
     </div>
   );
 };

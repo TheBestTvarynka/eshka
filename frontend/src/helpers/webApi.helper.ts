@@ -38,7 +38,7 @@ export async function throwIfResponseFailed(res: Response) {
   // 200 - OK
   // 201 - CREATED
   // 410 - Gone (DELETED)
-  if (res.status !== 200 && res.status !== 201 && res.status !== 410) {
+  if (res.status !== 200 && res.status !== 201 && res.status !== 204 && res.status !== 410) {
     const data = await res.text()
     console.log(data);
     throw data;
@@ -55,6 +55,7 @@ export async function callWebApi(args: IRequestArgs) {
 const apiClient = {
   get: (args: IRequestArgs) => callWebApi({ method: 'GET', ...args }),
   post: (args: IRequestArgs) => callWebApi({ method: 'POST', ...args }),
+  put: (args: IRequestArgs) => callWebApi({ method: 'PUT', ...args }),
   delete: (args: IRequestArgs) => callWebApi({ method: 'DELETE', ...args })
 };
 
