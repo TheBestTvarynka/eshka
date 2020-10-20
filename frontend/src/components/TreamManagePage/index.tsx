@@ -21,7 +21,7 @@ const TeamManagePage: React.FC<ITeamManagePageProps> = ({ onClose }) => {
         <label className={styles.label}>Name</label>
         <input className={inputs.input_standard} placeholder="team name"/>
         <label className={styles.label}>Description</label>
-        <textarea className={inputs.textarea_standatd} placeholder="team description"/>
+        <textarea className={inputs.textarea_standard} placeholder="team description"/>
         <div className={containers.actions_panel}>
           <button className={`${buttons.button} ${buttons.grey}`} onClick={() => onClose()}>Cancel</button>
           <button className={`${buttons.button} ${buttons.green}`} onClick={() => onClose()}>Update</button>
