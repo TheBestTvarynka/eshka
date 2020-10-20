@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import CreateSubjectWindow from '../../components/CreateSubjectWindow';
 import listStyles from '../../components/TeamsList/styles.module.sass';
 import containers from '../../components/styles/containers.module.sass';
 import lists from '../../components/styles/lists.module.sass';
@@ -28,6 +29,7 @@ const openedQueues = [
 
 const SubjectPage = () => {
   const [selected, setSelected] = useState<number>(2);
+  const [cs, setCS] = useState<boolean>(false);
   return (
     <div className={styles.subject_page}>
       <div className={listStyles.list}>
@@ -40,7 +42,7 @@ const SubjectPage = () => {
           </div>
         )}
         <div className={listStyles.button_container}>
-          <button className={buttons.animated_border_button}>
+          <button className={buttons.animated_border_button} onClick={() => setCS(true)}>
             <span>Create subject</span>
           </button>
         </div>
@@ -72,6 +74,7 @@ const SubjectPage = () => {
           <button className={`${buttons.button_simple} ${buttons.green_simple}`}>Create queue</button>
         </div>
       </div>
+      {cs && <CreateSubjectWindow onClose={() => setCS(false)} />}
     </div>
   );
 };
