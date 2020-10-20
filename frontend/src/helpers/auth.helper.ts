@@ -2,7 +2,10 @@ import Cookies from 'js-cookie';
 
 const createAuthHelper = () => {
   console.log(Cookies.get('Authentication'));
-  let token: string | null | undefined = Cookies.get('Authentication') ? Cookies.get('Authentication') : null;
+  let token: string | null | undefined = Cookies.get('Authentication')
+    ? Cookies.get('Authentication')
+    // : null;
+    : '00116sp9ol7ocixn-jbxdgjdgkqvh0';
 
   let observers: Array<(isLogged: boolean) => void> = [];
 

@@ -9,7 +9,8 @@ export interface IAuthState {
 export interface ISubjectState {
   subject?: ISubject;
   subjects?: ISubject[];
-  isLoading: boolean;
+  isSubjectLoading: boolean;
+  isCreateLoading: boolean;
 }
 
 export interface IAppState {

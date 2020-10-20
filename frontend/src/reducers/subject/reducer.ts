@@ -6,29 +6,43 @@ import {
 import { ISubjectState, IAppState } from '../../models/appState';
 
 const initSubjectState: ISubjectState = {
-  isLoading: false
+  isSubjectLoading: false,
+  isCreateLoading: false
 }
 
-const subjectReducer = (state: IAppState['auth'] = initSubjectState, { type, payload }: any) => {
+const subjectReducer = (state: IAppState['subject'] = initSubjectState, { type, payload }: any) => {
+  console.log({ type });
+  console.log({ payload });
+  if (type === createSubjectRoutine.TRIGGER) {
+    return {
+      ...state,
+      isCreateLoading: true
+    };
+  }
+  if (type === loadSubjectRoutine.TRIGGER) {
+    return {
+      ...state,
+      isSubjectLoading: true
+    };
+  }
   if (type === createSubjectRoutine.SUCCESS) {
     return {
       ...state,
       subject: payload,
-      isLoading: false
+      isCreateLoading: false
     };
   }
   if (type === loadAllSubjectsRoutine.SUCCESS) {
     return {
       ...state,
-      subjects: payload,
-      isLoading: false
+      subjects: payload
     };
   }
   if (type === loadSubjectRoutine.SUCCESS) {
     return {
       ...state,
       subject: payload,
-      isLoading: false
+      isSubjectLoading: false
     };
   }
   if (type === loadSubjectRoutine.FAILURE
@@ -36,7 +50,8 @@ const subjectReducer = (state: IAppState['auth'] = initSubjectState, { type, pay
     || type === createSubjectRoutine.FAILURE) {
     return {
       ...state,
-      isLoading: false
+      isSubjectsLoading: false,
+      isCreateLoading: false
     };
   }
   return state;
