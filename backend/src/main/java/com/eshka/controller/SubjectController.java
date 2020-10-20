@@ -12,6 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Api("process all operations with subject objects")
 @RestController
 @RequestMapping("/subject")
@@ -24,6 +27,16 @@ public class SubjectController {
     @GetMapping("/{id}")
     public ResponseEntity<SubjectResponse> findById(@PathVariable(name = "id") String id) {
         return new ResponseEntity<>(mapper.subjectToSubjectResponse(subjectService.findById(Long.parseLong(id))),
+                HttpStatus.OK);
+    }
+
+    @ApiOperation("get all subjects")
+    @GetMapping
+    public ResponseEntity<List<SubjectResponse>> findById() {
+        List<Subject> subjectList = subjectService.findAll();
+        return new ResponseEntity<>(subjectList.stream()
+                .map(mapper::subjectToSubjectResponse)
+                .collect(Collectors.toList()),
                 HttpStatus.OK);
     }
 

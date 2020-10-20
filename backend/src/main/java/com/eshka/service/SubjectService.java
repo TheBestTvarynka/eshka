@@ -6,6 +6,8 @@ import com.eshka.repository.SubjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class SubjectService {
@@ -29,5 +31,9 @@ public class SubjectService {
 
     public void deleteById(long id) {
         subjectRepository.deleteById(id);
+    }
+
+    public List<Subject> findAll() {
+        return subjectRepository.findAll();
     }
 }
