@@ -8,4 +8,6 @@ public interface QueueService {
     Queue createNewQueue(Queue request);
 
     Queue editQueue(Queue request);
+
+    void deleteById(long id);
 }

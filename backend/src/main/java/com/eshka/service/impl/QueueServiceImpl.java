@@ -28,4 +28,9 @@ public class QueueServiceImpl implements QueueService {
         queue.setTitle(request.getTitle());
         return queueRepository.save(queue);
     }
+
+    @Override
+    public void deleteById(long id) {
+        queueRepository.deleteById(id);
+    }
 }

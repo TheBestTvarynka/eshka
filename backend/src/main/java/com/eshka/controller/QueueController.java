@@ -41,4 +41,11 @@ public class QueueController {
                 HttpStatus.OK);
     }
 
+    @ApiOperation("delete queue by id")
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteSubject(@PathVariable(name = "id") String id) {
+        queueService.deleteById(Long.parseLong(id));
+    }
+
 }
