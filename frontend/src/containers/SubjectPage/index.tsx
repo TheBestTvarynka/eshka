@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {
-  createSubjectRoutine,
+  updateSubjectRoutine,
   loadAllSubjectsRoutine,
   loadSubjectRoutine
 } from '../../sagas/subject/routines';
@@ -28,10 +28,11 @@ const openedQueues = [
 ] as IQueueShort[];
 
 const SubjectPage: React.FC<ISubjectPageProps> = ({
-  subject, subjects, isSubjectLoading, create, loadAll, load
+  subject, subjects, isSubjectLoading, update, loadAll, load
 }) => {
   const [selected, setSelected] = useState<number | undefined>(subject?.id);
   const [cs, setCS] = useState<boolean>(false);
+  const [edit, setEdit] = useState<boolean>(false);
 
   useEffect(() => {
     loadAll();
@@ -84,12 +85,21 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
           : <Loader/>
         }
         <div className={containers.vertical_actions_panel}>
+          <button className={`${buttons.button_simple} ${buttons.blue_simple}`}
+                  onClick={() => {
+                    if (subject) {
+                      setEdit(true);
+                      setCS(true);
+                    }
+                  }}
+          >Edit subject</button>
           <button className={`${buttons.button_simple} ${buttons.green_simple}`}>Create queue</button>
         </div>
       </div>
       {cs && <CreateSubjectWindow
+        subject={edit ? subject : undefined}
         onSubmit={data => {
-          create(data);
+          update(data);
           setCS(false);
         }}
         onClose={() => setCS(false)} />}
@@ -104,7 +114,7 @@ const mapStateToProps = (appState: IAppState) => ({
 });
 
 const mapDispatchToProps = {
-  create: createSubjectRoutine,
+  update: updateSubjectRoutine,
   loadAll: loadAllSubjectsRoutine,
   load: loadSubjectRoutine
 }

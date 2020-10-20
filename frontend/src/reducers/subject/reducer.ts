@@ -1,5 +1,5 @@
 import {
-  createSubjectRoutine,
+  updateSubjectRoutine,
   loadAllSubjectsRoutine,
   loadSubjectRoutine
 } from '../../sagas/subject/routines';
@@ -11,9 +11,7 @@ const initSubjectState: ISubjectState = {
 }
 
 const subjectReducer = (state: IAppState['subject'] = initSubjectState, { type, payload }: any) => {
-  console.log({ type });
-  console.log({ payload });
-  if (type === createSubjectRoutine.TRIGGER) {
+  if (type === updateSubjectRoutine.TRIGGER) {
     return {
       ...state,
       isCreateLoading: true
@@ -25,7 +23,7 @@ const subjectReducer = (state: IAppState['subject'] = initSubjectState, { type, 
       isSubjectLoading: true
     };
   }
-  if (type === createSubjectRoutine.SUCCESS) {
+  if (type === updateSubjectRoutine.SUCCESS) {
     return {
       ...state,
       subject: payload,
@@ -47,7 +45,7 @@ const subjectReducer = (state: IAppState['subject'] = initSubjectState, { type, 
   }
   if (type === loadSubjectRoutine.FAILURE
     || type === loadAllSubjectsRoutine.FAILURE
-    || type === createSubjectRoutine.FAILURE) {
+    || type === updateSubjectRoutine.FAILURE) {
     return {
       ...state,
       isSubjectsLoading: false,

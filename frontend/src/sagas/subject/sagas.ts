@@ -1,18 +1,26 @@
 import { all, put, call, takeEvery } from 'redux-saga/effects';
 import {
-  createSubjectRoutine,
+  updateSubjectRoutine,
   loadAllSubjectsRoutine,
   loadSubjectRoutine
 } from './routines';
 import apiClient from '../../helpers/webApi.helper';
 
-function* createSubject(action: any) {
+function* updateSubject(action: any) {
   const data = action.payload;
+  console.log({ data });
   try {
-    const res = yield apiClient.post({ endpoint: '/subject', body: data });
+    let res;
+    if (data.id) {
+      // update the subject
+      res = yield apiClient.put({ endpoint: '/subject', body: data });
+    } else {
+      // create a new subject
+      res = yield apiClient.post({ endpoint: '/subject', body: data });
+    }
     const parsedData = yield res.json();
     console.log({ parsedData });
-    yield put(createSubjectRoutine.success(parsedData));
+    yield put(updateSubjectRoutine.success(parsedData));
     yield call(loadAllSubjects);
   } catch(error) {
     console.log('Error with subject creation');
@@ -50,7 +58,7 @@ function* loadSubject(action: any) {
 
 export default function* subjectSaga() {
   yield all([
-    yield takeEvery(createSubjectRoutine.TRIGGER, createSubject),
+    yield takeEvery(updateSubjectRoutine.TRIGGER, updateSubject),
     yield takeEvery(loadAllSubjectsRoutine.TRIGGER, loadAllSubjects),
     yield takeEvery(loadSubjectRoutine.TRIGGER, loadSubject)
   ]);

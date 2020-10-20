@@ -11,8 +11,6 @@ const initAuthState: IAuthState = {
 }
 
 const authReducer = (state: IAppState['auth'] = initAuthState, { type, payload }: any) => {
-  console.log(type);
-  console.log(payload);
   if (type === loginRoutine.SUCCESS) {
     return {
       isLoading: false,
