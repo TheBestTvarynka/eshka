@@ -7,16 +7,23 @@ import com.eshka.entity.Subject;
 import com.eshka.entity.User;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
 
+@SpringBootTest
+@RunWith(SpringRunner.class)
 public class QueueMapperTest {
     private Queue queue;
     private QueueResponse queueResponse;
     private QueueRequest queueRequest;
+    @Autowired
+    private QueueMapper mapper;
 
 
     @Before
@@ -57,13 +64,13 @@ public class QueueMapperTest {
 
     @Test
     public void queueToQueueResponse() {
-        QueueResponse actual = QueueMapper.INSTANCE.queueToQueueResponse(queue);
+        QueueResponse actual = mapper.queueToQueueResponse(queue);
         assertEquals(queueResponse, actual);
     }
 
     @Test
     public void queueRequestToQueue() {
-        Queue actual = QueueMapper.INSTANCE.queueRequestToQueue(queueRequest);
+        Queue actual = mapper.queueRequestToQueue(queueRequest);
         System.out.println(actual);
         assertEquals(queue, actual);
     }

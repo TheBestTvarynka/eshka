@@ -4,4 +4,6 @@ import com.eshka.entity.Queue;
 
 public interface QueueService {
     Queue findById(long id);
+
+    Queue createNewQueue(Queue request);
 }

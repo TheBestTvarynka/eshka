@@ -1,8 +1,9 @@
-package com.eshka.service;
+package com.eshka.service.impl;
 
 import com.eshka.entity.Subject;
 import com.eshka.exception.SubjectNotFoundException;
 import com.eshka.repository.SubjectRepository;
+import com.eshka.service.SubjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
