@@ -2,20 +2,27 @@ package com.eshka.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "queue")
+@Entity(name = "Queue")
+@Table(name = "queue")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Queue {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Column(name = "title", unique = true, nullable = false)
+    @EqualsAndHashCode.Include
     private String title;
     @Column(name = "description")
     private String description;
@@ -33,4 +40,35 @@ public class Queue {
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "subject_id")
     private Subject subject;
+    @OneToMany(
+            mappedBy = "queue",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<QueueDetails> tags = new ArrayList<>();
+
+    public Queue(String title) {
+        this.title = title;
+    }
+
+    public void addUser(User user) {
+        QueueDetails queueDetails = new QueueDetails(this, user);
+        tags.add(queueDetails);
+        user.getQueues().add(queueDetails);
+    }
+
+    public void removeUser(User user) {
+        for (Iterator<QueueDetails> iterator = tags.iterator();
+             iterator.hasNext(); ) {
+            QueueDetails queueDetails = iterator.next();
+
+            if (queueDetails.getQueue().equals(this) &&
+                    queueDetails.getUser().equals(user)) {
+                iterator.remove();
+                queueDetails.getUser().getQueues().remove(queueDetails);
+                queueDetails.setQueue(null);
+                queueDetails.setUser(null);
+            }
+        }
+    }
 }
