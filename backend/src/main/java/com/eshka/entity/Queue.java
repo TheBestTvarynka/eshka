@@ -20,7 +20,7 @@ import java.util.List;
 public class Queue {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     @Column(name = "title", unique = true, nullable = false)
     @EqualsAndHashCode.Include
     private String title;
@@ -45,7 +45,7 @@ public class Queue {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<QueueDetails> tags = new ArrayList<>();
+    private List<QueueDetails> users = new ArrayList<>();
 
     public Queue(String title) {
         this.title = title;
@@ -53,12 +53,12 @@ public class Queue {
 
     public void addUser(User user) {
         QueueDetails queueDetails = new QueueDetails(this, user);
-        tags.add(queueDetails);
+        users.add(queueDetails);
         user.getQueues().add(queueDetails);
     }
 
     public void removeUser(User user) {
-        for (Iterator<QueueDetails> iterator = tags.iterator();
+        for (Iterator<QueueDetails> iterator = users.iterator();
              iterator.hasNext(); ) {
             QueueDetails queueDetails = iterator.next();
 
