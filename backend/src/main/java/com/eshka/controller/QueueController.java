@@ -33,4 +33,12 @@ public class QueueController {
         return new ResponseEntity<>(queueResponse, HttpStatus.CREATED);
     }
 
+    @ApiOperation("edit queue")
+    @PutMapping
+    public ResponseEntity<QueueResponse> editSubject(@RequestBody QueueRequest request) {
+        Queue newQueue = queueService.editQueue(mapper.queueRequestToQueue(request));
+        return new ResponseEntity<>(mapper.queueToQueueResponse(newQueue),
+                HttpStatus.OK);
+    }
+
 }

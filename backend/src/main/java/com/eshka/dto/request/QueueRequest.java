@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QueueRequest {
+    private long id;
     private String title;
     private String description;
     private LocalDateTime creationDate;

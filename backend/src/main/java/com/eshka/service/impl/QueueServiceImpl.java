@@ -20,4 +20,12 @@ public class QueueServiceImpl implements QueueService {
     public Queue createNewQueue(Queue request) {
         return queueRepository.save(request);
     }
+
+    @Override
+    public Queue editQueue(Queue request) {
+        Queue queue = queueRepository.findById(request.getId()).orElseThrow();
+        queue.setDescription(request.getDescription());
+        queue.setTitle(request.getTitle());
+        return queueRepository.save(queue);
+    }
 }
