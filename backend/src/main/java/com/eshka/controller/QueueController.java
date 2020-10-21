@@ -5,15 +5,20 @@ import com.eshka.dto.response.QueueResponse;
 import com.eshka.entity.Queue;
 import com.eshka.mapper.QueueMapper;
 import com.eshka.service.QueueService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/queue")
 @RequiredArgsConstructor
+@Api("process all operations with queue objects")
 public class QueueController {
     private final QueueMapper mapper;
     private final QueueService queueService;
@@ -48,4 +53,15 @@ public class QueueController {
         queueService.deleteById(Long.parseLong(id));
     }
 
+    @ApiOperation("get queues by params")
+    @GetMapping("/all")
+    public ResponseEntity<List<QueueResponse>> getQueuesByOpenedAndSubjectId(
+            @RequestParam("opened") String opened,
+            @RequestParam("subjectId") String subjectId) {
+        List<Queue> list = queueService.findByOpenedAndSubjectId(Boolean.parseBoolean(opened), Long.parseLong(subjectId));
+        return new ResponseEntity<>(list.stream()
+                .map(mapper::queueToQueueResponse)
+                .collect(Collectors.toList())
+                , HttpStatus.OK);
+    }
 }

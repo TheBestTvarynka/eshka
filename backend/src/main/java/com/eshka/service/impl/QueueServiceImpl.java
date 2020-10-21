@@ -7,6 +7,8 @@ import com.eshka.service.QueueService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class QueueServiceImpl implements QueueService {
@@ -37,5 +39,11 @@ public class QueueServiceImpl implements QueueService {
     @Override
     public void deleteById(long id) {
         queueRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Queue> findByOpenedAndSubjectId(boolean opened, long subjectId) {
+        return opened ? queueRepository.findAllByEndDateIsNullAndSubject_Id(subjectId) :
+                queueRepository.findAllByEndDateIsNotNullAndSubject_Id(subjectId);
     }
 }
