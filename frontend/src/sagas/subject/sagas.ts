@@ -9,7 +9,6 @@ import apiClient from '../../helpers/webApi.helper';
 
 function* updateSubject(action: any) {
   const data = action.payload;
-  console.log({ data });
   try {
     let res;
     if (data.id) {
@@ -20,7 +19,6 @@ function* updateSubject(action: any) {
       res = yield apiClient.post({ endpoint: '/subject', body: data });
     }
     const parsedData = yield res.json();
-    console.log({ parsedData });
     yield put(updateSubjectRoutine.success(parsedData));
     yield call(loadAllSubjects);
   } catch(error) {
@@ -30,11 +28,9 @@ function* updateSubject(action: any) {
 }
 
 function* loadAllSubjects() {
-  console.log('Load all subjects');
   try {
     const res = yield apiClient.get({ endpoint: '/subject' });
     const parsedData = yield res.json();
-    console.log({ parsedData });
     yield put(loadAllSubjectsRoutine.success(parsedData));
   } catch(error) {
     console.log('Error with loading subjects');
@@ -43,13 +39,10 @@ function* loadAllSubjects() {
 }
 
 function* loadSubject(action: any) {
-  console.log('Load subject');
   const id = action.payload;
-  console.log({ id });
   try {
     const res = yield apiClient.get({ endpoint: `/subject/${id}` });
     const parsedData = yield res.json();
-    console.log({ parsedData });
     yield put(loadSubjectRoutine.success(parsedData));
   } catch(error) {
     console.log('Error with subject loading');
@@ -58,9 +51,7 @@ function* loadSubject(action: any) {
 }
 
 function* deleteSubject(action: any) {
-  console.log(action.payload);
   const { id, subjectId } = action.payload;
-  console.log({ id });
   if (!id) {
     return;
   }

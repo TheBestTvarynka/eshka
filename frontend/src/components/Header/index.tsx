@@ -1,8 +1,12 @@
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
+import { logoutRoutine } from '../../sagas/auth/routines';
 import styles from './styles.module.sass';
+import { connect, ConnectedProps } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
-const Header: FC = () => {
+const Header: FC<IHeaderProps> = ({ logout }) => {
+  const history = useHistory();
   return (
     <div className={styles.header}>
       <div className={styles.header_group}>
@@ -38,6 +42,7 @@ const Header: FC = () => {
         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
              width="25" height="25"
              viewBox="0 0 172 172"
+             onClick={() => logout(history)}
              style={{"fill": "#000000"}}>
           <g fill="none" fillRule="nonzero" stroke="none" strokeWidth="1" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" strokeDasharray="" strokeDashoffset="0" fontFamily="none" fontWeight="none" fontSize="none" textAnchor="none" style={{mixBlendMode: "normal"}}>
             <path d="M0,172v-172h172v172z" fill="none" />
@@ -51,4 +56,10 @@ const Header: FC = () => {
   );
 };
 
-export default Header;
+const mapDispatchToProps = {
+  logout: logoutRoutine
+}
+
+const connector = connect(null, mapDispatchToProps);
+type IHeaderProps = ConnectedProps<typeof connector>;
+export default connector(Header);

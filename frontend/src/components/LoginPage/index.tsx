@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { loginRoutine } from '../../sagas/auth/routines';
 import { IAppState} from '../../models/appState';
+import { useHistory } from 'react-router-dom';
 import styles from './styles.module.sass';
 import inputs from '../styles/inputs.module.sass';
 
@@ -15,6 +16,7 @@ export interface ILoginProps {
 const usernameRegex = /^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/;
 
 const LoginPage: React.FC<ILoginProps> = ({ id, isLoading, login }) => {
+  const history = useHistory();
   const [usernameError, setUsernameError] = useState<string>('');
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -32,7 +34,7 @@ const LoginPage: React.FC<ILoginProps> = ({ id, isLoading, login }) => {
   const handleLogin = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     console.log({ email: username, password });
-    login({ username, password });
+    login({ username, password, history });
   };
 
   return (
