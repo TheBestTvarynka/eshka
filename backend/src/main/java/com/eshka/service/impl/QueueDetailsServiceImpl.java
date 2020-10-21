@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,5 +35,10 @@ public class QueueDetailsServiceImpl implements QueueDetailsService {
     @Override
     public void deleteQueueDetailsById(long userId, long queueId) {
         repository.deleteById(new QueueDetailsId(queueId, userId));
+    }
+
+    @Override
+    public List<QueueDetails> getAllByQueueId(long queueId) {
+        return repository.findAllByQueue_Id(queueId);
     }
 }
