@@ -1,39 +1,17 @@
 package com.eshka.service;
 
 import com.eshka.entity.Subject;
-import com.eshka.exception.SubjectNotFoundException;
-import com.eshka.repository.SubjectRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class SubjectService {
-    private final SubjectRepository subjectRepository;
+public interface SubjectService {
+    Subject findById(long id);
 
-    public Subject findById(long id) {
-        return subjectRepository.findById(id).orElseThrow();
-    }
+    Subject createNewSubject(Subject subject);
 
-    public Subject createNewSubject(Subject subject) {
-        return subjectRepository.save(subject);
-    }
+    Subject editSubject(Subject subject);
 
-    public Subject editSubject(Subject subject) {
-        Subject oldSubject = subjectRepository.findById(subject.getId()).orElseThrow(
-                () -> new SubjectNotFoundException("subject not found"));
-        oldSubject.setTitle(subject.getTitle());
-        oldSubject.setDescription(subject.getDescription());
-        return subjectRepository.save(oldSubject);
-    }
+    void deleteById(long id);
 
-    public void deleteById(long id) {
-        subjectRepository.deleteById(id);
-    }
-
-    public List<Subject> findAll() {
-        return subjectRepository.findAll();
-    }
+    List<Subject> findAll();
 }
