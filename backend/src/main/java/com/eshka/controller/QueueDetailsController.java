@@ -28,6 +28,5 @@ public class QueueDetailsController {
     public ResponseEntity<QueueDetailsResponse> createNewQueueDetails(@RequestBody QueueDetailsRequest request) {
         QueueDetails newQueueDetails = service.createNewQueueDetails(mapper.queueDetailsRequestToQueueDetails(request));
         return new ResponseEntity<>(mapper.queueDetailsToQueueDetailsResponse(newQueueDetails), HttpStatus.CREATED);
-
     }
 }
