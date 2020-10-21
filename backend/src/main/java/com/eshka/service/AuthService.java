@@ -54,7 +54,7 @@ public class AuthService {
                     .from(AuthCookieFilter.COOKIE_NAME, sessionId)
                     .maxAge(this.appProperties.getCookieMaxAge())
                     .sameSite("Strict")
-                    .path("/").httpOnly(true)
+                    .path("/").httpOnly(false)
                     .secure(this.appProperties.isSecureCookie())
                     .build();
             AfterLoginDTO afterLogin = AfterLoginDTO.builder()

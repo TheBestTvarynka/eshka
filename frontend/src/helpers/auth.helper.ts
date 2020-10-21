@@ -1,11 +1,11 @@
 import Cookies from 'js-cookie';
 
 const createAuthHelper = () => {
-  console.log(Cookies.get('Authentication'));
+  const COOKIE_NAME = 'Authentication';
+
   let token: string | null | undefined = Cookies.get('Authentication')
-    ? Cookies.get('Authentication')
-    // : null;
-    : '00116sp9ol7ocixn-jbxdgjdgkqvh0';
+    ? Cookies.get(COOKIE_NAME)
+    : null;
 
   let observers: Array<(isLogged: boolean) => void> = [];
 
@@ -24,9 +24,9 @@ const createAuthHelper = () => {
 
   const setToken = (newToken: typeof token) => {
     if (newToken) {
-      Cookies.set('Authentication', newToken);
+      Cookies.set(COOKIE_NAME, newToken, { path: '/', domain: 'localhost:3000' });
     } else {
-      Cookies.remove('Authentication');
+      Cookies.remove(COOKIE_NAME);
     }
     token = newToken;
     notify();
