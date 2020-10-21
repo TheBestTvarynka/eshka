@@ -1,6 +1,6 @@
 
 export interface IUser {
-  id: string;
+  id: number;
   fullName: string;
   username: string;
   email: string;
@@ -8,9 +8,9 @@ export interface IUser {
 }
 
 export interface IUserShort {
-  id: string;
+  id: number;
   fullName: string;
-  logo: string;
+  logo?: string;
 }
 
 export enum Role {

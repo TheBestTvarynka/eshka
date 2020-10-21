@@ -6,6 +6,6 @@ export interface ISubject {
 }
 
 export interface ISubjectShort {
-  id: string;
+  id: number;
   title: string;
 }

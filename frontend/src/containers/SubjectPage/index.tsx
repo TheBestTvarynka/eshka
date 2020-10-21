@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import {connect, ConnectedProps} from 'react-redux';
 import {
@@ -18,15 +19,15 @@ import { IAppState } from '../../models/appState';
 import { IQueueShort } from '../../models/queue';
 
 const closedQueues = [
-  { id: '1', name: 'Lab 1', participants: 23 },
-  { id: '2', name: 'Lab 2', participants: 15 },
-  { id: '3', name: 'Lab 3', participants: 19 }
+  { id: '1', title: 'Lab 1', participants: 23 },
+  { id: '2', title: 'Lab 2', participants: 15 },
+  { id: '3', title: 'Lab 3', participants: 19 }
 ] as IQueueShort[];
 
 const openedQueues = [
-  { id: '1', name: 'Lab 4', participants: 16 },
-  { id: '2', name: 'Lab 5', participants: 13 },
-  { id: '3', name: 'Lab 6', participants: 6 }
+  { id: '1', title: 'Lab 4', participants: 16 },
+  { id: '2', title: 'Lab 5', participants: 13 },
+  { id: '3', title: 'Lab 6', participants: 6 }
 ] as IQueueShort[];
 
 const SubjectPage: React.FC<ISubjectPageProps> = ({
@@ -43,7 +44,7 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
 
   return (
     <div className={styles.subject_page}>
-      <div className={listStyles.list}>
+      <div className={lists.dark_list}>
         {subjects && subjects.map(s =>
           <div className={`${listStyles.item} ${s.id === selected ? listStyles.selected : listStyles.simple}`}
                key={s.id}
@@ -64,23 +65,23 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
       <div className={containers.content_general}>
         {!isSubjectLoading
           ? <div className={containers.main_content}>
-              <span className={containers.title}>{subject ? subject.title : ''}</span>
+              <span className={containers.dark_item_title}>{subject ? subject.title : ''}</span>
               <span className={containers.description}>{subject ? subject.description : ''}</span>
               <div className={containers.two_columns}>
                 <div className={lists.light_list}>
                   <span className={lists.light_list_title}>Opened queues</span>
                   {openedQueues.map(queue =>
-                    <div className={lists.light_list_item} key={queue.id}>
+                    <Link to={`/queue/${queue.id}`} className={lists.light_list_item} key={queue.id}>
                       <span>{queue.name} ({queue.participants})</span>
-                    </div>
+                     </Link>
                   )}
                 </div>
                 <div className={lists.light_list}>
                   <span className={lists.light_list_title}>Closed queues</span>
                   {closedQueues.map(queue =>
-                    <div className={lists.light_list_item} key={queue.id}>
+                    <Link to={`/queue/${queue.id}`} className={lists.light_list_item} key={queue.id}>
                       <span>{queue.name} ({queue.participants})</span>
-                    </div>
+                    </Link>
                   )}
                 </div>
               </div>
