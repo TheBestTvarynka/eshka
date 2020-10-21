@@ -30,4 +30,9 @@ public class QueueDetailsServiceImpl implements QueueDetailsService {
         queueDetails.setPassed(request.isPassed());
         return repository.save(queueDetails);
     }
+
+    @Override
+    public void deleteQueueDetailsById(long userId, long queueId) {
+        repository.deleteById(new QueueDetailsId(queueId, userId));
+    }
 }
