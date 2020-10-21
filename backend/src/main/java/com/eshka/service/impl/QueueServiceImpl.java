@@ -1,6 +1,7 @@
 package com.eshka.service.impl;
 
 import com.eshka.entity.Queue;
+import com.eshka.exception.QueueNotFoundException;
 import com.eshka.repository.QueueRepository;
 import com.eshka.service.QueueService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,8 @@ public class QueueServiceImpl implements QueueService {
 
     @Override
     public Queue findById(long id) {
-        return queueRepository.findById(id).orElseThrow();
+        return queueRepository.findById(id).orElseThrow(
+                () -> new QueueNotFoundException("queue not found"));
     }
 
     @Override
@@ -23,7 +25,8 @@ public class QueueServiceImpl implements QueueService {
 
     @Override
     public Queue editQueue(Queue request) {
-        Queue queue = queueRepository.findById(request.getId()).orElseThrow();
+        Queue queue = queueRepository.findById(request.getId()).orElseThrow(
+                () -> new QueueNotFoundException("queue not found"));
         queue.setDescription(request.getDescription());
         queue.setTitle(request.getTitle());
         return queueRepository.save(queue);
