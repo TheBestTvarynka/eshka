@@ -12,6 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/queue-details")
 @RequiredArgsConstructor
@@ -40,5 +43,13 @@ public class QueueDetailsController {
     public void removeFromQueue(@PathVariable(name = "userId") String userid,
                                 @PathVariable(name = "queueId") String queueId) {
         service.deleteQueueDetailsById(Long.parseLong(userid), Long.parseLong(queueId));
+    }
+
+    @GetMapping("/{queueId}")
+    @ApiOperation("get list of queue details by queue id")
+    public ResponseEntity<List<QueueDetailsResponse>> getAllByQueueId(@PathVariable(name = "queueId") String queueId) {
+        return new ResponseEntity<>(service.getAllByQueueId(Long.parseLong(queueId)).stream()
+                .map(mapper::queueDetailsToQueueDetailsResponse)
+                .collect(Collectors.toList()), HttpStatus.OK);
     }
 }
