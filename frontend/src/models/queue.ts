@@ -1,17 +1,16 @@
 import { IUserShort } from './user';
 
 export interface IQueueShort {
-  id: string;
+  id: number;
   title: string;
-  participants: number;
 }
 
 export interface IQueue {
-  id: string;
+  id: number;
   title: string;
   description: string;
   creationDate: Date;
-  closeDate: Date;
+  closingDate: Date;
   startDate: Date;
   endDate: Date;
 }
