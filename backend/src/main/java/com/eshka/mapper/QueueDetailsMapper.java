@@ -2,7 +2,6 @@ package com.eshka.mapper;
 
 import com.eshka.dto.request.QueueDetailsRequest;
 import com.eshka.dto.response.QueueDetailsResponse;
-import com.eshka.entity.Queue;
 import com.eshka.entity.QueueDetails;
 import com.eshka.service.QueueService;
 import com.eshka.service.UserService;
@@ -22,5 +21,5 @@ public interface QueueDetailsMapper {
             @Mapping(source = "userId", target = "user"),
             @Mapping(source = "queueId", target = "queue")
     })
-    Queue queueDetailsRequestToQueueDetails(QueueDetailsRequest request);
+    QueueDetails queueDetailsRequestToQueueDetails(QueueDetailsRequest request);
 }

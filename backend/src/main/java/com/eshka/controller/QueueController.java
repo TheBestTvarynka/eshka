@@ -5,6 +5,7 @@ import com.eshka.dto.response.QueueResponse;
 import com.eshka.entity.Queue;
 import com.eshka.mapper.QueueMapper;
 import com.eshka.service.QueueService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/queue")
 @RequiredArgsConstructor
+@Api("process all operations with queue objects")
 public class QueueController {
     private final QueueMapper mapper;
     private final QueueService queueService;
