@@ -1,6 +1,8 @@
 import {
   loadOpenedQueuesRoutine,
-  loadClosedQueuesRoutine
+  loadClosedQueuesRoutine,
+  loadQueueRoutine,
+  loadQueueMembersRoutine
 } from '../../sagas/queue/routines';
 import { IQueueState, IAppState } from '../../models/appState';
 
@@ -23,6 +25,12 @@ const queueReducer = (state: IAppState["queue"] = initState, { type, payload}: a
       isClosedLoading: true
     };
   }
+  if (type === loadQueueRoutine.TRIGGER) {
+    return {
+      ...state,
+      isQueueLoading: true
+    };
+  }
   if (type === loadOpenedQueuesRoutine.SUCCESS) {
     return {
       ...state,
@@ -37,6 +45,19 @@ const queueReducer = (state: IAppState["queue"] = initState, { type, payload}: a
       isClosedLoading: false
     };
   }
+  if (type === loadQueueRoutine.SUCCESS) {
+    return {
+      ...state,
+      queue: payload,
+      isQueueLoading: false
+    };
+  }
+  if (type === loadQueueMembersRoutine.SUCCESS) {
+    return {
+      ...state,
+      queueMembers: payload
+    };
+  }
   if (type === loadOpenedQueuesRoutine.FAILURE) {
     return {
       ...state,
@@ -47,6 +68,12 @@ const queueReducer = (state: IAppState["queue"] = initState, { type, payload}: a
     return {
       ...state,
       isClosedLoading: false
+    };
+  }
+  if (type === loadQueueRoutine.FAILURE) {
+    return {
+      ...state,
+      isQueueLoading: false
     };
   }
   return state;

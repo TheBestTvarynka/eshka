@@ -1,5 +1,7 @@
 package com.eshka.dto.response;
 
+import com.eshka.entity.User;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,10 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class QueueDetailsResponse {
-    private long queueId;
-    private UserShortResponse user;
-    private int sequenceNumber;
-    private boolean passed;
-    private LocalDateTime turnedAt;
+public class UserShortResponse {
+    private long id;
+    private String fullName;
 }

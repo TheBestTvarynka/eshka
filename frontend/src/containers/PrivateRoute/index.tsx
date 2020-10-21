@@ -23,6 +23,7 @@ const PrivateRoute: FC<IPrivateRouteProps & PrivateRouteStateProps> = ({ compone
       loadUserData();
     }
   }, [isLogged, user, loadUserData]);
+  console.log({ rest });
   return (
     <Route
       {...rest}

@@ -1,6 +1,6 @@
 import { IUser } from './user';
 import { ISubject } from "./subject";
-import { IQueue, IQueueShort } from './queue';
+import { IQueue, IQueueMember, IQueueShort } from './queue';
 
 export interface IAuthState {
   user?: IUser;
@@ -16,6 +16,7 @@ export interface ISubjectState {
 
 export interface IQueueState {
   queue?: IQueue;
+  queueMembers?: IQueueMember[];
   opened?: IQueueShort[];
   closed?: IQueueShort[];
   isQueueLoading: boolean;
