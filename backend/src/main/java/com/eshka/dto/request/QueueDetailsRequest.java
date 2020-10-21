@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class QueueDetailsRequest {
     private long queueId;
     private long userId;
+    private boolean passed;
 }

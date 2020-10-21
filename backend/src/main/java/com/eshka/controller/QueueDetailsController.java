@@ -10,10 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/queue-details")
@@ -28,5 +25,11 @@ public class QueueDetailsController {
     public ResponseEntity<QueueDetailsResponse> createNewQueueDetails(@RequestBody QueueDetailsRequest request) {
         QueueDetails newQueueDetails = service.createNewQueueDetails(mapper.queueDetailsRequestToQueueDetails(request));
         return new ResponseEntity<>(mapper.queueDetailsToQueueDetailsResponse(newQueueDetails), HttpStatus.CREATED);
+    }
+    @PatchMapping
+    @ApiOperation("change passed status for queue details")
+    public ResponseEntity<QueueDetailsResponse> changePassedStatus(@RequestBody QueueDetailsRequest request) {
+        QueueDetails newQueueDetails = service.changePassedStatus(mapper.queueDetailsRequestToQueueDetails(request));
+        return new ResponseEntity<>(mapper.queueDetailsToQueueDetailsResponse(newQueueDetails), HttpStatus.OK);
     }
 }
