@@ -10,6 +10,7 @@ function* loadOpenedQueues(action: any) {
   try {
     const res = yield apiClient.get({ endpoint: `/queue/all?opened=true&subjectId=${subjectId}` });
     const parsedData = yield res.json();
+    console.log({ parsedData });
     yield put(loadOpenedQueuesRoutine.success(parsedData.map((item: any) => ({
       id: item.id,
       title: item.title
@@ -25,6 +26,7 @@ function* loadClosedQueues(action: any) {
   try {
     const res = yield apiClient.get({ endpoint: `/queue/all?opened=false&subjectId=${subjectId}` });
     const parsedData = yield res.json();
+    console.log({ parsedData });
     yield put(loadClosedQueuesRoutine.success(parsedData.map((item: any) => ({
       id: item.id,
       title: item.title

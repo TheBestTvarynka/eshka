@@ -7,11 +7,11 @@ import lists from '../../components/styles/lists.module.sass';
 import buttons from '../../components/styles/buttons.module.sass';
 
 const queueMock = {
-  id: '1',
+  id: 1,
   title: 'Lab 1',
   description: 'Allocator Design',
   creationDate: new Date(),
-  closeDate: new Date(),
+  closingDate: new Date(),
   startDate: new Date(),
   endDate: new Date()
 } as IQueue;
@@ -43,7 +43,7 @@ const QueuePage = () => {
         </span>
         <span className={`${containers.description} ${styles.date_c}`}>
           Closed at
-          <span className={styles.date}>{queueMock.closeDate.toLocaleString()}</span>
+          <span className={styles.date}>{queueMock.closingDate.toLocaleString()}</span>
         </span>
         <span className={containers.description}>{queueMock.description}</span>
         <span className={`${containers.description} ${styles.date_c}`}>
@@ -78,14 +78,14 @@ const QueuePage = () => {
           <div className={containers.vertical_actions_panel}>
             {isTurned(null, membersMock)
               ? <button className={`${buttons.button_simple} ${buttons.blue_simple}`}>Unturn</button>
-              : (queueMock.closeDate
+              : (queueMock.closingDate
                   ? <span className={`${buttons.button_simple} ${buttons.disabled}`}>Too late</span>
                   : <button className={`${buttons.button_simple} ${buttons.blue_simple}`}>Turn in</button>
                 )
             }
           </div>
           <div className={containers.vertical_actions_panel}>
-            {queueMock.closeDate
+            {queueMock.closingDate
               ? <span className={`${buttons.button_simple} ${buttons.disabled}`}>Queue closed</span>
               : <button className={`${buttons.button_simple} ${buttons.red_simple}`}>Close queue</button>
             }

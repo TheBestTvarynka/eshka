@@ -7,6 +7,10 @@ import {
   loadAllSubjectsRoutine,
   loadSubjectRoutine
 } from '../../sagas/subject/routines';
+import {
+  loadOpenedQueuesRoutine,
+  loadClosedQueuesRoutine
+} from '../../sagas/queue/routines';
 import CreateSubjectWindow from '../../components/CreateSubjectWindow';
 import ConfirmationWindow from '../../components/ConfirmationWindow';
 import Loader from '../../components/Loader';
@@ -16,22 +20,10 @@ import lists from '../../components/styles/lists.module.sass';
 import buttons from '../../components/styles/buttons.module.sass';
 import styles from './styles.module.sass';
 import { IAppState } from '../../models/appState';
-import { IQueueShort } from '../../models/queue';
-
-const closedQueues = [
-  { id: '1', title: 'Lab 1', participants: 23 },
-  { id: '2', title: 'Lab 2', participants: 15 },
-  { id: '3', title: 'Lab 3', participants: 19 }
-] as IQueueShort[];
-
-const openedQueues = [
-  { id: '1', title: 'Lab 4', participants: 16 },
-  { id: '2', title: 'Lab 5', participants: 13 },
-  { id: '3', title: 'Lab 6', participants: 6 }
-] as IQueueShort[];
 
 const SubjectPage: React.FC<ISubjectPageProps> = ({
-  subject, subjects, isSubjectLoading, update, deleteSubject, loadAll, load
+  subject, subjects, isSubjectLoading, openedQueues, closedQueues, isOpenedLoading, isClosedLoading,
+  update, deleteSubject, loadAll, load, loadOpened, loadClosed
 }) => {
   const [selected, setSelected] = useState<number | undefined>(subject?.id);
   const [cs, setCS] = useState<boolean>(false);
@@ -42,11 +34,23 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
     loadAll();
   }, [loadAll]);
 
+  useEffect(() => {
+    if (subject?.id) {
+      loadOpened(subject.id);
+    }
+  }, [subject, loadOpened]);
+
+  useEffect(() => {
+    if (subject?.id) {
+      loadClosed(subject.id);
+    }
+  }, [subject, loadClosed]);
+
   return (
     <div className={styles.subject_page}>
       <div className={lists.dark_list}>
         {subjects && subjects.map(s =>
-          <div className={`${listStyles.item} ${s.id === selected ? listStyles.selected : listStyles.simple}`}
+          <div className={`${lists.dark_list_item} ${s.id === selected ? lists.selected : lists.simple}`}
                key={s.id}
                onClick={() => {
                  load(s.id);
@@ -70,19 +74,25 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
               <div className={containers.two_columns}>
                 <div className={lists.light_list}>
                   <span className={lists.light_list_title}>Opened queues</span>
-                  {openedQueues.map(queue =>
-                    <Link to={`/queue/${queue.id}`} className={lists.light_list_item} key={queue.id}>
-                      <span>{queue.name} ({queue.participants})</span>
-                     </Link>
-                  )}
+                  {isOpenedLoading
+                    ? <Loader />
+                    : openedQueues && openedQueues.map(queue =>
+                        <Link to={`/queue/${queue.id}`} className={lists.light_list_item} key={queue.id}>
+                          <span>{queue.title}</span>
+                        </Link>
+                      )
+                  }
                 </div>
                 <div className={lists.light_list}>
                   <span className={lists.light_list_title}>Closed queues</span>
-                  {closedQueues.map(queue =>
-                    <Link to={`/queue/${queue.id}`} className={lists.light_list_item} key={queue.id}>
-                      <span>{queue.name} ({queue.participants})</span>
-                    </Link>
-                  )}
+                  {isClosedLoading
+                    ? <Loader />
+                    : closedQueues && closedQueues.map(queue =>
+                        <Link to={`/queue/${queue.id}`} className={lists.light_list_item} key={queue.id}>
+                          <span>{queue.title}</span>
+                        </Link>
+                      )
+                  }
                 </div>
               </div>
             </div>
@@ -127,14 +137,20 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
 const mapStateToProps = (appState: IAppState) => ({
   subject: appState.subject.subject,
   subjects: appState.subject.subjects,
-  isSubjectLoading: appState.subject.isSubjectLoading
+  isSubjectLoading: appState.subject.isSubjectLoading,
+  openedQueues: appState.queue.opened,
+  isOpenedLoading: appState.queue.isOpenedLoading,
+  closedQueues: appState.queue.closed,
+  isClosedLoading: appState.queue.isClosedLoading
 });
 
 const mapDispatchToProps = {
   update: updateSubjectRoutine,
   deleteSubject: deleteSubjectRoutine,
   loadAll: loadAllSubjectsRoutine,
-  load: loadSubjectRoutine
+  load: loadSubjectRoutine,
+  loadOpened: loadOpenedQueuesRoutine,
+  loadClosed: loadClosedQueuesRoutine
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
