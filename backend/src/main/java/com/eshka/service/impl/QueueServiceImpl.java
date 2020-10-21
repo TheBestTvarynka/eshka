@@ -29,6 +29,8 @@ public class QueueServiceImpl implements QueueService {
                 () -> new QueueNotFoundException("queue not found"));
         queue.setDescription(request.getDescription());
         queue.setTitle(request.getTitle());
+        queue.setStartDate(request.getStartDate());
+        queue.setEndDate(request.getEndDate());
         return queueRepository.save(queue);
     }
 
