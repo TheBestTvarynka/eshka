@@ -1,5 +1,6 @@
 package com.eshka.entity;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "subject")
+@Builder
 public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

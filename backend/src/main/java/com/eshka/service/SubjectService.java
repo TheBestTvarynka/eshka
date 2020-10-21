@@ -1,16 +1,17 @@
 package com.eshka.service;
 
 import com.eshka.entity.Subject;
-import com.eshka.repository.SubjectRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
-@RequiredArgsConstructor
-public class SubjectService {
-    private SubjectRepository subjectRepository;
+import java.util.List;
 
-    public Subject findById(long id) {
-        return subjectRepository.findById(id).orElseThrow();
-    }
+public interface SubjectService {
+    Subject findById(long id);
+
+    Subject createNewSubject(Subject subject);
+
+    Subject editSubject(Subject subject);
+
+    void deleteById(long id);
+
+    List<Subject> findAll();
 }

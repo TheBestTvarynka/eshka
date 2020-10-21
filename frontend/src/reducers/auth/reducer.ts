@@ -11,12 +11,16 @@ const initAuthState: IAuthState = {
 }
 
 const authReducer = (state: IAppState['auth'] = initAuthState, { type, payload }: any) => {
-  console.log(type);
-  console.log(payload);
+  if (type === loginRoutine.TRIGGER || type === registerRoutine.TRIGGER) {
+    return {
+      ...state,
+      isLoading: true
+    };
+  }
   if (type === loginRoutine.SUCCESS) {
     return {
       isLoading: false,
-      user: { ...payload }
+      user: payload
     }
   }
   if (type === registerRoutine.SUCCESS) {
@@ -36,6 +40,12 @@ const authReducer = (state: IAppState['auth'] = initAuthState, { type, payload }
       user: payload,
       isLoading: false
     }
+  }
+  if (type === loginRoutine.FAILURE || type === registerRoutine.FAILURE) {
+    return {
+      ...state,
+      isLoading: false
+    };
   }
   return state;
 };

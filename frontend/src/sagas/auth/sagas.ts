@@ -1,4 +1,4 @@
-import { all, put, takeEvery } from 'redux-saga/effects';
+import { all, put, call, takeEvery } from 'redux-saga/effects';
 import {
   loginRoutine,
   registerRoutine,
@@ -7,26 +7,20 @@ import {
 } from './routines';
 import apiClient from '../../helpers/webApi.helper';
 import authProvider from '../../helpers/auth.helper';
-import { Role } from '../../models/user';
 
 function* login(action: any) {
-  const credentials = action.payload;
-  console.log(credentials);
+  const { username, password, history } = action.payload;
   try {
-    const res = yield apiClient.post({ endpoint: '/auth/login', body: credentials });
-    console.log(res);
+    const res = yield apiClient.post({ endpoint: '/auth/login', body: { username, password } });
     const parsedData = yield res.json();
-    console.log(parsedData);
-    console.log(parsedData.sessionId);
-
     authProvider.setToken(parsedData.sessionId);
-
     yield put(loginRoutine.success({
       fullName: parsedData.fullName,
       username: parsedData.username,
       email: parsedData.email,
-      role: 'USER'
+      role: parsedData.role
     }));
+    history.push('/');
   } catch (error) {
     console.log('Error with Login');
     console.log(error);
@@ -46,17 +40,23 @@ function* register(action: any) {
   }
 }
 
-function* logout() {
-
+function* logout(action: any) {
+  const history = action.payload;
+  try {
+    yield apiClient.get({ endpoint: '/auth/logout' });
+    yield put(logoutRoutine.success());
+    authProvider.setToken(null);
+    history.push('/login');
+  } catch(error) {
+    console.log('Error with logout');
+    console.log(error);
+  }
 }
 
 function* loadUserData() {
-  console.log('In load user saga');
   try {
     const res = yield apiClient.get({ endpoint: '/user' });
-    console.log(res);
     const parsedData = yield res.json();
-    console.log(parsedData);
     yield put(loadUserRoutine.success(parsedData));
   } catch(error) {
     console.log('Error with fetching user data');

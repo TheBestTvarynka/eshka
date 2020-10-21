@@ -12,7 +12,7 @@ export interface IPrivateRouteProps {
   path: string;
 }
 
-const PrivateRoute: FC<IPrivateRouteProps & PrivateRouteStateProps> = ({ component: Component, user, loadUserData , ...rest }) => {
+const PrivateRoute: FC<IPrivateRouteProps & PrivateRouteStateProps> = ({ component: Component, user, loadUserData, ...rest }) => {
   const isLogged = authProvider.isLoggedIn();
 
   console.log({ isLogged });
