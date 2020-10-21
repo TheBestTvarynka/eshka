@@ -4,6 +4,7 @@ import { IUserShort } from '../../models/user';
 import styles from './styles.module.sass';
 import containers from '../styles/containers.module.sass';
 import lists from '../../components/styles/lists.module.sass';
+import buttons from '../../components/styles/buttons.module.sass';
 
 const queueMock = {
   id: '1',
@@ -26,6 +27,12 @@ const membersMock = [
 ] as IQueueMember[];
 
 const QueuePage = () => {
+  const isTurned = (userId: number | null | undefined, members: IQueueMember[]): boolean => {
+    if (!userId) {
+      return false;
+    }
+    return !!members.find(member => member.user.id === userId);
+  };
   return (
     <div className={containers.main_content}>
       <div className={styles.queue_data}>
@@ -67,7 +74,23 @@ const QueuePage = () => {
             ))}
           </div>
         </div>
-        <div></div>
+        <div className={containers.two_columns}>
+          <div className={containers.vertical_actions_panel}>
+            {isTurned(null, membersMock)
+              ? <button className={`${buttons.button_simple} ${buttons.blue_simple}`}>Unturn</button>
+              : (queueMock.closeDate
+                  ? <span className={`${buttons.button_simple} ${buttons.disabled}`}>Too late</span>
+                  : <button className={`${buttons.button_simple} ${buttons.blue_simple}`}>Turn in</button>
+                )
+            }
+          </div>
+          <div className={containers.vertical_actions_panel}>
+            {queueMock.closeDate
+              ? <span className={`${buttons.button_simple} ${buttons.disabled}`}>Queue closed</span>
+              : <button className={`${buttons.button_simple} ${buttons.red_simple}`}>Close queue</button>
+            }
+          </div>
+        </div>
       </div>
     </div>
   );
