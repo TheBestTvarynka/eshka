@@ -25,9 +25,9 @@ public class QueueController {
                 HttpStatus.OK);
     }
 
-    @ApiOperation("create new subject")
+    @ApiOperation("create new queue")
     @PostMapping
-    public ResponseEntity<QueueResponse> createSubject(@RequestBody QueueRequest request) {
+    public ResponseEntity<QueueResponse> createQueue(@RequestBody QueueRequest request) {
         Queue newQueue = queueService.createNewQueue(mapper.queueRequestToQueue(request));
         QueueResponse queueResponse = mapper.queueToQueueResponse(newQueue);
         return new ResponseEntity<>(queueResponse, HttpStatus.CREATED);
@@ -35,7 +35,7 @@ public class QueueController {
 
     @ApiOperation("edit queue")
     @PutMapping
-    public ResponseEntity<QueueResponse> editSubject(@RequestBody QueueRequest request) {
+    public ResponseEntity<QueueResponse> editQueue(@RequestBody QueueRequest request) {
         Queue newQueue = queueService.editQueue(mapper.queueRequestToQueue(request));
         return new ResponseEntity<>(mapper.queueToQueueResponse(newQueue),
                 HttpStatus.OK);
@@ -44,7 +44,7 @@ public class QueueController {
     @ApiOperation("delete queue by id")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteSubject(@PathVariable(name = "id") String id) {
+    public void deleteQueue(@PathVariable(name = "id") String id) {
         queueService.deleteById(Long.parseLong(id));
     }
 
