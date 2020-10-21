@@ -1,20 +1,14 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import { Link } from 'react-router-dom';
 import { loginRoutine } from '../../sagas/auth/routines';
 import { IAppState} from '../../models/appState';
 import styles from './styles.module.sass';
 import inputs from '../styles/inputs.module.sass';
 
-export interface ILoginProps {
-  id?: string;
-  isLoading: boolean;
-  login(loginData: any): void;
-}
-
 const usernameRegex = /^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/;
 
-const LoginPage: React.FC<ILoginProps> = ({ id, isLoading, login }) => {
+const LoginPage: React.FC<LoginPageProps> = ({ id, isLoading, login }) => {
   const [usernameError, setUsernameError] = useState<string>('');
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -76,4 +70,6 @@ const mapDispatchToProps = {
   login: loginRoutine
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type LoginPageProps = ConnectedProps<typeof connector>;
+export default connector(LoginPage);

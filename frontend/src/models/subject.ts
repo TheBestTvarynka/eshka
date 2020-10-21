@@ -1,11 +1,11 @@
 
 export interface ISubject {
-  id: string;
+  id: number;
   title: string;
   description: string;
 }
 
 export interface ISubjectShort {
-  id: string;
+  id: number;
   title: string;
 }

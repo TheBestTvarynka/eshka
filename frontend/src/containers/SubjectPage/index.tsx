@@ -9,10 +9,10 @@ import { ISubjectShort } from '../../models/subject';
 import { IQueueShort } from '../../models/queue';
 
 const subjectsMock = [
-  { id: '1', title: 'Math' },
-  { id: '2', title: 'Functional Programming' },
-  { id: '3', title: 'Databases | OLAP' },
-  { id: '4', title: 'OOP: Java' }
+  { id: 1, title: 'Math' },
+  { id: 2, title: 'Functional Programming' },
+  { id: 3, title: 'Databases | OLAP' },
+  { id: 4, title: 'OOP: Java' }
 ] as ISubjectShort[];
 
 const closedQueues = [
@@ -31,13 +31,13 @@ const SubjectPage = () => {
   const [selected, setSelected] = useState<number>(2);
   return (
     <div className={styles.subject_page}>
-      <div className={listStyles.list}>
+      <div className={lists.dark_list}>
         {subjectsMock.map((subject, index) =>
-          <div className={`${listStyles.item} ${index === selected ? listStyles.selected : listStyles.simple}`}
+          <div className={`${lists.dark_list_item} ${index === selected ? lists.selected : lists.simple}`}
                key={subject.id}
                onClick={() => setSelected(index)}
           >
-            <span className={listStyles.title}>{subject.title}</span>
+            <span className={lists.dark_item_title}>{subject.title}</span>
           </div>
         )}
         <div className={listStyles.button_container}>
@@ -48,7 +48,7 @@ const SubjectPage = () => {
       </div>
       <div className={containers.content_general}>
         <div className={containers.main_content}>
-          <span className={containers.title}>Databases | OLAP</span>
+          <span className={containers.dark_item_title}>Databases | OLAP</span>
           <span className={containers.description}>Some Description</span>
           <div className={containers.two_columns}>
             <div className={lists.light_list}>

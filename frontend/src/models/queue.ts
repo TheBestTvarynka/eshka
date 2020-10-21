@@ -1,3 +1,4 @@
+import { IUserShort } from './user';
 
 export interface IQueueShort {
   id: string;
@@ -13,4 +14,11 @@ export interface IQueue {
   closeDate: Date;
   startDate: Date;
   endDate: Date;
+}
+
+export interface IQueueMember {
+  user: IUserShort;
+  sequenceNumber: number;
+  turnedAt: Date;
+  passed: boolean;
 }
