@@ -9,6 +9,13 @@ import {
 } from './routines';
 import apiClient from '../../helpers/webApi.helper';
 
+const formatDate = (rawData: string[] | null | undefined): Date | null => {
+  if (rawData === null || rawData === undefined) {
+    return null;
+  }
+  return new Date(`${rawData[0]}-${rawData[1]}-${rawData[2]} ${rawData[3]}:${rawData[4]}:${rawData[5]}.${rawData[6]}`);
+}
+
 function* loadOpenedQueues(action: any) {
   const subjectId = action.payload;
   try {
@@ -45,8 +52,11 @@ function* loadQueue(action: any) {
   const id = action.payload;
   try {
     const res = yield apiClient.get({ endpoint: `/queue/${id}` });
-    const parsedData = yield res.json();
-    console.log({ parsedData });
+    let parsedData = yield res.json();
+    parsedData.creationDate = formatDate(parsedData.creationDate);
+    parsedData.endDate = formatDate(parsedData.endDate);
+    parsedData.startDate = formatDate(parsedData.startDate);
+    parsedData.closingDate = formatDate(parsedData.closingDate);
     yield put(loadQueueRoutine.success(parsedData));
   } catch(error) {
     console.log('Error with queue loading');
@@ -95,7 +105,11 @@ function* updateQueue(action: any) {
       // create
       res = yield apiClient.post({ endpoint: '/queue', body: data });
     }
-    const parsedData = yield res.json();
+    let parsedData = yield res.json();
+    parsedData.creationDate = formatDate(parsedData.creationDate);
+    parsedData.endDate = formatDate(parsedData.endDate);
+    parsedData.startDate = formatDate(parsedData.startDate);
+    parsedData.closeDate = formatDate(parsedData.closeDate);
     yield put(updateQueueRoutine.success(parsedData));
     yield call(loadOpenedQueues, { payload: subjectId });
     yield call(loadClosedQueues, { payload: subjectId });

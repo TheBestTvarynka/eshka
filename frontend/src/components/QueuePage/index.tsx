@@ -23,13 +23,9 @@ const QueuePage: React.FC<IQueuePageProps> = ({
   const [eq, setEQ] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log('update turned');
     if (!userId || !members) {
-      console.log('return false');
       setTurnedIn(false);
     } else {
-      console.log(members);
-      console.log(members?.find(member => member.user.id === userId));
       setTurnedIn(!!members?.find(member => member.user.id === userId));
     }
   }, [userId, members]);
@@ -110,11 +106,11 @@ const QueuePage: React.FC<IQueuePageProps> = ({
           {isLoading
             ? <Loader />
             : <div className={containers.vertical_actions_panel}>
-              {!queue?.closingDate &&
-                <button className={`${buttons.button_simple} ${buttons.blue_simple}`}
-                        onClick={() => setEQ(true)}
-                >Edit queue</button>
-              }
+                {!queue?.closingDate &&
+                  <button className={`${buttons.button_simple} ${buttons.blue_simple}`}
+                          onClick={() => setEQ(true)}
+                  >Edit queue</button>
+                }
                 {queue?.closingDate
                   ? <span className={`${buttons.button_simple} ${buttons.disabled}`}>Queue closed</span>
                   : <button className={`${buttons.button_simple} ${buttons.red_simple}`}>Close queue</button>
