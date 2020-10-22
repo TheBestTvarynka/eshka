@@ -4,7 +4,8 @@ import {
   loadOpenedQueuesRoutine,
   loadQueueRoutine,
   turnInQueueRoutine,
-  loadQueueMembersRoutine
+  loadQueueMembersRoutine,
+  updateQueueRoutine
 } from './routines';
 import apiClient from '../../helpers/webApi.helper';
 
@@ -80,12 +81,37 @@ function* loadQueueMembers(action: any) {
   }
 }
 
+function* updateQueue(action: any) {
+  const data = action.payload;
+  const subjectId = action.payload?.subjectId;
+  console.log({ data });
+  console.log({ subjectId });
+  try {
+    let res;
+    if (data?.id) {
+      // update
+      res = yield apiClient.put({ endpoint: '/queue', body: data });
+    } else {
+      // create
+      res = yield apiClient.post({ endpoint: '/queue', body: data });
+    }
+    const parsedData = yield res.json();
+    yield put(updateQueueRoutine.success(parsedData));
+    yield call(loadOpenedQueues, { payload: subjectId });
+    yield call(loadClosedQueues, { payload: subjectId });
+  } catch(error) {
+    console.log('Error with queue updating');
+    console.log(error);
+  }
+}
+
 export default function* queueSaga() {
   yield all([
     yield takeEvery(loadOpenedQueuesRoutine.TRIGGER, loadOpenedQueues),
     yield takeEvery(loadClosedQueuesRoutine.TRIGGER, loadClosedQueues),
     yield takeEvery(loadQueueRoutine.TRIGGER, loadQueue),
     yield takeEvery(turnInQueueRoutine.TRIGGER, turnIn),
-    yield takeEvery(loadQueueMembersRoutine.TRIGGER, loadQueueMembers)
+    yield takeEvery(loadQueueMembersRoutine.TRIGGER, loadQueueMembers),
+    yield takeEvery(updateQueueRoutine.TRIGGER, updateQueue)
   ]);
 }

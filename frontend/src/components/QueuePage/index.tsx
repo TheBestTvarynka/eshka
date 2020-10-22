@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { IQueueMember } from '../../models/queue';
 import {
   loadQueueRoutine,
   loadQueueMembersRoutine,
@@ -17,7 +16,6 @@ import { useParams } from 'react-router-dom';
 const QueuePage: React.FC<IQueuePageProps> = ({ userId, queue, members, loadQueue, turnIn, loadMembers, isLoading }) => {
   const params: any = useParams();
   const [turnedIn, setTurnedIn] = useState<boolean>(false);
-  console.log({ userId });
 
   useEffect(() => {
     console.log('update turned');
