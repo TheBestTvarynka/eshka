@@ -9,9 +9,11 @@ import {
 } from '../../sagas/subject/routines';
 import {
   loadOpenedQueuesRoutine,
-  loadClosedQueuesRoutine
+  loadClosedQueuesRoutine,
+  updateQueueRoutine
 } from '../../sagas/queue/routines';
 import CreateSubjectWindow from '../../components/CreateSubjectWindow';
+import CreateQueueWindow from '../../components/CreateQueueWindow';
 import ConfirmationWindow from '../../components/ConfirmationWindow';
 import Loader from '../../components/Loader';
 import listStyles from '../../components/TeamsList/styles.module.sass';
@@ -22,11 +24,12 @@ import styles from './styles.module.sass';
 import { IAppState } from '../../models/appState';
 
 const SubjectPage: React.FC<ISubjectPageProps> = ({
-  subject, subjects, isSubjectLoading, openedQueues, closedQueues, isOpenedLoading, isClosedLoading,
-  update, deleteSubject, loadAll, load, loadOpened, loadClosed
+  user, subject, subjects, isSubjectLoading, openedQueues, closedQueues, isOpenedLoading, isClosedLoading,
+  update, deleteSubject, loadAll, load, loadOpened, loadClosed, createQueue
 }) => {
   const [selected, setSelected] = useState<number | undefined>(subject?.id);
   const [cs, setCS] = useState<boolean>(false);
+  const [cq, setCQ] = useState<boolean>(false);
   const [ds, setDS] = useState<boolean>(false);
   const [edit, setEdit] = useState<boolean>(false);
 
@@ -107,7 +110,9 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
                     }
                   }}
           >Edit subject</button>
-          <button className={`${buttons.button_simple} ${buttons.green_simple}`}>Create queue</button>
+          <button className={`${buttons.button_simple} ${buttons.green_simple}`}
+                  onClick={() => setCQ(true)}
+          >Create queue</button>
           <button className={`${buttons.button_simple} ${buttons.red_simple}`}
                   onClick={() => setDS(true)}
           >Delete subject</button>
@@ -130,11 +135,18 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
                                  }}
                                  onCancel={() => setDS(false)}
       />}
+      {cq && <CreateQueueWindow onSubmit={data => {
+                                  createQueue({ ...data, subjectId: subject?.id, makerId: user?.id });
+                                  setCQ(false);
+                                }}
+                                onClose={() => setCQ(false)}
+      />}
     </div>
   );
 };
 
 const mapStateToProps = (appState: IAppState) => ({
+  user: appState.auth.user,
   subject: appState.subject.subject,
   subjects: appState.subject.subjects,
   isSubjectLoading: appState.subject.isSubjectLoading,
@@ -150,7 +162,8 @@ const mapDispatchToProps = {
   loadAll: loadAllSubjectsRoutine,
   load: loadSubjectRoutine,
   loadOpened: loadOpenedQueuesRoutine,
-  loadClosed: loadClosedQueuesRoutine
+  loadClosed: loadClosedQueuesRoutine,
+  createQueue: updateQueueRoutine
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

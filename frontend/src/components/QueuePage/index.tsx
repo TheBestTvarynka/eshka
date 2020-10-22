@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { IQueueMember } from '../../models/queue';
+import CreateQueueWindow from '../CreateQueueWindow';
 import {
   loadQueueRoutine,
   loadQueueMembersRoutine,
-  turnInQueueRoutine
+  turnInQueueRoutine,
+  updateQueueRoutine
 } from '../../sagas/queue/routines';
 import { IAppState } from '../../models/appState';
 import Loader from '../Loader';
@@ -14,19 +15,17 @@ import buttons from '../../components/styles/buttons.module.sass';
 import { connect, ConnectedProps } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-const QueuePage: React.FC<IQueuePageProps> = ({ userId, queue, members, loadQueue, turnIn, loadMembers, isLoading }) => {
+const QueuePage: React.FC<IQueuePageProps> = ({
+  userId, queue, members, loadQueue, turnIn,
+  update, loadMembers, isLoading }) => {
   const params: any = useParams();
   const [turnedIn, setTurnedIn] = useState<boolean>(false);
-  console.log({ userId });
+  const [eq, setEQ] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log('update turned');
     if (!userId || !members) {
-      console.log('return false');
       setTurnedIn(false);
     } else {
-      console.log(members);
-      console.log(members?.find(member => member.user.id === userId));
       setTurnedIn(!!members?.find(member => member.user.id === userId));
     }
   }, [userId, members]);
@@ -107,6 +106,11 @@ const QueuePage: React.FC<IQueuePageProps> = ({ userId, queue, members, loadQueu
           {isLoading
             ? <Loader />
             : <div className={containers.vertical_actions_panel}>
+                {!queue?.closingDate &&
+                  <button className={`${buttons.button_simple} ${buttons.blue_simple}`}
+                          onClick={() => setEQ(true)}
+                  >Edit queue</button>
+                }
                 {queue?.closingDate
                   ? <span className={`${buttons.button_simple} ${buttons.disabled}`}>Queue closed</span>
                   : <button className={`${buttons.button_simple} ${buttons.red_simple}`}>Close queue</button>
@@ -115,6 +119,12 @@ const QueuePage: React.FC<IQueuePageProps> = ({ userId, queue, members, loadQueu
           }
         </div>
       </div>
+      {eq && <CreateQueueWindow onSubmit={data => {
+                                  update({ ...data, subjectId: queue?.subjectId, makerId: userId });
+                                  setEQ(false);
+                                }}
+                                queue={queue}
+                                onClose={() => setEQ(false)} />}
     </div>
   );
 };
@@ -129,7 +139,8 @@ const mapStateToProps = (appState: IAppState) => ({
 const mapDispatchToProps = {
   loadQueue: loadQueueRoutine,
   loadMembers: loadQueueMembersRoutine,
-  turnIn: turnInQueueRoutine
+  turnIn: turnInQueueRoutine,
+  update: updateQueueRoutine
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

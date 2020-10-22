@@ -7,6 +7,7 @@ export interface IQueueShort {
 
 export interface IQueue {
   id: number;
+  subjectId: number;
   title: string;
   description: string;
   creationDate: Date;

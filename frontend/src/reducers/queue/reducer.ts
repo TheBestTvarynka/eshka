@@ -2,7 +2,8 @@ import {
   loadOpenedQueuesRoutine,
   loadClosedQueuesRoutine,
   loadQueueRoutine,
-  loadQueueMembersRoutine
+  loadQueueMembersRoutine,
+  updateQueueRoutine
 } from '../../sagas/queue/routines';
 import { IQueueState, IAppState } from '../../models/appState';
 
@@ -56,6 +57,12 @@ const queueReducer = (state: IAppState["queue"] = initState, { type, payload}: a
     return {
       ...state,
       queueMembers: payload
+    };
+  }
+  if (type === updateQueueRoutine.SUCCESS) {
+    return {
+      ...state,
+      queue: payload
     };
   }
   if (type === loadOpenedQueuesRoutine.FAILURE) {
