@@ -29,7 +29,7 @@ public class TeamServiceImpl implements TeamService {
     public Team editTeam(Team team) {
         Team oldTeam = teamRepository.findById(team.getId()).orElseThrow(
                 () -> new TeamNotFoundException("team not found"));
-        oldTeam.setTitle(team.getTitle());
+        oldTeam.setName(team.getName());
         oldTeam.setDescription(team.getDescription());
         return teamRepository.save(oldTeam);
     }

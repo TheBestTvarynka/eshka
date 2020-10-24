@@ -1,4 +1,4 @@
-package com.eshka.dto.response;
+package com.eshka.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
