@@ -16,7 +16,8 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Team findById(long id) {
-        return teamRepository.findById(id).orElseThrow();
+        return teamRepository.findById(id).orElseThrow(
+                () -> new TeamNotFoundException("team not found"));
     }
 
     @Override
