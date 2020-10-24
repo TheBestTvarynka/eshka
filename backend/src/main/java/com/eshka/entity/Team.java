@@ -16,8 +16,8 @@ public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
-    @Column(name = "description", unique = true, nullable = false)
+    @Column(name = "description")
     private String description;
 }
