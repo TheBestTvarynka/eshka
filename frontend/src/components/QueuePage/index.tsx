@@ -113,7 +113,12 @@ const QueuePage: React.FC<IQueuePageProps> = ({
                 }
                 {queue?.closingDate
                   ? <span className={`${buttons.button_simple} ${buttons.disabled}`}>Queue closed</span>
-                  : <button className={`${buttons.button_simple} ${buttons.red_simple}`}>Close queue</button>
+                  : <button className={`${buttons.button_simple} ${buttons.red_simple}`}
+                            onClick={() => {
+                              console.log('close queue');
+                              update({...queue, closeDate: new Date()});
+                            }}
+                    >Close queue</button>
                 }
               </div>
           }
