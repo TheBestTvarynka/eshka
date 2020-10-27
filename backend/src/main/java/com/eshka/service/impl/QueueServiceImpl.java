@@ -7,6 +7,7 @@ import com.eshka.service.QueueService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ public class QueueServiceImpl implements QueueService {
 
     @Override
     public Queue createNewQueue(Queue request) {
+        request.setCreationDate(LocalDateTime.now());
         return queueRepository.save(request);
     }
 
@@ -45,5 +47,10 @@ public class QueueServiceImpl implements QueueService {
     public List<Queue> findByOpenedAndSubjectId(boolean opened, long subjectId) {
         return opened ? queueRepository.findAllByEndDateIsNullAndSubject_Id(subjectId) :
                 queueRepository.findAllByEndDateIsNotNullAndSubject_Id(subjectId);
+    }
+
+    @Override
+    public List<Queue> findBySubjectId(long subjectId) {
+        return queueRepository.findAllBySubject_Id(subjectId);
     }
 }

@@ -9,4 +9,6 @@ public interface QueueRepository extends JpaRepository<Queue, Long> {
     List<Queue> findAllByEndDateIsNullAndSubject_Id(long subjectId);
 
     List<Queue> findAllByEndDateIsNotNullAndSubject_Id(long subjectId);
+
+    List<Queue> findAllBySubject_Id(long subjectId);
 }
