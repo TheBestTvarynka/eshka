@@ -15,13 +15,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "Queue")
-@Table(name = "queue")
+@Table(name = "queue", uniqueConstraints =
+@UniqueConstraint(columnNames = {"subject_id", "title"}))
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Queue {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "title", unique = true, nullable = false)
+    @Column(name = "title", nullable = false)
     @EqualsAndHashCode.Include
     private String title;
     @Column(name = "description")
