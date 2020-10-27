@@ -12,7 +12,5 @@ public interface TeamMapper {
 
     TeamResponse teamToTeamResponse(Team entity);
 
-    TeamResponse teamToUserResponse(String response);
-
     Team teamRequestToTeam(TeamRequest request);
 }

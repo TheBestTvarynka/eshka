@@ -5,14 +5,20 @@ import com.eshka.exception.TeamNotFoundException;
 import com.eshka.repository.TeamRepository;
 import com.eshka.service.TeamService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
 public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
+    @Value("${HOST}")
+    String host;
 
     @Override
     public Team findById(long id) {
@@ -29,14 +35,32 @@ public class TeamServiceImpl implements TeamService {
     public Team editTeam(Team team) {
         Team oldTeam = teamRepository.findById(team.getId()).orElseThrow(
                 () -> new TeamNotFoundException("team not found"));
+        oldTeam.setLink(team.getLink());
         oldTeam.setName(team.getName());
         oldTeam.setDescription(team.getDescription());
         return teamRepository.save(oldTeam);
     }
 
     @Override
-    public String generateJoinLink(Team team){
-        return "";
+    public String generateJoinLink(Team team, Boolean force) {
+        if (force == null || !force) {
+            String link = team.getLink();
+            if (link != null) {
+                return link;
+            } else {
+                return generateJoinLink(team, true);
+            }
+        } else {
+            String joinLink = host + "/join/" + new Random()
+                    .ints(48, 122 + 1)
+                    .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                    .limit(5)
+                    .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                    .toString();
+            team.setLink(joinLink);
+            teamRepository.save(team);
+            return joinLink;
+        }
     }
 
     @Override
