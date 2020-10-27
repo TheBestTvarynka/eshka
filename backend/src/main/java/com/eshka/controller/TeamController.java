@@ -46,6 +46,13 @@ public class TeamController {
                 HttpStatus.OK);
     }
 
+    @ApiOperation("join team")
+    @GetMapping("/{id}")
+    public ResponseEntity<TeamResponse> getJoinLink(@PathVariable(name = "id") String id) {
+        return new ResponseEntity<>(mapper.teamToUserResponse(teamService.generateJoinLink(teamService.findById(Long.parseLong(id)))),
+                HttpStatus.OK);
+    }
+
     @ApiOperation("delete team by id")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

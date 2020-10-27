@@ -35,6 +35,11 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public String generateJoinLink(Team team){
+        return "";
+    }
+
+    @Override
     public void deleteById(long id) {
         teamRepository.deleteById(id);
     }

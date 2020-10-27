@@ -11,5 +11,7 @@ public interface TeamService {
 
     Team editTeam(Team team);
 
+    String generateJoinLink(Team team);
+
     void deleteById(long id);
 }
