@@ -47,7 +47,7 @@ public class TeamController {
     }
 
     @ApiOperation("join team")
-    @GetMapping("/{id}")
+    @GetMapping("/join-link/{id}")
     public ResponseEntity<String> getJoinLink(@PathVariable(name = "id") String id, @RequestParam Boolean force) {
         return new ResponseEntity<>(teamService.generateJoinLink(teamService.findById(Long.parseLong(id)), force),
                 HttpStatus.OK);

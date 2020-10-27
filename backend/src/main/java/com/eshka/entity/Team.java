@@ -20,6 +20,6 @@ public class Team {
     private String name;
     @Column(name = "description")
     private String description;
-    @Column(name = "link")
+    @Column(name = "link", unique = true)
     private String link;
 }
