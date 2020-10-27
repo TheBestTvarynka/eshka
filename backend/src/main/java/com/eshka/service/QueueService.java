@@ -14,4 +14,6 @@ public interface QueueService {
     void deleteById(long id);
 
     List<Queue> findByOpenedAndSubjectId(boolean opened, long subjectId);
+
+    List<Queue> findBySubjectId(long subjectId);
 }

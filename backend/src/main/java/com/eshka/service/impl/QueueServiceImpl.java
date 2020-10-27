@@ -46,4 +46,9 @@ public class QueueServiceImpl implements QueueService {
         return opened ? queueRepository.findAllByEndDateIsNullAndSubject_Id(subjectId) :
                 queueRepository.findAllByEndDateIsNotNullAndSubject_Id(subjectId);
     }
+
+    @Override
+    public List<Queue> findBySubjectId(long subjectId) {
+        return queueRepository.findAllBySubject_Id(subjectId);
+    }
 }

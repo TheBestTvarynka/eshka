@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -56,9 +57,11 @@ public class QueueController {
     @ApiOperation("get queues by params")
     @GetMapping("/all")
     public ResponseEntity<List<QueueResponse>> getQueuesByOpenedAndSubjectId(
-            @RequestParam("opened") String opened,
+            @RequestParam(value = "opened", required = false) Optional<String> opened,
             @RequestParam("subjectId") String subjectId) {
-        List<Queue> list = queueService.findByOpenedAndSubjectId(Boolean.parseBoolean(opened), Long.parseLong(subjectId));
+        List<Queue> list = opened.isPresent() ?
+                queueService.findByOpenedAndSubjectId(Boolean.parseBoolean(opened.get()), Long.parseLong(subjectId))
+                : queueService.findBySubjectId(Long.parseLong(subjectId));
         return new ResponseEntity<>(list.stream()
                 .map(mapper::queueToQueueResponse)
                 .collect(Collectors.toList())
