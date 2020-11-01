@@ -125,7 +125,7 @@ const QueuePage: React.FC<IQueuePageProps> = ({
         </div>
       </div>
       {eq && <CreateQueueWindow onSubmit={data => {
-                                  update({ ...data, subjectId: queue?.subjectId, makerId: userId });
+                                  update({ ...data, id: queue?.id, subjectId: queue?.subjectId, makerId: queue?.makerId });
                                   setEQ(false);
                                 }}
                                 queue={queue}
