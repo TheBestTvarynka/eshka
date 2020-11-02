@@ -59,13 +59,13 @@ function* loadQueue(action: any) {
 }
 
 function* turnIn(action: any) {
-  const { queueId, userId } = action.payload;
+  const { queueId, userId, sequenceNumber } = action.payload;
   console.log({ queueId, userId });
   if (!queueId || !userId) {
     return;
   }
   try {
-    yield apiClient.post({ endpoint: '/queue-details', body: { queueId, userId, passed: false } });
+    yield apiClient.post({ endpoint: '/queue-details', body: { queueId, userId, passed: false, sequenceNumber } });
     yield call(loadQueueMembers, { payload: queueId});
   } catch(error) {
     console.log('Error with turning in');
