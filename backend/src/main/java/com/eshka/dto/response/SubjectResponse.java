@@ -12,5 +12,5 @@ public class SubjectResponse {
     private long id;
     private String title;
     private String description;
-    private Team team;
+    private long teamId;
 }
