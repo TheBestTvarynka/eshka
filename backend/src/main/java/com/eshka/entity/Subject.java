@@ -21,5 +21,5 @@ public class Subject {
     @Column(name = "description")
     private String description;
     @Column(name = "teamId")
-    private long teamId;
+    private Team team;
 }
