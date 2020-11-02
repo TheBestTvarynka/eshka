@@ -30,6 +30,7 @@ public class SubjectServiceImpl implements SubjectService {
                 () -> new SubjectNotFoundException("subject not found"));
         oldSubject.setTitle(subject.getTitle());
         oldSubject.setDescription(subject.getDescription());
+        oldSubject.setId(subject.getId());
         return subjectRepository.save(oldSubject);
     }
 

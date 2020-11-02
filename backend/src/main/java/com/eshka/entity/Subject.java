@@ -20,4 +20,6 @@ public class Subject {
     private String title;
     @Column(name = "description")
     private String description;
+    @Column(name = "teamId")
+    private long teamId;
 }
