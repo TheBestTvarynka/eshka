@@ -12,6 +12,7 @@ import styles from './styles.module.sass';
 import containers from '../styles/containers.module.sass';
 import lists from '../../components/styles/lists.module.sass';
 import buttons from '../../components/styles/buttons.module.sass';
+import inputs from '../../components/styles/inputs.module.sass';
 import { connect, ConnectedProps } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -21,6 +22,7 @@ const QueuePage: React.FC<IQueuePageProps> = ({
   const params: any = useParams();
   const [turnedIn, setTurnedIn] = useState<boolean>(false);
   const [eq, setEQ] = useState<boolean>(false);
+  const [newSN, setNewSN] = useState<number>(members ? members?.length + 1 : 1);
 
   useEffect(() => {
     if (!userId || !members) {
@@ -96,9 +98,16 @@ const QueuePage: React.FC<IQueuePageProps> = ({
                   ? <button className={`${buttons.button_simple} ${buttons.blue_simple}`}>Unturn</button>
                   : (queue?.closingDate
                       ? <span className={`${buttons.button_simple} ${buttons.disabled}`}>Too late</span>
-                      : <button className={`${buttons.button_simple} ${buttons.blue_simple}`}
-                                onClick={() => turnIn({ queueId: queue?.id, userId })}
-                      >Turn in</button>
+                      : <div className={containers.vertical_actions_panel}>
+                          <input type="number" className={inputs.input_standard}
+                                 onChange={event => setNewSN(Number.parseInt(event.target.value))}
+                                 defaultValue={newSN.toString()}
+                          />
+                          <button className={`${buttons.button_simple} ${buttons.blue_simple} ${styles.field}`}
+                                  onClick={() => turnIn({ queueId: queue?.id, userId })}>
+                            Turn in
+                          </button>
+                        </div>
                   )
                 }
               </div>
