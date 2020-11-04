@@ -8,13 +8,7 @@ import {
   updateQueueRoutine
 } from './routines';
 import apiClient from '../../helpers/webApi.helper';
-
-const formatDate = (rawData: string[] | null | undefined): Date | null => {
-  if (rawData === null || rawData === undefined) {
-    return null;
-  }
-  return new Date(`${rawData[0]}-${rawData[1]}-${rawData[2]} ${rawData[3]}:${rawData[4]}:${rawData[5]}.${rawData[6]}`);
-}
+import dateTimeHelper from '../../helpers/dateTimeHelper';
 
 function* loadOpenedQueues(action: any) {
   const subjectId = action.payload;
@@ -53,10 +47,10 @@ function* loadQueue(action: any) {
   try {
     const res = yield apiClient.get({ endpoint: `/queue/${id}` });
     let parsedData = yield res.json();
-    parsedData.creationDate = formatDate(parsedData.creationDate);
-    parsedData.endDate = formatDate(parsedData.endDate);
-    parsedData.startDate = formatDate(parsedData.startDate);
-    parsedData.closingDate = formatDate(parsedData.closingDate);
+    parsedData.creationDate = dateTimeHelper.dateFromRaw(parsedData.creationDate);
+    parsedData.endDate = dateTimeHelper.dateFromRaw(parsedData.endDate);
+    parsedData.startDate = dateTimeHelper.dateFromRaw(parsedData.startDate);
+    parsedData.closingDate = dateTimeHelper.dateFromRaw(parsedData.closingDate);
     yield put(loadQueueRoutine.success(parsedData));
   } catch(error) {
     console.log('Error with queue loading');
@@ -65,13 +59,13 @@ function* loadQueue(action: any) {
 }
 
 function* turnIn(action: any) {
-  const { queueId, userId } = action.payload;
+  const { queueId, userId, sequenceNumber } = action.payload;
   console.log({ queueId, userId });
   if (!queueId || !userId) {
     return;
   }
   try {
-    yield apiClient.post({ endpoint: '/queue-details', body: { queueId, userId, passed: false } });
+    yield apiClient.post({ endpoint: '/queue-details', body: { queueId, userId, passed: false, sequenceNumber } });
     yield call(loadQueueMembers, { payload: queueId});
   } catch(error) {
     console.log('Error with turning in');
@@ -100,16 +94,18 @@ function* updateQueue(action: any) {
     let res;
     if (data?.id) {
       // update
+      console.log('update');
       res = yield apiClient.put({ endpoint: '/queue', body: data });
     } else {
       // create
+      console.log('create');
       res = yield apiClient.post({ endpoint: '/queue', body: data });
     }
     let parsedData = yield res.json();
-    parsedData.creationDate = formatDate(parsedData.creationDate);
-    parsedData.endDate = formatDate(parsedData.endDate);
-    parsedData.startDate = formatDate(parsedData.startDate);
-    parsedData.closeDate = formatDate(parsedData.closeDate);
+    parsedData.creationDate = dateTimeHelper.dateFromRaw(parsedData.creationDate);
+    parsedData.endDate = dateTimeHelper.dateFromRaw(parsedData.endDate);
+    parsedData.startDate = dateTimeHelper.dateFromRaw(parsedData.startDate);
+    parsedData.closeDate = dateTimeHelper.dateFromRaw(parsedData.closeDate);
     yield put(updateQueueRoutine.success(parsedData));
     yield call(loadOpenedQueues, { payload: subjectId });
     yield call(loadClosedQueues, { payload: subjectId });
