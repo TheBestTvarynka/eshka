@@ -5,6 +5,7 @@ import { IAppState} from '../../models/appState';
 import styles from '../LoginPage/styles.module.sass';
 import inputs from '../styles/inputs.module.sass';
 import { Link } from 'react-router-dom';
+import Loader from '../Loader';
 
 const emailRegex = /^\S+@\S+\.\S+$/;
 const usernameRegex = /^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/;
@@ -98,13 +99,18 @@ const RegisterPage: React.FC<IRegisterProps> = ({ isLoading, register }) => {
             validatePasswords(event.target.value, passwordRepeat, setPassword, setPasswordError)
           }/>
           <label>Repeat password</label>
-          <input className={inputs.input_standard} type="password" onChange={event =>
-            validatePasswords(event.target.value, password, setPasswordRepeat, setPasswordError)
-          }/>
+          <input className={inputs.input_standard} type="password"
+                 onChange={event =>
+                   validatePasswords(event.target.value, password, setPasswordRepeat, setPasswordError)
+                 }
+          />
           {passwordError &&
             <label className={styles.error} style={{marginTop: "0.25em"}}>{passwordError}</label>
           }
-          <button onClick={handleSubmit}>Register</button>
+          {isLoading
+            ? <Loader />
+            : <button onClick={handleSubmit}>Register</button>
+          }
         </form>
       </div>
     </div>
