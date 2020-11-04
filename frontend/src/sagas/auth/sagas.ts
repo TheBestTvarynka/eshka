@@ -22,6 +22,7 @@ function* login(action: any) {
     }));
     history.push('/');
   } catch (error) {
+    yield put(loginRoutine.failure());
     console.log('Error with Login');
     console.log(error);
   }
@@ -34,6 +35,7 @@ function* register(action: any) {
     yield apiClient.post({ endpoint: '/auth/register', body: resisterData });
     yield put(registerRoutine.success());
   } catch (error) {
+    yield put(registerRoutine.failure());
     console.log('Error with register');
     console.log(error);
   }
@@ -47,6 +49,7 @@ function* logout(action: any) {
     authProvider.setToken(null);
     history.push('/login');
   } catch(error) {
+    yield put(logoutRoutine.failure());
     console.log('Error with logout');
     console.log(error);
   }
@@ -58,6 +61,7 @@ function* loadUserData() {
     const parsedData = yield res.json();
     yield put(loadUserRoutine.success(parsedData));
   } catch(error) {
+    yield put(loadUserRoutine.failure());
     console.log('Error with fetching user data');
     console.log(error);
   }
