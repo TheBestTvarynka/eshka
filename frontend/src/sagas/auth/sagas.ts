@@ -1,4 +1,4 @@
-import { all, put, call, takeEvery } from 'redux-saga/effects';
+import { all, put, takeEvery } from 'redux-saga/effects';
 import {
   loginRoutine,
   registerRoutine,
@@ -31,9 +31,8 @@ function* register(action: any) {
   const resisterData = action.payload;
   console.log(resisterData);
   try {
-    const res = yield apiClient.post({ endpoint: '/auth/register', body: resisterData });
-    // console.log(res);
-    // yield put(registerRoutine.success(res));
+    yield apiClient.post({ endpoint: '/auth/register', body: resisterData });
+    yield put(registerRoutine.success());
   } catch (error) {
     console.log('Error with register');
     console.log(error);

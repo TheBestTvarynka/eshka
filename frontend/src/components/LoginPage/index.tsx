@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { loginRoutine } from '../../sagas/auth/routines';
 import { IAppState} from '../../models/appState';
 import { useHistory } from 'react-router-dom';
+import Loader from '../Loader';
 import styles from './styles.module.sass';
 import inputs from '../styles/inputs.module.sass';
 
@@ -55,8 +56,10 @@ const LoginPage: React.FC<LoginPageProps> = ({ id, isLoading, login }) => {
           <input className={inputs.input_standard} type="password"
                  onChange={event => setPassword(event.target.value)}
           />
-          <button onClick={handleLogin}>Sign in</button>
-          {isLoading && <span>Loading...</span>}
+          {isLoading
+            ? <Loader />
+            : <button onClick={handleLogin}>Sign in</button>
+          }
         </form>
       </div>
     </div>
