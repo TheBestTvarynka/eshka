@@ -60,7 +60,7 @@ public class QueueController {
             @RequestParam(value = "opened", required = false) Optional<String> opened,
             @RequestParam("subjectId") String subjectId) {
         List<Queue> list = opened.isPresent()
-		? queueService.findByOpenedAndSubjectId(Boolean.parseBoolean(opened.get()), Long.parseLong(subjectId))
+                ? queueService.findByOpenedAndSubjectId(Boolean.parseBoolean(opened.get()), Long.parseLong(subjectId))
                 : queueService.findBySubjectId(Long.parseLong(subjectId));
         return new ResponseEntity<>(list.stream()
                 .map(mapper::queueToQueueResponse)

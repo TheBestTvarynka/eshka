@@ -35,7 +35,7 @@ public class QueueServiceImpl implements QueueService {
         queue.setTitle(request.getTitle());
         queue.setStartDate(request.getStartDate());
         queue.setEndDate(request.getEndDate());
-	queue.setClosingDate(request.getClosingDate());
+        queue.setClosingDate(request.getClosingDate());
         return queueRepository.save(queue);
     }
 
@@ -47,8 +47,8 @@ public class QueueServiceImpl implements QueueService {
     @Override
     public List<Queue> findByOpenedAndSubjectId(boolean opened, long subjectId) {
         return opened
-		? queueRepository.findAllByClosingDateIsNullAndSubject_Id(subjectId)
-		: queueRepository.findAllByClosingDateIsNotNullAndSubject_Id(subjectId);
+                ? queueRepository.findAllByClosingDateIsNullAndSubject_Id(subjectId)
+                : queueRepository.findAllByClosingDateIsNotNullAndSubject_Id(subjectId);
     }
 
     @Override
