@@ -31,7 +31,7 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
   const [cs, setCS] = useState<boolean>(false);
   const [cq, setCQ] = useState<boolean>(false);
   const [ds, setDS] = useState<boolean>(false);
-  const [edit, setEdit] = useState<boolean>(false);
+  const [es, setES] = useState<boolean>(false);
 
   useEffect(() => {
     loadAll();
@@ -104,10 +104,7 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
         <div className={containers.vertical_actions_panel}>
           <button className={`${buttons.button_simple} ${buttons.blue_simple}`}
                   onClick={() => {
-                    if (subject) {
-                      setEdit(true);
-                      setCS(true);
-                    }
+                    if (subject) setES(true);
                   }}
           >Edit subject</button>
           <button className={`${buttons.button_simple} ${buttons.green_simple}`}
@@ -119,10 +116,17 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
         </div>
       </div>
       {cs && <CreateSubjectWindow
-        subject={edit ? subject : undefined}
+        subject={undefined}
         onSubmit={data => {
           update(data);
           setCS(false);
+        }}
+        onClose={() => setCS(false)} />}
+      {es && <CreateSubjectWindow
+        subject={subject}
+        onSubmit={data => {
+          update(data);
+          setES(false);
         }}
         onClose={() => setCS(false)} />}
       {ds && <ConfirmationWindow title="Confirm deletion"

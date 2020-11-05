@@ -47,7 +47,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ id, isLoading, login }) => {
         </div>
         <form className={`${styles.column} ${styles.login_column}`}>
           <span>Login into Eshka</span>
-          <label>Email</label>
+          <label>Username</label>
           <input className={inputs.input_standard} placeholder="cap_map"
                  onChange={handleUsernameChange}
           />
