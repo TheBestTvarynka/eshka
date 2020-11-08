@@ -10,18 +10,16 @@ export interface IAuthState {
 export interface ISubjectState {
   subject?: ISubject;
   subjects?: ISubject[];
+  queues?: IQueueShort[];
   isSubjectLoading: boolean;
   isCreateLoading: boolean;
+  isQueuesLoading: boolean;
 }
 
 export interface IQueueState {
   queue?: IQueue;
   queueMembers?: IQueueMember[];
-  opened?: IQueueShort[];
-  closed?: IQueueShort[];
   isQueueLoading: boolean;
-  isOpenedLoading: boolean;
-  isClosedLoading: boolean;
 }
 
 export interface IAppState {

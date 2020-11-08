@@ -3,6 +3,7 @@ import { IUserShort } from './user';
 export interface IQueueShort {
   id: number;
   title: string;
+  isOpen: boolean;
 }
 
 export interface IQueue {

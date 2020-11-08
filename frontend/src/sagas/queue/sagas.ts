@@ -1,46 +1,13 @@
 import { all, put, call, takeEvery } from 'redux-saga/effects';
 import {
-  loadClosedQueuesRoutine,
-  loadOpenedQueuesRoutine,
   loadQueueRoutine,
   turnInQueueRoutine,
   loadQueueMembersRoutine,
   updateQueueRoutine
 } from './routines';
+import { loadSubjectQueuesRoutine } from '../subject/routines';
 import apiClient from '../../helpers/webApi.helper';
 import dateTimeHelper from '../../helpers/dateTimeHelper';
-
-function* loadOpenedQueues(action: any) {
-  const subjectId = action.payload;
-  try {
-    const res = yield apiClient.get({ endpoint: `/queue/all?opened=true&subjectId=${subjectId}` });
-    const parsedData = yield res.json();
-    console.log({ parsedData });
-    yield put(loadOpenedQueuesRoutine.success(parsedData.map((item: any) => ({
-      id: item.id,
-      title: item.title
-    }))));
-  } catch(error) {
-    console.log('Error with loading opened queues');
-    console.log(error);
-  }
-}
-
-function* loadClosedQueues(action: any) {
-  const subjectId = action.payload;
-  try {
-    const res = yield apiClient.get({ endpoint: `/queue/all?opened=false&subjectId=${subjectId}` });
-    const parsedData = yield res.json();
-    console.log({ parsedData });
-    yield put(loadClosedQueuesRoutine.success(parsedData.map((item: any) => ({
-      id: item.id,
-      title: item.title
-    }))));
-  } catch(error) {
-    console.log('Error with loading closed queues');
-    console.log(error);
-  }
-}
 
 function* loadQueue(action: any) {
   const id = action.payload;
@@ -55,6 +22,7 @@ function* loadQueue(action: any) {
   } catch(error) {
     console.log('Error with queue loading');
     console.log(error);
+    yield put(loadQueueRoutine.failure());
   }
 }
 
@@ -82,6 +50,7 @@ function* loadQueueMembers(action: any) {
   } catch(error) {
     console.log('Error with queue members loading');
     console.log(error);
+    yield put(loadQueueMembersRoutine.failure());
   }
 }
 
@@ -107,18 +76,17 @@ function* updateQueue(action: any) {
     parsedData.startDate = dateTimeHelper.dateFromRaw(parsedData.startDate);
     parsedData.closeDate = dateTimeHelper.dateFromRaw(parsedData.closeDate);
     yield put(updateQueueRoutine.success(parsedData));
-    yield call(loadOpenedQueues, { payload: subjectId });
-    yield call(loadClosedQueues, { payload: subjectId });
+    // yield call(loadOpenedQueues, { payload: subjectId });
+    yield put(loadSubjectQueuesRoutine.trigger(subjectId))
   } catch(error) {
     console.log('Error with queue updating');
     console.log(error);
+    yield put(updateQueueRoutine.failure());
   }
 }
 
 export default function* queueSaga() {
   yield all([
-    yield takeEvery(loadOpenedQueuesRoutine.TRIGGER, loadOpenedQueues),
-    yield takeEvery(loadClosedQueuesRoutine.TRIGGER, loadClosedQueues),
     yield takeEvery(loadQueueRoutine.TRIGGER, loadQueue),
     yield takeEvery(turnInQueueRoutine.TRIGGER, turnIn),
     yield takeEvery(loadQueueMembersRoutine.TRIGGER, loadQueueMembers),

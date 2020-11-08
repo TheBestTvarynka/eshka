@@ -3,7 +3,8 @@ import {
   updateSubjectRoutine,
   deleteSubjectRoutine,
   loadAllSubjectsRoutine,
-  loadSubjectRoutine
+  loadSubjectRoutine,
+  loadSubjectQueuesRoutine
 } from './routines';
 import apiClient from '../../helpers/webApi.helper';
 
@@ -24,6 +25,7 @@ function* updateSubject(action: any) {
   } catch(error) {
     console.log('Error with subject creation');
     console.log(error);
+    yield put(updateSubjectRoutine.failure());
   }
 }
 
@@ -35,6 +37,7 @@ function* loadAllSubjects() {
   } catch(error) {
     console.log('Error with loading subjects');
     console.log(error);
+    yield put(loadAllSubjectsRoutine.failure());
   }
 }
 
@@ -47,6 +50,7 @@ function* loadSubject(action: any) {
   } catch(error) {
     console.log('Error with subject loading');
     console.log(error);
+    yield put(loadSubjectRoutine.failure());
   }
 }
 
@@ -67,11 +71,35 @@ function* deleteSubject(action: any) {
   }
 }
 
+function* loadSubjectQueues(action: any) {
+  const subjectId = action.payload;
+  try {
+    const res = yield apiClient.get({ endpoint: `/queue/all?subjectId=${subjectId}` });
+    const parsedData = yield res.json();
+    console.log({ parsedData });
+    console.log(parsedData.map((queue: any) => ({
+      id: queue.id,
+      title: queue.title,
+      isOpen: !queue.closingDate
+    })));
+    yield put(loadSubjectQueuesRoutine.success(parsedData.map((queue: any) => ({
+      id: queue.id,
+      title: queue.title,
+      isOpen: !queue.closingDate
+    }))));
+  } catch(error) {
+    console.log('Error with subject queues loading');
+    console.log(error);
+    yield put(loadSubjectQueuesRoutine.failure());
+  }
+}
+
 export default function* subjectSaga() {
   yield all([
     yield takeEvery(updateSubjectRoutine.TRIGGER, updateSubject),
     yield takeEvery(loadAllSubjectsRoutine.TRIGGER, loadAllSubjects),
     yield takeEvery(loadSubjectRoutine.TRIGGER, loadSubject),
+    yield takeEvery(loadSubjectQueuesRoutine.TRIGGER, loadSubjectQueues),
     yield takeEvery(deleteSubjectRoutine.TRIGGER, deleteSubject)
   ]);
 }

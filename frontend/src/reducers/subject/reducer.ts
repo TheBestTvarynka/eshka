@@ -1,13 +1,15 @@
 import {
   updateSubjectRoutine,
   loadAllSubjectsRoutine,
-  loadSubjectRoutine
+  loadSubjectRoutine,
+  loadSubjectQueuesRoutine
 } from '../../sagas/subject/routines';
 import { ISubjectState, IAppState } from '../../models/appState';
 
 const initSubjectState: ISubjectState = {
   isSubjectLoading: false,
-  isCreateLoading: false
+  isCreateLoading: false,
+  isQueuesLoading: false
 }
 
 const subjectReducer = (state: IAppState['subject'] = initSubjectState, { type, payload }: any) => {
@@ -21,6 +23,12 @@ const subjectReducer = (state: IAppState['subject'] = initSubjectState, { type, 
     return {
       ...state,
       isSubjectLoading: true
+    };
+  }
+  if (type === loadSubjectQueuesRoutine.TRIGGER) {
+    return {
+      ...state,
+      isQueuesLoading: true
     };
   }
   if (type === updateSubjectRoutine.SUCCESS) {
@@ -43,13 +51,22 @@ const subjectReducer = (state: IAppState['subject'] = initSubjectState, { type, 
       isSubjectLoading: false
     };
   }
+  if (type === loadSubjectQueuesRoutine.SUCCESS) {
+    return {
+      ...state,
+      queues: payload,
+      isQueuesLoading: false
+    };
+  }
   if (type === loadSubjectRoutine.FAILURE
     || type === loadAllSubjectsRoutine.FAILURE
-    || type === updateSubjectRoutine.FAILURE) {
+    || type === updateSubjectRoutine.FAILURE
+    || type === loadSubjectQueuesRoutine.FAILURE) {
     return {
       ...state,
       isSubjectsLoading: false,
-      isCreateLoading: false
+      isCreateLoading: false,
+      isQueuesLoading: false
     };
   }
   return state;
