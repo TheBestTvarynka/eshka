@@ -71,7 +71,7 @@ public class TeamServiceImpl implements TeamService {
     public void joinToTeam(User user, String link) {
         Team team = teamRepository.findByLink(link).orElseThrow(
                 () -> new TeamNotFoundException("team not found"));
-        user.setTeamId(team.getId());
+        user.setTeam(team);
         userRepository.save(user);
     }
 }

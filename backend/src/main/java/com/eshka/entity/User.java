@@ -28,7 +28,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
-    private Long teamId;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "team_id")
+    private Team team;
     @Column(name = "full_name", nullable = false)
     private String fullName;
     private String email;
