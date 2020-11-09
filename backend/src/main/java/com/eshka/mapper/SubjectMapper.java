@@ -15,7 +15,7 @@ public interface SubjectMapper {
     SubjectMapper INSTANCE = Mappers.getMapper(SubjectMapper.class);
 
     @Mappings({
-            @Mapping(target = "teamId", source = "entity.team"),
+            @Mapping(target = "teamId", source = "entity.team.id"),
     })
     SubjectResponse subjectToSubjectResponse(Subject entity);
 
