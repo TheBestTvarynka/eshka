@@ -20,6 +20,7 @@ public class Subject {
     private String title;
     @Column(name = "description")
     private String description;
-    @Column(name = "teamId")
-    private long teamId;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "team_id")
+    private Team team;
 }
