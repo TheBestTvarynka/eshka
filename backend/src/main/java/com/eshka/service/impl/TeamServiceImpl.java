@@ -1,22 +1,22 @@
 package com.eshka.service.impl;
 
 import com.eshka.entity.Team;
+import com.eshka.entity.User;
 import com.eshka.exception.TeamNotFoundException;
 import com.eshka.repository.TeamRepository;
+import com.eshka.repository.UserRepository;
 import com.eshka.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
 public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
+    private final UserRepository userRepository;
     @Value("${HOST}")
     String host;
 
@@ -66,5 +66,12 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public void deleteById(long id) {
         teamRepository.deleteById(id);
+    }
+
+    public void joinToTeam(User user, String link) {
+        Team team = teamRepository.findByLink(link).orElseThrow(
+                () -> new TeamNotFoundException("team not found"));
+        user.setTeamId(team.getId());
+        userRepository.save(user);
     }
 }

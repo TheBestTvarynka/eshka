@@ -3,11 +3,13 @@ package com.eshka.controller;
 import com.eshka.dto.request.TeamRequest;
 import com.eshka.dto.response.TeamResponse;
 import com.eshka.entity.Team;
+import com.eshka.entity.User;
 import com.eshka.mapper.TeamMapper;
 import com.eshka.service.TeamService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +39,11 @@ public class TeamController {
         return new ResponseEntity<>(mapper.teamToTeamResponse(teamService.createNewTeam(team)),
                 HttpStatus.CREATED);
     }
+
+    @ApiOperation("join to team")
+    @PostMapping("/join/{link}")
+    @ResponseStatus(HttpStatus.OK)
+    public void joinToTeam(@PathVariable(name = "link") String link, @AuthenticationPrincipal User user) { teamService.joinToTeam(user, link); }
 
     @ApiOperation("edit team")
     @PutMapping
