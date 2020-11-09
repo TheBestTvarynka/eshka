@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SubjectController {
     private final SubjectService subjectService;
-    private static final SubjectMapper mapper = SubjectMapper.INSTANCE;
+    private final SubjectMapper mapper;
 
     @ApiOperation("get subject by id")
     @GetMapping("/{id}")
