@@ -4,11 +4,14 @@ import com.eshka.dto.request.SubjectRequest;
 import com.eshka.dto.response.SubjectResponse;
 import com.eshka.entity.Subject;
 import org.junit.Before;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 public class SubjectMapperTest {
+    @Autowired
+    private SubjectMapper mapper;
     private Subject subject;
     private SubjectResponse subjectResponse;
     private SubjectRequest subjectRequest;
@@ -33,13 +36,13 @@ public class SubjectMapperTest {
 
     @Test
     public void subjectToSubjectResponse() {
-        SubjectResponse actual = SubjectMapper.INSTANCE.subjectToSubjectResponse(subject);
+        SubjectResponse actual = mapper.subjectToSubjectResponse(subject);
         assertEquals(subjectResponse, actual);
     }
 
     @Test
     public void subjectRequestToSubject() {
-        Subject actual = SubjectMapper.INSTANCE.subjectRequestToSubject(subjectRequest);
+        Subject actual = mapper.subjectRequestToSubject(subjectRequest);
         assertEquals(subject.getDescription(), actual.getDescription());
         assertEquals(subject.getTitle(), actual.getTitle());
     }
