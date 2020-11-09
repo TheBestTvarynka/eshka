@@ -51,7 +51,7 @@ public class TeamServiceImpl implements TeamService {
                 return generateJoinLink(team, true);
             }
         } else {
-            String joinLink = host + "/join/" + new Random()
+            String joinLink = new Random()
                     .ints(48, 122 + 1)
                     .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
                     .limit(5)
@@ -59,7 +59,7 @@ public class TeamServiceImpl implements TeamService {
                     .toString();
             team.setLink(joinLink);
             teamRepository.save(team);
-            return joinLink;
+            return host + "/join/" + joinLink;
         }
     }
 
