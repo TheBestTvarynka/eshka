@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -22,4 +23,6 @@ public class Team {
     private String description;
     @Column(name = "link", unique = true)
     private String link;
+    @ManyToMany(mappedBy = "teams")
+    private Set<User> users;
 }

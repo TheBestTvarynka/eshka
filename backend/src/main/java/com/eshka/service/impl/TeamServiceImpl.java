@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -71,7 +72,13 @@ public class TeamServiceImpl implements TeamService {
     public void joinToTeam(User user, String link) {
         Team team = teamRepository.findByLink(link).orElseThrow(
                 () -> new TeamNotFoundException("team not found"));
-        user.setTeam(team);
+        Set<Team> teams = user.getTeams();
+        Set<User> users = team.getUsers();
+        teams.add(team);
+        users.add(user);
+        user.setTeams(teams);
+        team.setUsers(users);
         userRepository.save(user);
+        teamRepository.save(team);
     }
 }
