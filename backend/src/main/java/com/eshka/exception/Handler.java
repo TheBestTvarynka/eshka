@@ -17,6 +17,12 @@ public class Handler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = UserNotExistException.class)
     public ResponseEntity<String> handleUserNotExist() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("User with this credentials does not exist");
+                .body("Wrong username or password");
+    }
+
+    @ExceptionHandler(value = UserAlreadyExist.class)
+    public ResponseEntity<String> handleUserAlreadyExist() {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("User already exist");
     }
 }
