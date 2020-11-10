@@ -22,5 +22,7 @@ Platform that helps organize students
 ###### Acceptance criteria - Theme won't be able for other students
 * AS a user I WANT to see list of themes with linked student SO THAT I can be aware which topic will be prepared by which student
 ###### Acceptance criteria - Themes will be showed in a pair with student which prepare this theme
+* AS a teacher I WANT to be able to edit and delete themes from themes list
+###### Acceptance criteria - Themes will be not showed in themes list after this in all new requests
 #### Mocks - 
 ##### https://wireframepro.mockflow.com/view/M6371a15f5b309ea477b36fe677fc0c9d1600622313602
