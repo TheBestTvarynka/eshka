@@ -5,6 +5,7 @@ import {
   logoutRoutine,
   loadUserRoutine
 } from './routines';
+import { toastr } from 'react-redux-toastr';
 import apiClient from '../../helpers/webApi.helper';
 import authProvider from '../../helpers/auth.helper';
 
@@ -23,6 +24,7 @@ function* login(action: any) {
     history.push('/');
   } catch (error) {
     yield put(loginRoutine.failure());
+    toastr.error(error.toString(), "");
     console.log('Error with Login');
     console.log(error);
   }
@@ -34,8 +36,10 @@ function* register(action: any) {
   try {
     yield apiClient.post({ endpoint: '/auth/register', body: resisterData });
     yield put(registerRoutine.success());
+    toastr.success('All good. You can login now.', "");
   } catch (error) {
     yield put(registerRoutine.failure());
+    toastr.error(error.toString(), "");
     console.log('Error with register');
     console.log(error);
   }
