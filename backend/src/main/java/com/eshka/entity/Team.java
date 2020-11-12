@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
+import java.util.HashSet;
 
 @Data
 @NoArgsConstructor
@@ -23,6 +24,6 @@ public class Team {
     private String description;
     @Column(name = "link", unique = true)
     private String link;
-    @ManyToMany(mappedBy = "teams")
-    private Set<User> users;
+    @ManyToMany(mappedBy = "teams", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private Set<User> users = new HashSet<User>();
 }

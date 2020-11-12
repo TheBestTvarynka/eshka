@@ -17,5 +17,5 @@ public interface TeamService {
 
     void deleteById(long id);
 
-    void joinToTeam(User user,String link);
+    void joinToTeam(User user, String link);
 }

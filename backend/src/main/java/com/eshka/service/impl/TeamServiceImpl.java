@@ -73,12 +73,8 @@ public class TeamServiceImpl implements TeamService {
         Team team = teamRepository.findByLink(link).orElseThrow(
                 () -> new TeamNotFoundException("team not found"));
         Set<Team> teams = user.getTeams();
-        Set<User> users = team.getUsers();
         teams.add(team);
-        users.add(user);
         user.setTeams(teams);
-        team.setUsers(users);
         userRepository.save(user);
-        teamRepository.save(team);
     }
 }
