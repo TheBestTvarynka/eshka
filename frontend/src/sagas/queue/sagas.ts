@@ -85,7 +85,7 @@ function* updateQueue(action: any) {
   }
 }
 
-export default function* queueSaga() {
+export default function* queueSagas() {
   yield all([
     yield takeEvery(loadQueueRoutine.TRIGGER, loadQueue),
     yield takeEvery(turnInQueueRoutine.TRIGGER, turnIn),

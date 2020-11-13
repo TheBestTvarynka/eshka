@@ -1,6 +1,7 @@
 import { IUser } from './user';
 import { ISubject } from "./subject";
 import { IQueue, IQueueMember, IQueueShort } from './queue';
+import {ITeam, ITeamShort} from "./team";
 
 export interface IAuthState {
   user?: IUser;
@@ -22,8 +23,16 @@ export interface IQueueState {
   isQueueLoading: boolean;
 }
 
+export interface ITeamState {
+  team?: ITeam;
+  teams?: ITeamShort[];
+  isTeamLoading: boolean;
+  isUpdateLoading: boolean;
+}
+
 export interface IAppState {
   auth: IAuthState;
   subject: ISubjectState;
   queue: IQueueState;
+  team: ITeamState;
 }

@@ -94,7 +94,7 @@ function* loadSubjectQueues(action: any) {
   }
 }
 
-export default function* subjectSaga() {
+export default function* subjectSagas() {
   yield all([
     yield takeEvery(updateSubjectRoutine.TRIGGER, updateSubject),
     yield takeEvery(loadAllSubjectsRoutine.TRIGGER, loadAllSubjects),

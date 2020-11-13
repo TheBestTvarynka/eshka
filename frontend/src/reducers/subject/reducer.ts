@@ -10,7 +10,7 @@ const initSubjectState: ISubjectState = {
   isSubjectLoading: false,
   isCreateLoading: false,
   isQueuesLoading: false
-}
+};
 
 const subjectReducer = (state: IAppState['subject'] = initSubjectState, { type, payload }: any) => {
   if (type === updateSubjectRoutine.TRIGGER) {
