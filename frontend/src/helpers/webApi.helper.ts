@@ -39,6 +39,7 @@ export async function throwIfResponseFailed(res: Response) {
   // 410 - Gone (DELETED)
   if (res.status !== 200 && res.status !== 201 && res.status !== 204 && res.status !== 410) {
     const data = await res.text()
+    console.log(data);
     throw data;
   }
 }
