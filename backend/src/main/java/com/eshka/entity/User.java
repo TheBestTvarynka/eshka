@@ -12,6 +12,8 @@ import org.hibernate.annotations.NaturalIdCache;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 @Data
 @NoArgsConstructor
@@ -28,6 +30,12 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "TeamToUser",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "team_id"))
+    private Set<Team> teams = new HashSet<Team>();
     @Column(name = "full_name", nullable = false)
     private String fullName;
     private String email;
