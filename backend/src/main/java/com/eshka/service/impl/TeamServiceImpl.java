@@ -47,7 +47,7 @@ public class TeamServiceImpl implements TeamService {
         if (force == null || !force) {
             String link = team.getLink();
             if (link != null) {
-                return link;
+                return host + "/join/" + link;
             } else {
                 return generateJoinLink(team, true);
             }
