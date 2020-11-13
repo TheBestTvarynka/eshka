@@ -3,6 +3,7 @@ package com.eshka.controller;
 import com.eshka.dto.request.TeamRequest;
 import com.eshka.dto.response.TeamResponse;
 import com.eshka.entity.Team;
+import com.eshka.entity.User;
 import com.eshka.mapper.TeamMapper;
 import com.eshka.service.TeamService;
 import io.swagger.annotations.Api;
@@ -10,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +30,16 @@ public class TeamController {
     public ResponseEntity<TeamResponse> findById(@PathVariable(name = "id") String id) {
         return new ResponseEntity<>(mapper.teamToTeamResponse(teamService.findById(Long.parseLong(id))),
                 HttpStatus.OK);
+    }
+
+    @ApiOperation("get all user teams")
+    @GetMapping("/all")
+    public ResponseEntity<List<TeamShortResponse>> getTeams(@AuthenticationPrincipal User user) {
+        List<Team> teams = user.getTeams();
+        return new ResponseEntity<>(teams.stream()
+			.map(mapper::teamToTeamShortResponse)
+			.collect(Collectors.toList()),
+		HttpStatus.OK);
     }
 
     @ApiOperation("create new team")
