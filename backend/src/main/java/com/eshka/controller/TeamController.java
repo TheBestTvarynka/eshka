@@ -2,6 +2,7 @@ package com.eshka.controller;
 
 import com.eshka.dto.request.TeamRequest;
 import com.eshka.dto.response.TeamResponse;
+import com.eshka.dto.response.TeamShortResponse;
 import com.eshka.entity.Team;
 import com.eshka.entity.User;
 import com.eshka.mapper.TeamMapper;
@@ -9,12 +10,12 @@ import com.eshka.service.TeamService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +37,7 @@ public class TeamController {
     @ApiOperation("get all user teams")
     @GetMapping("/all")
     public ResponseEntity<List<TeamShortResponse>> getTeams(@AuthenticationPrincipal User user) {
-        List<Team> teams = user.getTeams();
+        Set<Team> teams = user.getTeams();
         return new ResponseEntity<>(teams.stream()
 			.map(mapper::teamToTeamShortResponse)
 			.collect(Collectors.toList()),

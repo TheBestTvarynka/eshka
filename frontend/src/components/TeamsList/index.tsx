@@ -1,30 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import JoinTeamWindow from '../JoinTeamWindow';
 import styles from './styles.module.sass';
 import buttons from '../styles/buttons.module.sass';
 import lists from '../styles/lists.module.sass';
-import { ITeamShort } from '../../models/team';
+import { IAppState } from '../../models/appState';
+import { loadTeamsRoutine } from '../../sagas/team/routines';
 
-const teamsMock = [
-  { id: '1', title: 'BananasTornadas', membersCount: 9 },
-  { id: '2', title: 'IP-82', membersCount: 30 },
-  { id: '3', title: 'MizarField', membersCount: 28 },
-  { id: '4', title: 'Flowers', membersCount: 31 },
-  { id: '5', title: 'CloudsOfTheGod', membersCount: 15 }
-] as ITeamShort[];
-
-const TeamsList = () => {
+const TeamsList: React.FC<ITeamListProps> = ({ teams, loadTeams }) => {
   const [selected, setSelected] = useState<number>(1);
   const [jw, setJW] = useState<boolean>(false);
+
+  useEffect(() => {
+    loadTeams();
+  }, [loadTeams]);
+
   return (
     <div className={lists.dark_list}>
-      {teamsMock.map((team, index) => (
+      {teams && teams.map((team, index) => (
         <div className={`${lists.dark_list_item} ${index === selected ? lists.selected : lists.simple}`}
              key={team.id}
              onClick={() => setSelected(index)}
         >
-          <span className={lists.dark_item_title}>{team.title}</span>
-          <span className={lists.members_count}>{team.membersCount} member(s)</span>
+          <span className={lists.dark_item_title}>{team.name}</span>
+          <span className={lists.members_count}>{team.description.substr(0, 10)} member(s)</span>
         </div>
       ))}
       <div className={styles.button_container}>
@@ -37,4 +36,14 @@ const TeamsList = () => {
   );
 }
 
-export default TeamsList;
+const mapStateToProps = (appState: IAppState) => ({
+  teams: appState.team.teams
+});
+
+const mapDispatchToProps = {
+  loadTeams: loadTeamsRoutine
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type ITeamListProps = ConnectedProps<typeof connector>;
+export default connector(TeamsList);

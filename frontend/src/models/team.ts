@@ -11,6 +11,6 @@ export interface ITeam {
 
 export interface ITeamShort {
   id: string;
-  title: string;
-  membersCount: number;
+  name: string;
+  description: string;
 }

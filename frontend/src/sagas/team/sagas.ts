@@ -8,7 +8,7 @@ import apiClient from '../../helpers/webApi.helper';
 
 function* loadTeams() {
   try {
-    const res = yield apiClient.get({ endpoint: '/team' });
+    const res = yield apiClient.get({ endpoint: '/team/all' });
     const parsedData = yield res.json();
     yield put(loadTeamsRoutine.success(parsedData));
   } catch (error) {
