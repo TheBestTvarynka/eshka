@@ -32,7 +32,7 @@ public class SubjectController {
 
     @ApiOperation("get all subjects")
     @GetMapping
-    public ResponseEntity<List<SubjectResponse>> findById() {
+    public ResponseEntity<List<SubjectResponse>> findAll() {
         List<Subject> subjectList = subjectService.findAll();
         return new ResponseEntity<>(subjectList.stream()
                 .map(mapper::subjectToSubjectResponse)

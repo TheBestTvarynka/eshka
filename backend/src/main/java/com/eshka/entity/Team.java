@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -26,4 +28,6 @@ public class Team {
     private String link;
     @ManyToMany(mappedBy = "teams", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Set<User> users = new HashSet<User>();
+    @OneToMany(mappedBy = "team")
+    private List<Subject> subjects = new ArrayList<>();
 }

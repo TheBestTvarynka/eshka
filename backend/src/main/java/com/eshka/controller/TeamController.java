@@ -1,8 +1,8 @@
 package com.eshka.controller;
 
 import com.eshka.dto.request.TeamRequest;
+import com.eshka.dto.response.TeamFullResponse;
 import com.eshka.dto.response.TeamResponse;
-import com.eshka.dto.response.TeamShortResponse;
 import com.eshka.entity.Team;
 import com.eshka.entity.User;
 import com.eshka.mapper.TeamMapper;
@@ -34,14 +34,21 @@ public class TeamController {
                 HttpStatus.OK);
     }
 
+    @ApiOperation("get full team info")
+    @GetMapping("/{id}/full")
+    public ResponseEntity<TeamFullResponse> getFullInfo(@PathVariable(name = "id") String id) {
+        Team team = teamService.findById(Long.parseLong(id));
+        return new ResponseEntity<>(TeamFullResponse.fromTeam(team),
+                HttpStatus.OK);
+    }
+
     @ApiOperation("get all user teams")
-    @GetMapping("/all")
-    public ResponseEntity<List<TeamShortResponse>> getTeams(@AuthenticationPrincipal User user) {
-        Set<Team> teams = user.getTeams();
-        return new ResponseEntity<>(teams.stream()
-			.map(mapper::teamToTeamShortResponse)
-			.collect(Collectors.toList()),
-		HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<List<TeamResponse>> getTeams(@AuthenticationPrincipal User user) {
+        return new ResponseEntity<>(user.getTeams().stream()
+                .map(mapper::teamToTeamResponse)
+                .collect(Collectors.toList()),
+                HttpStatus.OK);
     }
 
     @ApiOperation("create new team")
