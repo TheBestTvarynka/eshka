@@ -15,15 +15,12 @@ export interface IPrivateRouteProps {
 const PrivateRoute: FC<IPrivateRouteProps & PrivateRouteStateProps> = ({ component: Component, user, loadUserData, ...rest }) => {
   const isLogged = authProvider.isLoggedIn();
 
-  console.log({ isLogged });
-  console.log({ user });
-
   useEffect(() => {
     if (isLogged && !user) {
       loadUserData();
     }
   }, [isLogged, user, loadUserData]);
-  console.log({ rest });
+
   return (
     <Route
       {...rest}

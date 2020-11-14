@@ -8,10 +8,10 @@ import lists from '../styles/lists.module.sass';
 import containers from '../styles/containers.module.sass';
 import buttons from '../styles/buttons.module.sass';
 import { IAppState } from '../../models/appState';
-import { loadTeamRoutine } from '../../sagas/team/routines';
+import { loadTeamRoutine, updateTeamRoutine } from '../../sagas/team/routines';
 import Loader from '../Loader';
 
-const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading }) => {
+const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading, updateTeam }) => {
   const [cw, setCW] = useState<boolean>(false);
   const [tm, setTM] = useState<boolean>(false);
   const [ip, setIP] = useState<boolean>(false);
@@ -35,7 +35,6 @@ const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading }) => {
                   <span className={lists.light_list_title}>Members</span>
                   {team.members.map(member => (
                     <div key={member.id} className={lists.light_list_item}>
-                      {/*<img src={member.logo} alt="ProfilePicture" />*/}
                       <span>{member.fullName}</span>
                     </div>
                   ))}
@@ -93,7 +92,13 @@ const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading }) => {
                                  cancelValue="Cancel"
                                  onCancel={() => setCW(false)}
       />}
-      {tm && <TeamManagePage onClose={() => setTM(false)} />}
+      {tm && <TeamManagePage onClose={() => setTM(false)}
+                             onSubmit={data => {
+                               updateTeam(data);
+                               setTM(false);
+                             }}
+                             team={team}
+      />}
       {ip && <InvitePage onClose={() => setIP(false)} />}
     </div>
   );
@@ -105,7 +110,8 @@ const mapStateToProps = (appState: IAppState) => ({
 });
 
 const mapDispatchToProps = {
-  loadTeam: loadTeamRoutine
+  loadTeam: loadTeamRoutine,
+  updateTeam: updateTeamRoutine
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

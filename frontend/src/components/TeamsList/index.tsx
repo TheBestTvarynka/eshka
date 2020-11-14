@@ -27,7 +27,7 @@ const TeamsList: React.FC<ITeamListProps> = ({ id, teams, loadTeams, loadTeam })
       ))}
       <div className={styles.button_container}>
         <button className={buttons.animated_border_button} onClick={() => setJW(true)}>
-          <span>Join team</span>
+          <span>Join</span>
         </button>
       </div>
       {jw && <JoinTeamWindow onClose={() => setJW(false)}/> }

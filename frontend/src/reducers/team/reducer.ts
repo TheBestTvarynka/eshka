@@ -11,7 +11,7 @@ const initTeamState: ITeamState = {
 };
 
 const teamReducer = (state: IAppState['team'] = initTeamState, { type, payload }: any) => {
-  if (type === loadTeamRoutine.TRIGGER) {
+  if (type === loadTeamRoutine.TRIGGER || type === updateTeamRoutine.TRIGGER) {
     return {
       ...state,
       isTeamLoading: true
@@ -30,7 +30,14 @@ const teamReducer = (state: IAppState['team'] = initTeamState, { type, payload }
       teams: payload
     };
   }
-  if (type === loadTeamRoutine.FAILURE) {
+  if (type === updateTeamRoutine.SUCCESS) {
+    return {
+      ...state,
+      team: { ...state.team, ...payload },
+      isTeamLoading: false
+    };
+  }
+  if (type === loadTeamRoutine.FAILURE || type === updateTeamRoutine.FAILURE) {
     return {
       ...state,
       isTeamLoading: false
