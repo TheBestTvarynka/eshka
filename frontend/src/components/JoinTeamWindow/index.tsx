@@ -23,7 +23,7 @@ const JoinTeamWindow: React.FC<IJoinTeamWindowProps> = ({ onClose }) => {
                placeholder="https://eshka.com/join/<some_letters>"
                onChange={event => setLink(event.target.value)}
         />
-        <span className={styles.hint}>*You can join only by the link</span>
+        <span className={styles.hint}>*You can join only with provided id</span>
         <div className={containers.actions_panel}>
           <button onClick={() => onClose()} className={`${buttons.button} ${buttons.grey}`}>Cancel</button>
           <button onClick={() => onClose()} className={`${buttons.button} ${buttons.green}`}>Join</button>

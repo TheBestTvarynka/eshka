@@ -7,7 +7,7 @@ import com.eshka.repository.TeamRepository;
 import com.eshka.repository.UserRepository;
 import com.eshka.service.TeamService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+// import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
@@ -18,8 +18,8 @@ import java.util.Set;
 public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
     private final UserRepository userRepository;
-    @Value("${HOST}")
-    String host;
+    // @Value("${HOST}")
+    // String host;
 
     @Override
     public Team findById(long id) {
@@ -47,7 +47,7 @@ public class TeamServiceImpl implements TeamService {
         if (force == null || !force) {
             String link = team.getLink();
             if (link != null) {
-                return host + "/join/" + link;
+                return link;
             } else {
                 return generateJoinLink(team, true);
             }
@@ -60,7 +60,7 @@ public class TeamServiceImpl implements TeamService {
                     .toString();
             team.setLink(joinLink);
             teamRepository.save(team);
-            return host + "/join/" + joinLink;
+            return joinLink;
         }
     }
 

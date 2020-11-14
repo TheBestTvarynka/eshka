@@ -21,12 +21,14 @@ import lists from '../../components/styles/lists.module.sass';
 import buttons from '../../components/styles/buttons.module.sass';
 import styles from './styles.module.sass';
 import { IAppState } from '../../models/appState';
+import { useParams, useHistory } from 'react-router-dom';
 
 const SubjectPage: React.FC<ISubjectPageProps> = ({
   user, subject, subjects, isSubjectLoading, queues, isQueuesLoading,
   update, deleteSubject, loadAll, load, loadQueues, createQueue
 }) => {
-  const [selected, setSelected] = useState<number | undefined>(subject?.id);
+  const params: any = useParams();
+  const history = useHistory();
   const [cs, setCS] = useState<boolean>(false);
   const [cq, setCQ] = useState<boolean>(false);
   const [ds, setDS] = useState<boolean>(false);
@@ -37,20 +39,23 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
   }, [loadAll]);
 
   useEffect(() => {
-    if (subject?.id) {
-      loadQueues(subject.id);
+    const id = params.id;
+    if (id) {
+      load(id);
+      loadQueues(id);
     }
-  }, [subject, loadQueues]);
+  }, [params, loadQueues]);
 
   return (
     <div className={styles.subject_page}>
       <div className={lists.dark_list}>
         {subjects && subjects.map(s =>
-          <div className={`${lists.dark_list_item} ${s.id === selected ? lists.selected : lists.simple}`}
+          <div className={`${lists.dark_list_item} ${s.id === subject?.id ? lists.selected : lists.simple}`}
                key={s.id}
                onClick={() => {
-                 load(s.id);
-                 setSelected(s.id)
+                 history.push(`/subject/${s.id}`)
+                 // load(s.id);
+                 // setSelected(s.id);
                }}
           >
             <span className={listStyles.title}>{s.title}</span>

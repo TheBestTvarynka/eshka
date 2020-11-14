@@ -42,7 +42,7 @@ const InvitePage: React.FC<IInvitePageProps> = ({ onClose, id }) => {
   return (
     <div className={containers.modal_background} onClick={handleOutsideClick} id="background">
       <div className={containers.window}>
-        <span className={styles.title}>Get the link for joining</span>
+        <span className={styles.title}>Get id for joining</span>
         {loading
           ? <Loader />
           : <div className={styles.actions}>
@@ -65,7 +65,7 @@ const InvitePage: React.FC<IInvitePageProps> = ({ onClose, id }) => {
               </button>
             </div>
         }
-        <span className={styles.copied}>{copied ? 'Link copied!' : '' }</span>
+        <span className={styles.copied}>{copied ? 'Join id copied!' : '' }</span>
       </div>
     </div>
   );
