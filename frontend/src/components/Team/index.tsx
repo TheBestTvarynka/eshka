@@ -1,61 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ISubjectShort } from '../../models/subject';
-import Loader from '../Loader';
+import { connect, ConnectedProps } from 'react-redux';
 import ConfirmationWindow from '../ConfirmationWindow';
 import TeamManagePage from '../TreamManagePage';
 import InvitePage from '../InvitePage';
-import { ITeam } from '../../models/team';
 import lists from '../styles/lists.module.sass';
 import containers from '../styles/containers.module.sass';
 import buttons from '../styles/buttons.module.sass';
-import { IUserShort } from '../../models/user';
+import { IAppState } from '../../models/appState';
+import { loadTeamRoutine } from '../../sagas/team/routines';
+import Loader from '../Loader';
 
-const teamMock = {
-  id: '1',
-  title: 'IP-82',
-  description: 'IP-82 - group of KPI university. 121 specialization. FICT faculty. Third year of bachelors degree.',
-  members: [
-    { id: 1, fullName: 'Kirito Mikoto', logo: 'https://img.icons8.com/color/48/000000/test-account.png' },
-    { id: 2, fullName: 'Madara Uchiha', logo: 'https://img.icons8.com/color/48/000000/test-account.png' },
-    { id: 3, fullName: 'Kimimaru Ootsuki', logo: 'https://img.icons8.com/color/48/000000/test-account.png' }
-  ] as IUserShort[],
-  subjects: [
-    { id: 1, title: 'Math' },
-    { id: 2, title: 'Functional Programming' },
-    { id: 3, title: 'Databases | OLAP' },
-    { id: 4, title: 'OOP: Java' }] as ISubjectShort[]
-} as ITeam;
-
-const Team = () => {
+const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading }) => {
   const [cw, setCW] = useState<boolean>(false);
   const [tm, setTM] = useState<boolean>(false);
   const [ip, setIP] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (team?.id) {
+      loadTeam(team.id);
+    }
+  }, [loadTeam]);
+
   return (
     <div className={containers.content_general}>
-      <div className={containers.main_content}>
-        <span className={containers.dark_item_title}>{teamMock.title}</span>
-        <span className={containers.description}>{teamMock.description}</span>
-        <div className={containers.two_columns}>
-          <div className={lists.light_list}>
-            <span className={lists.light_list_title}>Members</span>
-            {teamMock.members.map(member => (
-              <div key={member.id} className={lists.light_list_item}>
-                <img src={member.logo} alt="ProfilePicture" />
-                <span>{member.fullName}</span>
+      {isLoading
+        ? <Loader />
+        : team && (
+            <div className={containers.main_content}>
+              <span className={containers.dark_item_title}>{team.name}</span>
+              <span className={containers.description}>{team.description}</span>
+              <div className={containers.two_columns}>
+                <div className={lists.light_list}>
+                  <span className={lists.light_list_title}>Members</span>
+                  {team.members.map(member => (
+                    <div key={member.id} className={lists.light_list_item}>
+                      {/*<img src={member.logo} alt="ProfilePicture" />*/}
+                      <span>{member.fullName}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className={lists.light_list}>
+                  <span className={lists.light_list_title}>Subjects</span>
+                  {team.subjects.map(subject => (
+                    <Link to={`/subject/${subject.id}`} key={subject.id} className={lists.light_list_item}>
+                      <span>{subject.title}</span>
+                    </Link>
+                  ))}
+                </div>
               </div>
-            ))}
-          </div>
-          <div className={lists.light_list}>
-            <span className={lists.light_list_title}>Subjects</span>
-            {teamMock.subjects.map(subject => (
-              <Link to={`/subject/${subject.id}`} key={subject.id} className={lists.light_list_item}>
-                <span>{subject.title}</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
+            </div>
+          )
+      }
       <div className={containers.vertical_actions_panel}>
         <button className={`${buttons.button_simple} ${buttons.blue_simple}`} onClick={() => setTM(true)}>
           <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
@@ -103,4 +99,15 @@ const Team = () => {
   );
 }
 
-export default Team;
+const mapStateToProps = (appState: IAppState) => ({
+  team: appState.team.team,
+  isLoading: appState.team.isTeamLoading
+});
+
+const mapDispatchToProps = {
+  loadTeam: loadTeamRoutine
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type ITeamProps = ConnectedProps<typeof connector>;
+export default connector(Team);

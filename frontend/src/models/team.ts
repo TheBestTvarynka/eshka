@@ -3,7 +3,7 @@ import { ISubjectShort } from "./subject";
 
 export interface ITeam {
   id: string;
-  title: string;
+  name: string;
   description: string;
   members: IUserShort[];
   subjects: ISubjectShort[];

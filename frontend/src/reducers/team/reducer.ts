@@ -21,7 +21,7 @@ const teamReducer = (state: IAppState['team'] = initTeamState, { type, payload }
     return {
       ...state,
       team: payload,
-      isTeamLoading: true
+      isTeamLoading: false
     };
   }
   if (type === loadTeamsRoutine.SUCCESS) {

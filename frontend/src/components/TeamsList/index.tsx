@@ -5,10 +5,9 @@ import styles from './styles.module.sass';
 import buttons from '../styles/buttons.module.sass';
 import lists from '../styles/lists.module.sass';
 import { IAppState } from '../../models/appState';
-import { loadTeamsRoutine } from '../../sagas/team/routines';
+import { loadTeamsRoutine, loadTeamRoutine } from '../../sagas/team/routines';
 
-const TeamsList: React.FC<ITeamListProps> = ({ teams, loadTeams }) => {
-  const [selected, setSelected] = useState<number>(1);
+const TeamsList: React.FC<ITeamListProps> = ({ id, teams, loadTeams, loadTeam }) => {
   const [jw, setJW] = useState<boolean>(false);
 
   useEffect(() => {
@@ -17,13 +16,13 @@ const TeamsList: React.FC<ITeamListProps> = ({ teams, loadTeams }) => {
 
   return (
     <div className={lists.dark_list}>
-      {teams && teams.map((team, index) => (
-        <div className={`${lists.dark_list_item} ${index === selected ? lists.selected : lists.simple}`}
+      {teams && teams.map(team => (
+        <div className={`${lists.dark_list_item} ${team.id === id ? lists.selected : lists.simple}`}
              key={team.id}
-             onClick={() => setSelected(index)}
+             onClick={() => loadTeam(team.id)}
         >
           <span className={lists.dark_item_title}>{team.name}</span>
-          <span className={lists.members_count}>{team.description.substr(0, 10)} member(s)</span>
+          <span className={lists.members_count}>{team.description.substr(0, 30)}...</span>
         </div>
       ))}
       <div className={styles.button_container}>
@@ -37,11 +36,13 @@ const TeamsList: React.FC<ITeamListProps> = ({ teams, loadTeams }) => {
 }
 
 const mapStateToProps = (appState: IAppState) => ({
+  id: appState.team.team?.id,
   teams: appState.team.teams
 });
 
 const mapDispatchToProps = {
-  loadTeams: loadTeamsRoutine
+  loadTeams: loadTeamsRoutine,
+  loadTeam: loadTeamRoutine
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
