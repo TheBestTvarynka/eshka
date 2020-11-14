@@ -13,7 +13,6 @@ export interface ISubjectState {
   subjects?: ISubject[];
   queues?: IQueueShort[];
   isSubjectLoading: boolean;
-  isCreateLoading: boolean;
   isQueuesLoading: boolean;
 }
 

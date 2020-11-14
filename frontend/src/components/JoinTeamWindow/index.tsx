@@ -3,6 +3,7 @@ import styles from './styles.module.sass';
 import inputs from '../styles/inputs.module.sass';
 import buttons from '../styles/buttons.module.sass';
 import containers from '../styles/containers.module.sass';
+import apiClient from '../../helpers/webApi.helper';
 
 export interface IJoinTeamWindowProps {
   onClose: () => void;

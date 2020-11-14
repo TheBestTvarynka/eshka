@@ -8,7 +8,6 @@ import { ISubjectState, IAppState } from '../../models/appState';
 
 const initSubjectState: ISubjectState = {
   isSubjectLoading: false,
-  isCreateLoading: false,
   isQueuesLoading: false
 };
 
@@ -16,7 +15,7 @@ const subjectReducer = (state: IAppState['subject'] = initSubjectState, { type, 
   if (type === updateSubjectRoutine.TRIGGER) {
     return {
       ...state,
-      isCreateLoading: true
+      isSubjectLoading: true
     };
   }
   if (type === loadSubjectRoutine.TRIGGER) {
@@ -35,7 +34,7 @@ const subjectReducer = (state: IAppState['subject'] = initSubjectState, { type, 
     return {
       ...state,
       subject: payload,
-      isCreateLoading: false
+      isSubjectLoading: false
     };
   }
   if (type === loadAllSubjectsRoutine.SUCCESS) {
@@ -65,7 +64,6 @@ const subjectReducer = (state: IAppState['subject'] = initSubjectState, { type, 
     return {
       ...state,
       isSubjectsLoading: false,
-      isCreateLoading: false,
       isQueuesLoading: false
     };
   }

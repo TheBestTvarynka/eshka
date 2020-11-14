@@ -24,7 +24,7 @@ import { IAppState } from '../../models/appState';
 import { useParams, useHistory } from 'react-router-dom';
 
 const SubjectPage: React.FC<ISubjectPageProps> = ({
-  user, subject, subjects, isSubjectLoading, queues, isQueuesLoading,
+  user, subject, subjects, isSubjectLoading, queues, isQueuesLoading, teamId,
   update, deleteSubject, loadAll, load, loadQueues, createQueue
 }) => {
   const params: any = useParams();
@@ -110,16 +110,15 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
         </div>
       </div>
       {cs && <CreateSubjectWindow
-        subject={undefined}
         onSubmit={data => {
-          update(data);
+          update({ ...data, teamId });
           setCS(false);
         }}
         onClose={() => setCS(false)} />}
       {es && <CreateSubjectWindow
         subject={subject}
         onSubmit={data => {
-          update(data);
+          update({ ...data, teamId: subject?.teamId });
           setES(false);
         }}
         onClose={() => setCS(false)} />}
@@ -148,6 +147,7 @@ const mapStateToProps = (appState: IAppState) => ({
   subject: appState.subject.subject,
   subjects: appState.subject.subjects,
   queues: appState.subject.queues,
+  teamId: appState.team.team?.id, // temporary parameter
   isSubjectLoading: appState.subject.isSubjectLoading,
   isQueuesLoading: appState.subject.isQueuesLoading
 });

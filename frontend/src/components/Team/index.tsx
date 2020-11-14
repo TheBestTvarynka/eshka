@@ -27,30 +27,30 @@ const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading, updateTeam }) =
     <div className={containers.content_general}>
       {isLoading
         ? <Loader />
-        : team && (
-            <div className={containers.main_content}>
-              <span className={containers.dark_item_title}>{team.name}</span>
-              <span className={containers.description}>{team.description}</span>
-              <div className={containers.two_columns}>
-                <div className={lists.light_list}>
-                  <span className={lists.light_list_title}>Members</span>
-                  {team.members.map(member => (
-                    <div key={member.id} className={lists.light_list_item}>
-                      <span>{member.fullName}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className={lists.light_list}>
-                  <span className={lists.light_list_title}>Subjects</span>
-                  {team.subjects.map(subject => (
-                    <Link to={`/subject/${subject.id}`} key={subject.id} className={lists.light_list_item}>
-                      <span>{subject.title}</span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )
+        : team
+          ? (<div className={containers.main_content}>
+               <span className={containers.dark_item_title}>{team.name}</span>
+               <span className={containers.description}>{team.description}</span>
+               <div className={containers.two_columns}>
+                 <div className={lists.light_list}>
+                   <span className={lists.light_list_title}>Members</span>
+                   {team.members.map(member => (
+                   <div key={member.id} className={lists.light_list_item}>
+                     <span>{member.fullName}</span>
+                   </div>
+                   ))}
+                 </div>
+                 <div className={lists.light_list}>
+                   <span className={lists.light_list_title}>Subjects</span>
+                   {team.subjects.map(subject => (
+                     <Link to={`/subject/${subject.id}`} key={subject.id} className={lists.light_list_item}>
+                       <span>{subject.title}</span>
+                     </Link>
+                   ))}
+               </div>
+             </div>
+            </div>)
+          : <div />
       }
       <div className={containers.vertical_actions_panel}>
         <button className={`${buttons.button_simple} ${buttons.blue_simple}`} onClick={() => setTM(true)}>
