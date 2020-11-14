@@ -2,7 +2,7 @@ import { IUserShort } from './user';
 import { ISubjectShort } from "./subject";
 
 export interface ITeam {
-  id: string;
+  id: number;
   name: string;
   description: string;
   members: IUserShort[];
@@ -10,7 +10,7 @@ export interface ITeam {
 }
 
 export interface ITeamShort {
-  id: string;
+  id: number;
   name: string;
   description: string;
 }

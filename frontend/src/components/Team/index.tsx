@@ -99,7 +99,7 @@ const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading, updateTeam }) =
                              }}
                              team={team}
       />}
-      {ip && <InvitePage onClose={() => setIP(false)} />}
+      {ip && <InvitePage id={team?.id} onClose={() => setIP(false)} />}
     </div>
   );
 }
