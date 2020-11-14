@@ -44,7 +44,7 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
       load(id);
       loadQueues(id);
     }
-  }, [params, loadQueues]);
+  }, [params, loadQueues, load]);
 
   return (
     <div className={styles.subject_page}>
@@ -52,11 +52,7 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
         {subjects && subjects.map(s =>
           <div className={`${lists.dark_list_item} ${s.id === subject?.id ? lists.selected : lists.simple}`}
                key={s.id}
-               onClick={() => {
-                 history.push(`/subject/${s.id}`)
-                 // load(s.id);
-                 // setSelected(s.id);
-               }}
+               onClick={() => history.push(`/subject/${s.id}`)}
           >
             <span className={listStyles.title}>{s.title}</span>
           </div>)

@@ -14,6 +14,7 @@ import Loader from '../Loader';
 const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading, updateTeam }) => {
   const [cw, setCW] = useState<boolean>(false);
   const [tm, setTM] = useState<boolean>(false);
+  const [ct, setCT] = useState<boolean>(false);
   const [ip, setIP] = useState<boolean>(false);
 
   useEffect(() => {
@@ -66,6 +67,10 @@ const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading, updateTeam }) =
           </svg>
           <span>Manage</span>
         </button>
+        <button className={`${buttons.button_simple} ${buttons.green_simple}`} onClick={() => setCT(true)}>
+          <img src="https://img.icons8.com/material/50/000000/plus-math--v2.png" alt=""/>
+          <span>Create</span>
+        </button>
         <button className={`${buttons.button_simple} ${buttons.green_simple}`} onClick={() => setIP(true)}>
           <img src="https://img.icons8.com/material/50/000000/plus-math--v2.png" alt=""/>
           <span>Invite</span>
@@ -98,6 +103,12 @@ const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading, updateTeam }) =
                                setTM(false);
                              }}
                              team={team}
+      />}
+      {ct && <TeamManagePage onClose={() => setCT(false)}
+                             onSubmit={data => {
+                               updateTeam(data);
+                               setCT(false);
+                             }}
       />}
       {ip && <InvitePage id={team?.id} onClose={() => setIP(false)} />}
     </div>

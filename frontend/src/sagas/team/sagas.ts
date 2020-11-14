@@ -1,4 +1,4 @@
-import { all, put, takeEvery } from 'redux-saga/effects';
+import { all, call, put, takeEvery } from 'redux-saga/effects';
 import {
   loadTeamRoutine,
   loadTeamsRoutine,
@@ -51,7 +51,9 @@ function* updateTeam(action: any) {
       res = yield apiClient.post({ endpoint: '/team', body: data });
     }
     const parsedData = yield res.json();
-    yield put(updateTeamRoutine.success(parsedData));
+    // load full team info after updating
+    yield call(loadTeam, { payload: parsedData.id });
+    yield call(loadTeams);
   } catch (error) {
     yield put(updateTeamRoutine.failure());
     toastr.error(error.toString(), "");
