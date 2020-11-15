@@ -7,4 +7,6 @@ public interface UserService {
     UserDTO buildUserDtoFromUser(User user);
 
     User findById(Long id);
+
+    User getCurrentUser();
 }

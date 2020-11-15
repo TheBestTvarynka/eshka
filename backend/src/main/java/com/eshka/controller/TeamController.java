@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,7 @@ public class TeamController {
 
     @ApiOperation("get team by id")
     @GetMapping("/{id}")
+    @PreAuthorize(value = "@teamServiceImpl.findById(#id).users.contains(@userServiceImpl.currentUser)")
     public ResponseEntity<TeamResponse> findById(@PathVariable(name = "id") String id) {
         return new ResponseEntity<>(mapper.teamToTeamResponse(teamService.findById(Long.parseLong(id))),
                 HttpStatus.OK);
@@ -46,6 +48,7 @@ public class TeamController {
 
     @ApiOperation("edit team")
     @PutMapping
+    @PreAuthorize(value = "@teamServiceImpl.findById(#request.id).users.contains(@userServiceImpl.currentUser)")
     public ResponseEntity<TeamResponse> editTeam(@RequestBody TeamRequest request) {
         Team team = mapper.teamRequestToTeam(request);
         return new ResponseEntity<>(mapper.teamToTeamResponse(teamService.editTeam(team)),
@@ -54,6 +57,7 @@ public class TeamController {
 
     @ApiOperation("join team")
     @GetMapping("/join-link/{id}")
+    @PreAuthorize(value = "@teamServiceImpl.findById(#id).users.contains(@userServiceImpl.currentUser)")
     public ResponseEntity<String> getJoinLink(@PathVariable(name = "id") String id, @RequestParam(required = false) Boolean force) {
         return new ResponseEntity<>(teamService.generateJoinLink(teamService.findById(Long.parseLong(id)), force),
                 HttpStatus.OK);
@@ -61,6 +65,7 @@ public class TeamController {
 
     @ApiOperation("delete team by id")
     @DeleteMapping("/{id}")
+    @PreAuthorize(value = "@teamServiceImpl.findById(#id).users.contains(@userServiceImpl.currentUser)")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTeam(@PathVariable(name = "id") String id) {
         teamService.deleteById(Long.parseLong(id));
