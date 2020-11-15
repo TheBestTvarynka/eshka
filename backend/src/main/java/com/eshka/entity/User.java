@@ -1,7 +1,5 @@
 package com.eshka.entity;
 
-//import com.eshka.entity.enums.Role;
-
 import com.eshka.entity.enums.Role;
 import lombok.*;
 import org.hibernate.annotations.Cache;
@@ -11,9 +9,9 @@ import org.hibernate.annotations.NaturalIdCache;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
 
 @Data
 @NoArgsConstructor
@@ -30,12 +28,8 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinTable(
-            name = "TeamToUser",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "team_id"))
-    private Set<Team> teams = new HashSet<Team>();
+    @ManyToMany(mappedBy = "users")
+    private Set<Team> teams = new HashSet<>();
     @Column(name = "full_name", nullable = false)
     private String fullName;
     private String email;
@@ -47,11 +41,7 @@ public class User {
 
     private boolean active;
 
-    //    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-//    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
-//    @Enumerated(EnumType.STRING)
-//    private Set<Role> roles;
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Role role;
 

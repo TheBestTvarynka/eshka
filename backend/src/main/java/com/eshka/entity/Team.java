@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+
 import javax.persistence.*;
 import java.util.Set;
 import java.util.HashSet;
@@ -24,6 +25,12 @@ public class Team {
     private String description;
     @Column(name = "link", unique = true)
     private String link;
-    @ManyToMany(mappedBy = "teams", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    private Set<User> users = new HashSet<User>();
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "team_user",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> users = new HashSet<>();
 }
