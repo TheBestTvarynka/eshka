@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -23,4 +25,20 @@ public class Subject {
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "team_id")
     private Team team;
+    @OneToMany(
+            mappedBy = "subject",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Queue> queues = new ArrayList<>();
+
+    public void addQueue(Queue queue) {
+        queues.add(queue);
+        queue.setSubject(this);
+    }
+
+    public void removeQueue(Queue queue) {
+        queues.remove(queue);
+        queue.setSubject(null);
+    }
 }
