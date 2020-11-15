@@ -38,8 +38,7 @@ public class Queue {
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "maker_id")
     private User maker;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "subject_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Subject subject;
     @OneToMany(
             mappedBy = "queue",
