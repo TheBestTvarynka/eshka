@@ -9,13 +9,10 @@ import com.eshka.service.TeamService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Api("process all operations with team objects")
 @RestController
@@ -43,7 +40,9 @@ public class TeamController {
     @ApiOperation("join to team")
     @PostMapping("/join/{link}")
     @ResponseStatus(HttpStatus.OK)
-    public void joinToTeam(@PathVariable(name = "link") String link, @AuthenticationPrincipal User user) { teamService.joinToTeam(user, link); }
+    public void joinToTeam(@PathVariable(name = "link") String link, @AuthenticationPrincipal User user) {
+        teamService.joinToTeam(user, link);
+    }
 
     @ApiOperation("edit team")
     @PutMapping
