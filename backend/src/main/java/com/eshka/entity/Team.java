@@ -26,7 +26,6 @@ public class Team {
     @Column(name = "link", unique = true)
     private String link;
     @ManyToMany(cascade = {
-            CascadeType.PERSIST,
             CascadeType.MERGE
     })
     @JoinTable(name = "team_user",

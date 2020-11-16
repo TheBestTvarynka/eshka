@@ -6,6 +6,7 @@ import com.eshka.exception.TeamNotFoundException;
 import com.eshka.repository.TeamRepository;
 import com.eshka.repository.UserRepository;
 import com.eshka.service.TeamService;
+import com.eshka.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.Set;
 public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
     @Value("${HOST}")
     String host;
 
@@ -29,6 +31,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Team createNewTeam(Team team) {
+        team.getUsers().add(userService.getCurrentUser());
         return teamRepository.save(team);
     }
 
