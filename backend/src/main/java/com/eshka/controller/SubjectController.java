@@ -31,9 +31,9 @@ public class SubjectController {
     }
 
     @ApiOperation("get all subjects")
-    @GetMapping
-    public ResponseEntity<List<SubjectResponse>> findById() {
-        List<Subject> subjectList = subjectService.findAll();
+    @GetMapping("/team/{teamId}")
+    public ResponseEntity<List<SubjectResponse>> findByTeamId(@PathVariable(name = "teamId") String teamId) {
+        List<Subject> subjectList = subjectService.findAllByTeamId(Long.parseLong(teamId));
         return new ResponseEntity<>(subjectList.stream()
                 .map(mapper::subjectToSubjectResponse)
                 .collect(Collectors.toList()),
