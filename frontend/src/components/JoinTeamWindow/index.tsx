@@ -4,6 +4,8 @@ import inputs from '../styles/inputs.module.sass';
 import buttons from '../styles/buttons.module.sass';
 import containers from '../styles/containers.module.sass';
 import apiClient from '../../helpers/webApi.helper';
+import { toastr } from 'react-redux-toastr';
+import Loader from "../Loader";
 
 export interface IJoinTeamWindowProps {
   onClose: () => void;
@@ -11,11 +13,28 @@ export interface IJoinTeamWindowProps {
 
 const JoinTeamWindow: React.FC<IJoinTeamWindowProps> = ({ onClose }) => {
   const [link, setLink] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleJoin = () => {
+    if (!link) return;
+    setLoading(true);
+    apiClient.post({ endpoint: `/team/join/${link}` }).then(res => {
+      setLoading(false);
+      if (res.status === 200) {
+        toastr.success('Joining success!', '');
+        onClose();
+      } else {
+        res.text().then(text => toastr.error(text, ''));
+      }
+    });
+  };
+
   const handleOutsideClick = (event: any) => {
     if (event.target.id === 'background') {
       onClose();
     }
   };
+
   return (
     <div onClick={handleOutsideClick} id="background" className={containers.modal_background}>
       <form className={containers.window}>
@@ -25,10 +44,13 @@ const JoinTeamWindow: React.FC<IJoinTeamWindowProps> = ({ onClose }) => {
                onChange={event => setLink(event.target.value)}
         />
         <span className={styles.hint}>*You can join only with provided id</span>
-        <div className={containers.actions_panel}>
-          <button onClick={() => onClose()} className={`${buttons.button} ${buttons.grey}`}>Cancel</button>
-          <button onClick={() => onClose()} className={`${buttons.button} ${buttons.green}`}>Join</button>
-        </div>
+        {loading
+          ? <Loader />
+          : <div className={containers.actions_panel}>
+              <button onClick={onClose} className={`${buttons.button} ${buttons.grey}`}>Cancel</button>
+              <button onClick={handleJoin} className={`${buttons.button} ${buttons.green}`}>Join</button>
+            </div>
+        }
       </form>
     </div>
   );
