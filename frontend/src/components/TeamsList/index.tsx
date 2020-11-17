@@ -30,7 +30,12 @@ const TeamsList: React.FC<ITeamListProps> = ({ id, teams, loadTeams, loadTeam })
           <span>Join</span>
         </button>
       </div>
-      {jw && <JoinTeamWindow onClose={() => setJW(false)}/> }
+      {jw && <JoinTeamWindow onClose={() => setJW(false)}
+                             onSuccess={() => {
+                               setJW(false);
+                               if (loadTeams) loadTeams();
+                             }}
+      /> }
     </div>
   );
 }

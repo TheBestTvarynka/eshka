@@ -9,9 +9,10 @@ import Loader from "../Loader";
 
 export interface IJoinTeamWindowProps {
   onClose: () => void;
+  onSuccess: () => void;
 }
 
-const JoinTeamWindow: React.FC<IJoinTeamWindowProps> = ({ onClose }) => {
+const JoinTeamWindow: React.FC<IJoinTeamWindowProps> = ({ onSuccess, onClose }) => {
   const [link, setLink] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -22,10 +23,13 @@ const JoinTeamWindow: React.FC<IJoinTeamWindowProps> = ({ onClose }) => {
       setLoading(false);
       if (res.status === 200) {
         toastr.success('Joining success!', '');
-        onClose();
+        onSuccess();
       } else {
         res.text().then(text => toastr.error(text, ''));
       }
+    }).catch(() => {
+      setLoading(false);
+      toastr.error('Error with joining!', '');
     });
   };
 
