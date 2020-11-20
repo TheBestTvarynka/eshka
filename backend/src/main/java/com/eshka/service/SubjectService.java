@@ -13,5 +13,5 @@ public interface SubjectService {
 
     void deleteById(long id);
 
-    List<Subject> findAll();
+    List<Subject> findAllByTeamId(long teamId);
 }

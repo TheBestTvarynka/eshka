@@ -40,7 +40,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public List<Subject> findAll() {
-        return subjectRepository.findAll();
+    public List<Subject> findAllByTeamId(long teamId) {
+        return subjectRepository.findAllByTeam_Id(teamId);
     }
 }
