@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { IAppState } from '../../models/appState';
-import { loadTeamsRoutine, loadTeamRoutine } from '../../sagas/team/routines';
+import { loadTeamsRoutine } from '../../sagas/team/routines';
 import styles from './styles.module.sass';
 import { useHistory } from 'react-router-dom';
-// import Loader from '../../components/Loader';
 
-const Dashboard: React.FC<IDashboardProps> = ({ id, teams, loadTeams, loadTeam}) => {
+const Dashboard: React.FC<IDashboardProps> = ({ teams, loadTeams }) => {
   const history = useHistory();
 
   useEffect(() => {
@@ -26,13 +25,11 @@ const Dashboard: React.FC<IDashboardProps> = ({ id, teams, loadTeams, loadTeam})
 };
 
 const mapStateToProps = (appState: IAppState) => ({
-  id: appState.team.team?.id,
   teams: appState.team.teams
 });
 
 const mapDispatchToProps = {
-  loadTeams: loadTeamsRoutine,
-  loadTeam: loadTeamRoutine
+  loadTeams: loadTeamsRoutine
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

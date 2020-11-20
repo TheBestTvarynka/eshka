@@ -3,7 +3,7 @@ import TeamsList from '../../components/TeamsList';
 import Team from '../../components/Team';
 import styles from './styles.module.sass';
 
-const MainPage = () => {
+const TeamPage = () => {
   return (
     <div className={styles.main_page}>
       <TeamsList />
@@ -12,4 +12,4 @@ const MainPage = () => {
   );
 }
 
-export default MainPage;
+export default TeamPage;

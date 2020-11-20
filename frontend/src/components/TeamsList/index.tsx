@@ -5,9 +5,11 @@ import styles from './styles.module.sass';
 import buttons from '../styles/buttons.module.sass';
 import lists from '../styles/lists.module.sass';
 import { IAppState } from '../../models/appState';
-import { loadTeamsRoutine, loadTeamRoutine } from '../../sagas/team/routines';
+import { loadTeamsRoutine } from '../../sagas/team/routines';
+import { useHistory } from 'react-router-dom';
 
-const TeamsList: React.FC<ITeamListProps> = ({ id, teams, loadTeams, loadTeam }) => {
+const TeamsList: React.FC<ITeamListProps> = ({ id, teams, loadTeams }) => {
+  const history = useHistory();
   const [jw, setJW] = useState<boolean>(false);
 
   useEffect(() => {
@@ -19,7 +21,7 @@ const TeamsList: React.FC<ITeamListProps> = ({ id, teams, loadTeams, loadTeam })
       {teams && teams.map(team => (
         <div className={`${lists.dark_list_item} ${team.id === id ? lists.selected : lists.simple}`}
              key={team.id}
-             onClick={() => loadTeam(team.id)}
+             onClick={() => history.push(`/team/${team.id}`)}
         >
           <span className={lists.dark_item_title}>{team.name}</span>
           <span className={lists.members_count}>{team.description.substr(0, 30)}...</span>
@@ -46,8 +48,7 @@ const mapStateToProps = (appState: IAppState) => ({
 });
 
 const mapDispatchToProps = {
-  loadTeams: loadTeamsRoutine,
-  loadTeam: loadTeamRoutine
+  loadTeams: loadTeamsRoutine
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

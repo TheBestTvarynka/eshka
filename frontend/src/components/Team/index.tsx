@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { connect, ConnectedProps } from 'react-redux';
 import ConfirmationWindow from '../ConfirmationWindow';
 import TeamManagePage from '../TreamManagePage';
@@ -12,6 +12,7 @@ import { loadTeamRoutine, updateTeamRoutine } from '../../sagas/team/routines';
 import Loader from '../Loader';
 
 const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading, updateTeam }) => {
+  const params: any = useParams();
   const [cw, setCW] = useState<boolean>(false);
   const [tm, setTM] = useState<boolean>(false);
   const [ct, setCT] = useState<boolean>(false);
@@ -22,6 +23,13 @@ const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading, updateTeam }) =
       loadTeam(team.id);
     }
   }, [loadTeam]);
+
+  useEffect(() => {
+    const id = params?.id;
+    if (id) {
+      loadTeam(id);
+    }
+  }, [params, loadTeam]);
 
   return (
     <div className={containers.content_general}>
