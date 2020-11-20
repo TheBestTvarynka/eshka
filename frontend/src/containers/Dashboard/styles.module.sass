@@ -1,0 +1,35 @@
+.card_container
+  width: 100%
+  max-height: 100vh
+  overflow: auto
+  //display: flex
+  //flex-direction: row
+  //flex-wrap: wrap
+  //justify-content: center
+  display: grid
+  grid-template-columns: 25% 25% 25% 25%
+  padding-top: 0.5em
+
+.card
+  margin: 0.5em
+  border-radius: 0.5em
+  border: 2px solid #342c52
+  color: #342c52
+  padding: 0.5em
+  background: #f4f9fb
+  -webkit-transition: all 0.2s
+  -moz-transition: all 0.2s
+  transition: all 0.2s
+
+  &:hover
+    background: #50437f
+    color: #f4f9fb
+    border-color: #50437f
+    cursor: pointer
+
+.card_title
+  font-weight: bold
+  font-size: 20px
+
+.card_description
+  font-size: 15px

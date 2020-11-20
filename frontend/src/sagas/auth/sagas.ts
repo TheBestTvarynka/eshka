@@ -22,7 +22,7 @@ function* login(action: any) {
       email: parsedData.email,
       role: parsedData.role
     }));
-    history.push('/');
+    history.push('/dashboard');
   } catch (error) {
     yield put(loginRoutine.failure());
     toastr.error(error.toString(), "");
