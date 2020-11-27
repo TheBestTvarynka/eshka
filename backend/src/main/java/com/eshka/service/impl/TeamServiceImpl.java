@@ -1,8 +1,13 @@
 package com.eshka.service.impl;
 
+import com.eshka.dto.response.SubjectResponse;
+import com.eshka.dto.response.TeamFullResponse;
+import com.eshka.dto.response.UserShortResponse;
+import com.eshka.entity.Subject;
 import com.eshka.entity.Team;
 import com.eshka.entity.User;
 import com.eshka.exception.TeamNotFoundException;
+import com.eshka.mapper.SubjectMapper;
 import com.eshka.repository.TeamRepository;
 import com.eshka.repository.UserRepository;
 import com.eshka.service.TeamService;
@@ -10,14 +15,15 @@ import com.eshka.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
-    private final UserRepository userRepository;
     private final UserService userService;
 
     @Override

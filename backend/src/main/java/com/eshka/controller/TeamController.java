@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class TeamController {
     private final TeamService teamService;
-    private static final TeamMapper mapper = TeamMapper.INSTANCE;
+    private final TeamMapper mapper;
 
     @ApiOperation("get team by id")
     @GetMapping("/{id}")
@@ -35,10 +35,10 @@ public class TeamController {
     }
 
     @ApiOperation("get full team info")
-    @GetMapping("/{id}/full")
-    public ResponseEntity<TeamFullResponse> getFullInfo(@PathVariable(name = "id") String id) {
-        Team team = teamService.findById(Long.parseLong(id));
-        return new ResponseEntity<>(TeamFullResponse.fromTeam(team),
+    @GetMapping("/{teamId}/full")
+    public ResponseEntity<TeamFullResponse> getFullInfo(@PathVariable(name = "teamId") String teamId) {
+        Team team = teamService.findById(Long.parseLong(teamId));
+        return new ResponseEntity<>(mapper.teamToTeamFullResponse(team),
                 HttpStatus.OK);
     }
 
@@ -84,10 +84,10 @@ public class TeamController {
     }
 
     @ApiOperation("delete team by id")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{teamId}")
     @PreAuthorize(value = "@teamServiceImpl.findById(#id).users.contains(@userServiceImpl.currentUser)")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTeam(@PathVariable(name = "id") String id) {
-        teamService.deleteById(Long.parseLong(id));
+    public void deleteTeam(@PathVariable(name = "teamId") String teamId) {
+        teamService.deleteById(Long.parseLong(teamId));
     }
 }

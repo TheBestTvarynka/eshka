@@ -1,7 +1,6 @@
 package com.eshka.service.impl;
 
 
-import com.eshka.dto.request.UserDTO;
 import com.eshka.entity.User;
 import com.eshka.exception.UserNotExistException;
 import com.eshka.repository.UserRepository;
@@ -17,11 +16,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-
-    @Override
-    public UserDTO buildUserDtoFromUser(User user) {
-        return UserDTO.fromUser(user);
-    }
 
     @Override
     public User findById(Long id) {
