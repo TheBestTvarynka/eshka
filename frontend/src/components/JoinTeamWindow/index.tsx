@@ -44,7 +44,7 @@ const JoinTeamWindow: React.FC<IJoinTeamWindowProps> = ({ onSuccess, onClose }) 
       <form className={containers.window}>
         <span className={styles.title}>Type a link below</span>
         <input className={inputs.input_standard}
-               placeholder="https://eshka.com/join/<some_letters>"
+               placeholder="aAbBbd"
                onChange={event => setLink(event.target.value)}
         />
         <span className={styles.hint}>*You can join only with provided id</span>

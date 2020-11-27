@@ -9,11 +9,14 @@ import containers from '../styles/containers.module.sass';
 import buttons from '../styles/buttons.module.sass';
 import { IAppState } from '../../models/appState';
 import { loadTeamRoutine, updateTeamRoutine } from '../../sagas/team/routines';
+import { updateSubjectRoutine } from '../../sagas/subject/routines';
 import Loader from '../Loader';
+import CreateSubjectWindow from '../CreateSubjectWindow';
 
-const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading, updateTeam }) => {
+const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading, updateTeam, createSubject }) => {
   const params: any = useParams();
   const [cw, setCW] = useState<boolean>(false);
+  const [cs, setCS] = useState<boolean>(false);
   const [tm, setTM] = useState<boolean>(false);
   const [ct, setCT] = useState<boolean>(false);
   const [ip, setIP] = useState<boolean>(false);
@@ -77,7 +80,11 @@ const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading, updateTeam }) =
         </button>
         <button className={`${buttons.button_simple} ${buttons.green_simple}`} onClick={() => setCT(true)}>
           <img src="https://img.icons8.com/material/50/000000/plus-math--v2.png" alt=""/>
-          <span>Create</span>
+          <span>Team</span>
+        </button>
+        <button className={`${buttons.button_simple} ${buttons.green_simple}`} onClick={() => setCS(true)}>
+          <img src="https://img.icons8.com/material/50/000000/plus-math--v2.png" alt=""/>
+          <span>Subject</span>
         </button>
         <button className={`${buttons.button_simple} ${buttons.green_simple}`} onClick={() => setIP(true)}>
           <img src="https://img.icons8.com/material/50/000000/plus-math--v2.png" alt=""/>
@@ -105,6 +112,13 @@ const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading, updateTeam }) =
                                  cancelValue="Cancel"
                                  onCancel={() => setCW(false)}
       />}
+      {cs && <CreateSubjectWindow onSubmit={data => {
+                                    if (!team?.id) return;
+                                    createSubject({ ...data, teamId: team?.id });
+                                    setCS(false);
+                                  }}
+                                  onClose={() => setCS(false)}
+      />}
       {tm && <TeamManagePage onClose={() => setTM(false)}
                              onSubmit={data => {
                                updateTeam(data);
@@ -130,7 +144,8 @@ const mapStateToProps = (appState: IAppState) => ({
 
 const mapDispatchToProps = {
   loadTeam: loadTeamRoutine,
-  updateTeam: updateTeamRoutine
+  updateTeam: updateTeamRoutine,
+  createSubject: updateSubjectRoutine
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

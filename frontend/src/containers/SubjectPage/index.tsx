@@ -8,9 +8,8 @@ import {
   loadSubjectRoutine,
   loadSubjectQueuesRoutine
 } from '../../sagas/subject/routines';
-import {
-  updateQueueRoutine
-} from '../../sagas/queue/routines';
+import { updateQueueRoutine } from '../../sagas/queue/routines';
+import { loadTeamRoutine } from '../../sagas/team/routines';
 import CreateSubjectWindow from '../../components/CreateSubjectWindow';
 import CreateQueueWindow from '../../components/CreateQueueWindow';
 import ConfirmationWindow from '../../components/ConfirmationWindow';
@@ -25,7 +24,7 @@ import { useParams, useHistory } from 'react-router-dom';
 
 const SubjectPage: React.FC<ISubjectPageProps> = ({
   user, subject, subjects, isSubjectLoading, queues, isQueuesLoading, teamId,
-  update, deleteSubject, loadAll, load, loadQueues, createQueue
+  update, deleteSubject, loadAll, load, loadQueues, createQueue, loadTeam
 }) => {
   const params: any = useParams();
   const history = useHistory();
@@ -35,8 +34,13 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
   const [es, setES] = useState<boolean>(false);
 
   useEffect(() => {
-    loadAll();
-  }, [loadAll]);
+    if (subject?.teamId) {
+      loadAll(subject.teamId);
+      if (!teamId) {
+        loadTeam(subject.teamId);
+      }
+    }
+  }, [loadAll, subject, teamId]);
 
   useEffect(() => {
     const id = params.id;
@@ -127,7 +131,7 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
                                  cancelValue="Cancel"
                                  submitValue="Delete"
                                  onSubmit={() => {
-                                   deleteSubject({ id: subject?.id, subjectId: subject?.id });
+                                   deleteSubject({ id: subject?.id, teamId });
                                    setDS(false);
                                  }}
                                  onCancel={() => setDS(false)}
@@ -158,7 +162,8 @@ const mapDispatchToProps = {
   loadAll: loadAllSubjectsRoutine,
   load: loadSubjectRoutine,
   loadQueues: loadSubjectQueuesRoutine,
-  createQueue: updateQueueRoutine
+  createQueue: updateQueueRoutine,
+  loadTeam: loadTeamRoutine,
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

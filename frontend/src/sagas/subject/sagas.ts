@@ -7,6 +7,7 @@ import {
   loadSubjectQueuesRoutine
 } from './routines';
 import apiClient from '../../helpers/webApi.helper';
+import { toastr } from 'react-redux-toastr';
 
 function* updateSubject(action: any) {
   const data = action.payload;
@@ -21,23 +22,27 @@ function* updateSubject(action: any) {
     }
     const parsedData = yield res.json();
     yield put(updateSubjectRoutine.success(parsedData));
-    yield call(loadAllSubjects);
+
+    yield call(loadAllSubjects, { payload: parsedData.teamId });
   } catch(error) {
+    yield put(updateSubjectRoutine.failure());
+    toastr.error(error.toString(), "");
     console.log('Error with subject creation');
     console.log(error);
-    yield put(updateSubjectRoutine.failure());
   }
 }
 
-function* loadAllSubjects() {
+function* loadAllSubjects(action: any) {
+  const teamId = action.payload;
   try {
-    const res = yield apiClient.get({ endpoint: '/subject' });
+    const res = yield apiClient.get({ endpoint: `/subject/team/${teamId}` });
     const parsedData = yield res.json();
     yield put(loadAllSubjectsRoutine.success(parsedData));
   } catch(error) {
+    yield put(loadAllSubjectsRoutine.failure());
+    toastr.error(error.toString(), "")
     console.log('Error with loading subjects');
     console.log(error);
-    yield put(loadAllSubjectsRoutine.failure());
   }
 }
 
@@ -48,24 +53,24 @@ function* loadSubject(action: any) {
     const parsedData = yield res.json();
     yield put(loadSubjectRoutine.success(parsedData));
   } catch(error) {
+    yield put(loadSubjectRoutine.failure());
+    toastr.error(error.toString(), "")
     console.log('Error with subject loading');
     console.log(error);
-    yield put(loadSubjectRoutine.failure());
   }
 }
 
 function* deleteSubject(action: any) {
-  const { id, subjectId } = action.payload;
+  const { id, teamId } = action.payload;
   if (!id) {
     return;
   }
   try {
     yield apiClient.delete({ endpoint: `/subject/${id}` });
-    yield call(loadAllSubjects);
-    if (id === subjectId) {
-      yield put(loadSubjectRoutine.success(undefined));
-    }
+    yield call(loadAllSubjects, { payload: teamId });
+    yield put(loadSubjectRoutine.success(undefined));
   } catch(error) {
+    toastr.error(error.toString(), "")
     console.log('Error with subject deleting');
     console.log(error);
   }
@@ -88,9 +93,10 @@ function* loadSubjectQueues(action: any) {
       isOpen: !queue.closingDate
     }))));
   } catch(error) {
+    yield put(loadSubjectQueuesRoutine.failure());
+    toastr.error(error.toString(), "")
     console.log('Error with subject queues loading');
     console.log(error);
-    yield put(loadSubjectQueuesRoutine.failure());
   }
 }
 
