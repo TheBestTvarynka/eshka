@@ -6,7 +6,7 @@ import {
 } from './routines';
 import apiClient from '../../helpers/webApi.helper';
 import { toastr } from 'react-redux-toastr';
-import { ISubjectShort } from '../../models/subject';
+import { loadAllSubjectsRoutine } from '../subject/routines';
 
 function* loadTeams() {
   try {
@@ -26,11 +26,10 @@ function* loadTeam(action: any) {
   try {
     const res = yield apiClient.get({ endpoint: `/team/${id}/full` });
     const parsedData = yield res.json();
-    const subjects = parsedData.subjects.map((s: any) => ({
-      id: s.id,
-      title: s.title
-    } as ISubjectShort));
-    yield put(loadTeamRoutine.success({ ...parsedData, subjects }));
+    const subjects = parsedData.subjects;
+    delete parsedData.subjects;
+    yield put(loadTeamRoutine.success({ ...parsedData }));
+    yield put(loadAllSubjectsRoutine.success(subjects));
   } catch (error) {
     yield put(loadTeamRoutine.failure());
     toastr.error(error.toString(), "");

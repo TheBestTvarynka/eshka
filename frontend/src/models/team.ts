@@ -6,7 +6,6 @@ export interface ITeam {
   name: string;
   description: string;
   members: IUserShort[];
-  subjects: ISubjectShort[];
 }
 
 export interface ITeamShort {

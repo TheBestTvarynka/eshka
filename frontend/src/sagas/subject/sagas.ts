@@ -33,6 +33,7 @@ function* updateSubject(action: any) {
 }
 
 function* loadAllSubjects(action: any) {
+  console.log('load all subjects');
   const teamId = action.payload;
   try {
     const res = yield apiClient.get({ endpoint: `/subject/team/${teamId}` });

@@ -13,7 +13,7 @@ import { updateSubjectRoutine } from '../../sagas/subject/routines';
 import Loader from '../Loader';
 import CreateSubjectWindow from '../CreateSubjectWindow';
 
-const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading, updateTeam, createSubject }) => {
+const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading, updateTeam, createSubject, subjects }) => {
   const params: any = useParams();
   const [cw, setCW] = useState<boolean>(false);
   const [cs, setCS] = useState<boolean>(false);
@@ -53,7 +53,7 @@ const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading, updateTeam, cre
                  </div>
                  <div className={lists.light_list}>
                    <span className={lists.light_list_title}>Subjects</span>
-                   {team.subjects.map(subject => (
+                   {subjects?.map(subject => (
                      <Link to={`/subject/${subject.id}`} key={subject.id} className={lists.light_list_item}>
                        <span>{subject.title}</span>
                      </Link>
@@ -139,6 +139,7 @@ const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading, updateTeam, cre
 
 const mapStateToProps = (appState: IAppState) => ({
   team: appState.team.team,
+  subjects: appState.subject.subjects,
   isLoading: appState.team.isTeamLoading
 });
 
