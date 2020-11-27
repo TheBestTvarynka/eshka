@@ -33,7 +33,6 @@ public class AuthController {
     @GetMapping("/logout")
     @ResponseStatus(HttpStatus.OK)
     public void logout() {
-        System.out.println("Log Out");
     }
 
 }
