@@ -27,6 +27,7 @@ public class Team {
     private String description;
     @Column(name = "link", unique = true)
     private String link;
+
     @ManyToMany(cascade = {
             CascadeType.MERGE
     })
@@ -34,6 +35,7 @@ public class Team {
             joinColumns = @JoinColumn(name = "team_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users = new HashSet<>();
+
     @OneToMany(mappedBy = "team")
     private List<Subject> subjects = new ArrayList<>();
 }

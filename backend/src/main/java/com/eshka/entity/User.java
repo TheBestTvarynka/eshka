@@ -28,11 +28,15 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
-    @ManyToMany(mappedBy = "users")
+
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
     private Set<Team> teams = new HashSet<>();
+
     @Column(name = "full_name", nullable = false)
     private String fullName;
+
     private String email;
+
     @NaturalId
     @EqualsAndHashCode.Include
     private String username;

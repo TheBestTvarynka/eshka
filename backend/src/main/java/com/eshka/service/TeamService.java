@@ -19,3 +19,4 @@ public interface TeamService {
 
     void joinToTeam(User user, String link);
 }
+
