@@ -8,10 +8,8 @@ import com.eshka.repository.UserRepository;
 import com.eshka.service.TeamService;
 import com.eshka.service.UserService;
 import lombok.RequiredArgsConstructor;
-// import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -20,8 +18,6 @@ import java.util.Set;
 public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
     private final UserRepository userRepository;
-    // @Value("${HOST}")
-    // String host;
     private final UserService userService;
 
     @Override
@@ -73,12 +69,13 @@ public class TeamServiceImpl implements TeamService {
         teamRepository.deleteById(id);
     }
 
+    @Override
     public void joinToTeam(User user, String link) {
         Team team = teamRepository.findByLink(link).orElseThrow(
                 () -> new TeamNotFoundException("team not found"));
-        Set<Team> teams = user.getTeams();
-        teams.add(team);
-        user.setTeams(teams);
-        userRepository.save(user);
+        Set<User> users = team.getUsers();
+        users.add(user);
+        team.setUsers(users);
+        teamRepository.save(team);
     }
 }
