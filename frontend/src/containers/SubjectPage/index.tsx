@@ -1,17 +1,15 @@
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import {connect, ConnectedProps} from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import {
   updateSubjectRoutine,
   deleteSubjectRoutine,
   loadAllSubjectsRoutine,
-  loadSubjectRoutine
+  loadSubjectRoutine,
+  loadSubjectQueuesRoutine
 } from '../../sagas/subject/routines';
-import {
-  loadOpenedQueuesRoutine,
-  loadClosedQueuesRoutine,
-  updateQueueRoutine
-} from '../../sagas/queue/routines';
+import { updateQueueRoutine } from '../../sagas/queue/routines';
+import { loadTeamRoutine } from '../../sagas/team/routines';
 import CreateSubjectWindow from '../../components/CreateSubjectWindow';
 import CreateQueueWindow from '../../components/CreateQueueWindow';
 import ConfirmationWindow from '../../components/ConfirmationWindow';
@@ -22,43 +20,43 @@ import lists from '../../components/styles/lists.module.sass';
 import buttons from '../../components/styles/buttons.module.sass';
 import styles from './styles.module.sass';
 import { IAppState } from '../../models/appState';
+import { useParams, useHistory } from 'react-router-dom';
 
 const SubjectPage: React.FC<ISubjectPageProps> = ({
-  user, subject, subjects, isSubjectLoading, openedQueues, closedQueues, isOpenedLoading, isClosedLoading,
-  update, deleteSubject, loadAll, load, loadOpened, loadClosed, createQueue
+  user, subject, subjects, isSubjectLoading, queues, isQueuesLoading, teamId,
+  update, deleteSubject, loadAll, load, loadQueues, createQueue, loadTeam
 }) => {
-  const [selected, setSelected] = useState<number | undefined>(subject?.id);
+  const params: any = useParams();
+  const history = useHistory();
   const [cs, setCS] = useState<boolean>(false);
   const [cq, setCQ] = useState<boolean>(false);
   const [ds, setDS] = useState<boolean>(false);
   const [es, setES] = useState<boolean>(false);
 
   useEffect(() => {
-    loadAll();
-  }, [loadAll]);
+    if (subject?.teamId) {
+      loadAll(subject.teamId);
+      if (!teamId) {
+        loadTeam(subject.teamId);
+      }
+    }
+  }, [loadAll, subject, teamId]);
 
   useEffect(() => {
-    if (subject?.id) {
-      loadOpened(subject.id);
+    const id = params.id;
+    if (id) {
+      load(id);
+      loadQueues(id);
     }
-  }, [subject, loadOpened]);
-
-  useEffect(() => {
-    if (subject?.id) {
-      loadClosed(subject.id);
-    }
-  }, [subject, loadClosed]);
+  }, [params, loadQueues, load]);
 
   return (
     <div className={styles.subject_page}>
       <div className={lists.dark_list}>
         {subjects && subjects.map(s =>
-          <div className={`${lists.dark_list_item} ${s.id === selected ? lists.selected : lists.simple}`}
+          <div className={`${lists.dark_list_item} ${s.id === subject?.id ? lists.selected : lists.simple}`}
                key={s.id}
-               onClick={() => {
-                 load(s.id);
-                 setSelected(s.id)
-               }}
+               onClick={() => history.push(`/subject/${s.id}`)}
           >
             <span className={listStyles.title}>{s.title}</span>
           </div>)
@@ -77,9 +75,9 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
               <div className={containers.two_columns}>
                 <div className={lists.light_list}>
                   <span className={lists.light_list_title}>Opened queues</span>
-                  {isOpenedLoading
+                  {isQueuesLoading
                     ? <Loader />
-                    : openedQueues && openedQueues.map(queue =>
+                    : queues && queues.filter(queue => queue.isOpen).map(queue =>
                         <Link to={`/queue/${queue.id}`} className={lists.light_list_item} key={queue.id}>
                           <span>{queue.title}</span>
                         </Link>
@@ -88,9 +86,9 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
                 </div>
                 <div className={lists.light_list}>
                   <span className={lists.light_list_title}>Closed queues</span>
-                  {isClosedLoading
+                  {isQueuesLoading
                     ? <Loader />
-                    : closedQueues && closedQueues.map(queue =>
+                    : queues && queues.filter(queue => !queue.isOpen).map(queue =>
                         <Link to={`/queue/${queue.id}`} className={lists.light_list_item} key={queue.id}>
                           <span>{queue.title}</span>
                         </Link>
@@ -116,16 +114,15 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
         </div>
       </div>
       {cs && <CreateSubjectWindow
-        subject={undefined}
         onSubmit={data => {
-          update(data);
+          update({ ...data, teamId });
           setCS(false);
         }}
         onClose={() => setCS(false)} />}
       {es && <CreateSubjectWindow
         subject={subject}
         onSubmit={data => {
-          update(data);
+          update({ ...data, teamId: subject?.teamId });
           setES(false);
         }}
         onClose={() => setCS(false)} />}
@@ -134,7 +131,7 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
                                  cancelValue="Cancel"
                                  submitValue="Delete"
                                  onSubmit={() => {
-                                   deleteSubject({ id: subject?.id, subjectId: subject?.id });
+                                   deleteSubject({ id: subject?.id, teamId });
                                    setDS(false);
                                  }}
                                  onCancel={() => setDS(false)}
@@ -153,11 +150,10 @@ const mapStateToProps = (appState: IAppState) => ({
   user: appState.auth.user,
   subject: appState.subject.subject,
   subjects: appState.subject.subjects,
+  queues: appState.subject.queues,
+  teamId: appState.team.team?.id, // temporary parameter
   isSubjectLoading: appState.subject.isSubjectLoading,
-  openedQueues: appState.queue.opened,
-  isOpenedLoading: appState.queue.isOpenedLoading,
-  closedQueues: appState.queue.closed,
-  isClosedLoading: appState.queue.isClosedLoading
+  isQueuesLoading: appState.subject.isQueuesLoading
 });
 
 const mapDispatchToProps = {
@@ -165,9 +161,9 @@ const mapDispatchToProps = {
   deleteSubject: deleteSubjectRoutine,
   loadAll: loadAllSubjectsRoutine,
   load: loadSubjectRoutine,
-  loadOpened: loadOpenedQueuesRoutine,
-  loadClosed: loadClosedQueuesRoutine,
-  createQueue: updateQueueRoutine
+  loadQueues: loadSubjectQueuesRoutine,
+  createQueue: updateQueueRoutine,
+  loadTeam: loadTeamRoutine,
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

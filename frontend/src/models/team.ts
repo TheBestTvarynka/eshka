@@ -2,15 +2,14 @@ import { IUserShort } from './user';
 import { ISubjectShort } from "./subject";
 
 export interface ITeam {
-  id: string;
-  title: string;
+  id: number;
+  name: string;
   description: string;
   members: IUserShort[];
-  subjects: ISubjectShort[];
 }
 
 export interface ITeamShort {
-  id: string;
-  title: string;
-  membersCount: number;
+  id: number;
+  name: string;
+  description: string;
 }

@@ -1,27 +1,30 @@
 package com.eshka.service.impl;
 
+import com.eshka.dto.response.SubjectResponse;
+import com.eshka.dto.response.TeamFullResponse;
+import com.eshka.dto.response.UserShortResponse;
+import com.eshka.entity.Subject;
 import com.eshka.entity.Team;
 import com.eshka.entity.User;
 import com.eshka.exception.TeamNotFoundException;
+import com.eshka.mapper.SubjectMapper;
 import com.eshka.repository.TeamRepository;
 import com.eshka.repository.UserRepository;
 import com.eshka.service.TeamService;
 import com.eshka.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
-    private final UserRepository userRepository;
     private final UserService userService;
-    @Value("${HOST}")
-    String host;
 
     @Override
     public Team findById(long id) {
@@ -50,7 +53,7 @@ public class TeamServiceImpl implements TeamService {
         if (force == null || !force) {
             String link = team.getLink();
             if (link != null) {
-                return host + "/join/" + link;
+                return link;
             } else {
                 return generateJoinLink(team, true);
             }
@@ -63,7 +66,7 @@ public class TeamServiceImpl implements TeamService {
                     .toString();
             team.setLink(joinLink);
             teamRepository.save(team);
-            return host + "/join/" + joinLink;
+            return joinLink;
         }
     }
 
@@ -72,12 +75,13 @@ public class TeamServiceImpl implements TeamService {
         teamRepository.deleteById(id);
     }
 
+    @Override
     public void joinToTeam(User user, String link) {
         Team team = teamRepository.findByLink(link).orElseThrow(
                 () -> new TeamNotFoundException("team not found"));
-        Set<Team> teams = user.getTeams();
-        teams.add(team);
-        user.setTeams(teams);
-        userRepository.save(user);
+        Set<User> users = team.getUsers();
+        users.add(user);
+        team.setUsers(users);
+        teamRepository.save(team);
     }
 }

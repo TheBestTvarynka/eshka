@@ -24,7 +24,7 @@ const CreateSubjectWindow: React.FC<ICreateSubjectProps> = ({ onClose, onSubmit,
   return (
     <div className={containers.modal_background} onClick={handleOutsideClick} id="background">
       <form className={containers.window}>
-        <span className={styles.title}>Create a new subject</span>
+        <span className={styles.title}>{subject ? 'Update' : 'Create a new'} subject</span>
         <span className={styles.label}>Type a subject title</span>
         <input className={inputs.input_standard}
                defaultValue={subject?.title}

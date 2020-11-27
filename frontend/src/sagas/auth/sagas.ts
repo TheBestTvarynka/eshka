@@ -16,12 +16,13 @@ function* login(action: any) {
     const parsedData = yield res.json();
     authProvider.setToken(parsedData.sessionId);
     yield put(loginRoutine.success({
+      id: parsedData.id as number,
       fullName: parsedData.fullName,
       username: parsedData.username,
       email: parsedData.email,
       role: parsedData.role
     }));
-    history.push('/');
+    history.push('/dashboard');
   } catch (error) {
     yield put(loginRoutine.failure());
     toastr.error(error.toString(), "");

@@ -1,61 +1,68 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ISubjectShort } from '../../models/subject';
-import Loader from '../Loader';
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { connect, ConnectedProps } from 'react-redux';
 import ConfirmationWindow from '../ConfirmationWindow';
 import TeamManagePage from '../TreamManagePage';
 import InvitePage from '../InvitePage';
-import { ITeam } from '../../models/team';
 import lists from '../styles/lists.module.sass';
 import containers from '../styles/containers.module.sass';
 import buttons from '../styles/buttons.module.sass';
-import { IUserShort } from '../../models/user';
+import { IAppState } from '../../models/appState';
+import { loadTeamRoutine, updateTeamRoutine } from '../../sagas/team/routines';
+import { updateSubjectRoutine } from '../../sagas/subject/routines';
+import Loader from '../Loader';
+import CreateSubjectWindow from '../CreateSubjectWindow';
 
-const teamMock = {
-  id: '1',
-  title: 'IP-82',
-  description: 'IP-82 - group of KPI university. 121 specialization. FICT faculty. Third year of bachelors degree.',
-  members: [
-    { id: 1, fullName: 'Kirito Mikoto', logo: 'https://img.icons8.com/color/48/000000/test-account.png' },
-    { id: 2, fullName: 'Madara Uchiha', logo: 'https://img.icons8.com/color/48/000000/test-account.png' },
-    { id: 3, fullName: 'Kimimaru Ootsuki', logo: 'https://img.icons8.com/color/48/000000/test-account.png' }
-  ] as IUserShort[],
-  subjects: [
-    { id: 1, title: 'Math' },
-    { id: 2, title: 'Functional Programming' },
-    { id: 3, title: 'Databases | OLAP' },
-    { id: 4, title: 'OOP: Java' }] as ISubjectShort[]
-} as ITeam;
-
-const Team = () => {
+const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading, updateTeam, createSubject, subjects }) => {
+  const params: any = useParams();
   const [cw, setCW] = useState<boolean>(false);
+  const [cs, setCS] = useState<boolean>(false);
   const [tm, setTM] = useState<boolean>(false);
+  const [ct, setCT] = useState<boolean>(false);
   const [ip, setIP] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (team?.id) {
+      loadTeam(team.id);
+    }
+  }, [loadTeam]);
+
+  useEffect(() => {
+    const id = params?.id;
+    if (id) {
+      loadTeam(id);
+    }
+  }, [params, loadTeam]);
+
   return (
     <div className={containers.content_general}>
-      <div className={containers.main_content}>
-        <span className={containers.dark_item_title}>{teamMock.title}</span>
-        <span className={containers.description}>{teamMock.description}</span>
-        <div className={containers.two_columns}>
-          <div className={lists.light_list}>
-            <span className={lists.light_list_title}>Members</span>
-            {teamMock.members.map(member => (
-              <div key={member.id} className={lists.light_list_item}>
-                <img src={member.logo} alt="ProfilePicture" />
-                <span>{member.fullName}</span>
-              </div>
-            ))}
-          </div>
-          <div className={lists.light_list}>
-            <span className={lists.light_list_title}>Subjects</span>
-            {teamMock.subjects.map(subject => (
-              <Link to={`/subject/${subject.id}`} key={subject.id} className={lists.light_list_item}>
-                <span>{subject.title}</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
+      {isLoading
+        ? <Loader />
+        : team
+          ? (<div className={containers.main_content}>
+               <span className={containers.dark_item_title}>{team.name}</span>
+               <span className={containers.description}>{team.description}</span>
+               <div className={containers.two_columns}>
+                 <div className={lists.light_list}>
+                   <span className={lists.light_list_title}>Members</span>
+                   {team.members.map(member => (
+                   <div key={member.id} className={lists.light_list_item}>
+                     <span>{member.fullName}</span>
+                   </div>
+                   ))}
+                 </div>
+                 <div className={lists.light_list}>
+                   <span className={lists.light_list_title}>Subjects</span>
+                   {subjects?.map(subject => (
+                     <Link to={`/subject/${subject.id}`} key={subject.id} className={lists.light_list_item}>
+                       <span>{subject.title}</span>
+                     </Link>
+                   ))}
+               </div>
+             </div>
+            </div>)
+          : <div />
+      }
       <div className={containers.vertical_actions_panel}>
         <button className={`${buttons.button_simple} ${buttons.blue_simple}`} onClick={() => setTM(true)}>
           <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
@@ -70,6 +77,14 @@ const Team = () => {
             </g>
           </svg>
           <span>Manage</span>
+        </button>
+        <button className={`${buttons.button_simple} ${buttons.green_simple}`} onClick={() => setCT(true)}>
+          <img src="https://img.icons8.com/material/50/000000/plus-math--v2.png" alt=""/>
+          <span>Team</span>
+        </button>
+        <button className={`${buttons.button_simple} ${buttons.green_simple}`} onClick={() => setCS(true)}>
+          <img src="https://img.icons8.com/material/50/000000/plus-math--v2.png" alt=""/>
+          <span>Subject</span>
         </button>
         <button className={`${buttons.button_simple} ${buttons.green_simple}`} onClick={() => setIP(true)}>
           <img src="https://img.icons8.com/material/50/000000/plus-math--v2.png" alt=""/>
@@ -97,10 +112,43 @@ const Team = () => {
                                  cancelValue="Cancel"
                                  onCancel={() => setCW(false)}
       />}
-      {tm && <TeamManagePage onClose={() => setTM(false)} />}
-      {ip && <InvitePage onClose={() => setIP(false)} />}
+      {cs && <CreateSubjectWindow onSubmit={data => {
+                                    if (!team?.id) return;
+                                    createSubject({ ...data, teamId: team?.id });
+                                    setCS(false);
+                                  }}
+                                  onClose={() => setCS(false)}
+      />}
+      {tm && <TeamManagePage onClose={() => setTM(false)}
+                             onSubmit={data => {
+                               updateTeam(data);
+                               setTM(false);
+                             }}
+                             team={team}
+      />}
+      {ct && <TeamManagePage onClose={() => setCT(false)}
+                             onSubmit={data => {
+                               updateTeam(data);
+                               setCT(false);
+                             }}
+      />}
+      {ip && <InvitePage id={team?.id} onClose={() => setIP(false)} />}
     </div>
   );
 }
 
-export default Team;
+const mapStateToProps = (appState: IAppState) => ({
+  team: appState.team.team,
+  subjects: appState.subject.subjects,
+  isLoading: appState.team.isTeamLoading
+});
+
+const mapDispatchToProps = {
+  loadTeam: loadTeamRoutine,
+  updateTeam: updateTeamRoutine,
+  createSubject: updateSubjectRoutine
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type ITeamProps = ConnectedProps<typeof connector>;
+export default connector(Team);

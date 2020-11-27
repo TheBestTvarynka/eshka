@@ -1,6 +1,7 @@
 package com.eshka.controller;
 
 import com.eshka.dto.request.TeamRequest;
+import com.eshka.dto.response.TeamFullResponse;
 import com.eshka.dto.response.TeamResponse;
 import com.eshka.entity.Team;
 import com.eshka.entity.User;
@@ -11,6 +12,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +24,30 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class TeamController {
     private final TeamService teamService;
-    private static final TeamMapper mapper = TeamMapper.INSTANCE;
+    private final TeamMapper mapper;
 
     @ApiOperation("get team by id")
     @GetMapping("/{id}")
     @PreAuthorize(value = "@teamServiceImpl.findById(#id).users.contains(@userServiceImpl.currentUser)")
     public ResponseEntity<TeamResponse> findById(@PathVariable(name = "id") String id) {
         return new ResponseEntity<>(mapper.teamToTeamResponse(teamService.findById(Long.parseLong(id))),
+                HttpStatus.OK);
+    }
+
+    @ApiOperation("get full team info")
+    @GetMapping("/{teamId}/full")
+    public ResponseEntity<TeamFullResponse> getFullInfo(@PathVariable(name = "teamId") String teamId) {
+        Team team = teamService.findById(Long.parseLong(teamId));
+        return new ResponseEntity<>(mapper.teamToTeamFullResponse(team),
+                HttpStatus.OK);
+    }
+
+    @ApiOperation("get all user teams")
+    @GetMapping
+    public ResponseEntity<List<TeamResponse>> getTeams(@AuthenticationPrincipal User user) {
+        return new ResponseEntity<>(user.getTeams().stream()
+                .map(mapper::teamToTeamResponse)
+                .collect(Collectors.toList()),
                 HttpStatus.OK);
     }
 
@@ -64,10 +84,10 @@ public class TeamController {
     }
 
     @ApiOperation("delete team by id")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{teamId}")
     @PreAuthorize(value = "@teamServiceImpl.findById(#id).users.contains(@userServiceImpl.currentUser)")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTeam(@PathVariable(name = "id") String id) {
-        teamService.deleteById(Long.parseLong(id));
+    public void deleteTeam(@PathVariable(name = "teamId") String teamId) {
+        teamService.deleteById(Long.parseLong(teamId));
     }
 }

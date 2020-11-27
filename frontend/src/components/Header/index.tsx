@@ -14,7 +14,7 @@ const Header: FC<IHeaderProps> = ({ logout }) => {
              alt="Logo"
              className={styles.logo}
         />
-        <Link to="/home"><span className={styles.app_name}>Eshka</span></Link>
+        <Link to="/dashboard"><span className={styles.app_name}>Eshka</span></Link>
       </div>
       <div className={styles.header_group}>
         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"

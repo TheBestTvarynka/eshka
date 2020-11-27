@@ -14,14 +14,4 @@ public class UserDTO {
     private String username;
     private String email;
     private String role;
-
-    public static UserDTO fromUser(User user) {
-        UserDTO dto = new UserDTO();
-        dto.setId(user.getUserId());
-        dto.setFullName(user.getFullName());
-        dto.setEmail(user.getEmail());
-        dto.setUsername(user.getUsername());
-        dto.setRole(user.getRole().name());
-        return dto;
-    }
 }

@@ -30,4 +30,9 @@ public class AuthController {
         this.authService.register(registerData);
     }
 
+    @GetMapping("/logout")
+    @ResponseStatus(HttpStatus.OK)
+    public void logout() {
+    }
+
 }

@@ -3,8 +3,6 @@ package com.eshka.service;
 import com.eshka.entity.Team;
 import com.eshka.entity.User;
 
-import java.util.List;
-
 public interface TeamService {
 
     Team findById(long id);
@@ -19,3 +17,4 @@ public interface TeamService {
 
     void joinToTeam(User user, String link);
 }
+
