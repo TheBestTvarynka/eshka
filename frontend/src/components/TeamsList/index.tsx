@@ -7,6 +7,17 @@ import lists from '../styles/lists.module.sass';
 import { IAppState } from '../../models/appState';
 import { loadTeamsRoutine } from '../../sagas/team/routines';
 import { useHistory } from 'react-router-dom';
+import { ITeamShort } from '../../models/team';
+
+const teamComparator = (t1: ITeamShort, t2: ITeamShort) => {
+  if (t1.name === t2.name) {
+    return 0;
+  } else if (t1.name > t2.name) {
+    return 1;
+  } else {
+    return -1;
+  }
+};
 
 const TeamsList: React.FC<ITeamListProps> = ({ id, teams, loadTeams }) => {
   const history = useHistory();
@@ -18,7 +29,7 @@ const TeamsList: React.FC<ITeamListProps> = ({ id, teams, loadTeams }) => {
 
   return (
     <div className={lists.dark_list}>
-      {teams && teams.map(team => (
+      {teams && teams.sort(teamComparator).map(team => (
         <div className={`${lists.dark_list_item} ${team.id === id ? lists.selected : lists.simple}`}
              key={team.id}
              onClick={() => history.push(`/team/${team.id}`)}
