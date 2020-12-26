@@ -117,7 +117,7 @@ const QueuePage: React.FC<IQueuePageProps> = ({
                                defaultValue={newSN.toString()}
                         />
                         <button className={`${buttons.button_simple} ${buttons.blue_simple} ${styles.field}`}
-                                onClick={() => turnIn({ queueId: queue?.id, userId })}>
+                                onClick={() => turnIn({ queueId: queue?.id, userId, sequenceNumber: newSN })}>
                           Turn in
                         </button>
                       </div>
