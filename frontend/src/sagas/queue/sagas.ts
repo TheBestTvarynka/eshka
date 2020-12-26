@@ -74,9 +74,8 @@ function* updateQueue(action: any) {
     parsedData.creationDate = dateTimeHelper.dateFromRaw(parsedData.creationDate);
     parsedData.endDate = dateTimeHelper.dateFromRaw(parsedData.endDate);
     parsedData.startDate = dateTimeHelper.dateFromRaw(parsedData.startDate);
-    parsedData.closeDate = dateTimeHelper.dateFromRaw(parsedData.closeDate);
+    parsedData.closingDate = dateTimeHelper.dateFromRaw(parsedData.closingDate);
     yield put(updateQueueRoutine.success(parsedData));
-    // yield call(loadOpenedQueues, { payload: subjectId });
     yield put(loadSubjectQueuesRoutine.trigger(subjectId))
   } catch(error) {
     console.log('Error with queue updating');
