@@ -93,24 +93,21 @@ const QueuePage: React.FC<IQueuePageProps> = ({
         <div className={containers.two_columns}>
           {isLoading
             ? <Loader />
-            : <div className={containers.vertical_actions_panel}>
-                {turnedIn
-                  ? <button className={`${buttons.button_simple} ${buttons.blue_simple}`}>Unturn</button>
-                  : (queue?.closingDate
-                      ? <span className={`${buttons.button_simple} ${buttons.disabled}`}>Too late</span>
-                      : <div className={containers.vertical_actions_panel}>
-                          <input type="number" className={inputs.input_standard}
-                                 onChange={event => setNewSN(Number.parseInt(event.target.value))}
-                                 defaultValue={newSN.toString()}
-                          />
-                          <button className={`${buttons.button_simple} ${buttons.blue_simple} ${styles.field}`}
-                                  onClick={() => turnIn({ queueId: queue?.id, userId })}>
-                            Turn in
-                          </button>
-                        </div>
-                  )
-                }
-              </div>
+            : turnedIn
+                ? <div><button className={`${buttons.button_simple} ${buttons.blue_simple}`}>Unturn</button></div>
+                : (queue?.closingDate
+                    ? <span className={`${buttons.button_simple} ${buttons.disabled}`}>Too late</span>
+                    : <div className={containers.vertical_actions_panel}>
+                      <input type="number" className={`${inputs.input_standard} ${styles.input}`}
+                             onChange={event => setNewSN(Number.parseInt(event.target.value))}
+                             defaultValue={newSN.toString()}
+                      />
+                      <button className={`${buttons.button_simple} ${buttons.blue_simple} ${styles.field}`}
+                              onClick={() => turnIn({ queueId: queue?.id, userId })}>
+                        Turn in
+                      </button>
+                    </div>
+                )
           }
           {isLoading
             ? <Loader />
