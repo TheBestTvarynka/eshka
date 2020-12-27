@@ -21,6 +21,17 @@ import buttons from '../../components/styles/buttons.module.sass';
 import styles from './styles.module.sass';
 import { IAppState } from '../../models/appState';
 import { useParams, useHistory } from 'react-router-dom';
+import { ISubject } from '../../models/subject';
+
+const subjectComparator = (s1: ISubject, s2: ISubject) => {
+  if (s1.title === s2.title) {
+    return 0;
+  } else if (s1.title > s2.title) {
+    return 1;
+  } else {
+    return -1;
+  }
+};
 
 const SubjectPage: React.FC<ISubjectPageProps> = ({
   user, subject, subjects, isSubjectLoading, queues, isQueuesLoading, teamId,
@@ -53,7 +64,7 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
   return (
     <div className={styles.subject_page}>
       <div className={lists.dark_list}>
-        {subjects && subjects.map(s =>
+        {subjects && subjects.sort(subjectComparator).map(s =>
           <div className={`${lists.dark_list_item} ${s.id === subject?.id ? lists.selected : lists.simple}`}
                key={s.id}
                onClick={() => history.push(`/subject/${s.id}`)}
@@ -64,6 +75,15 @@ const SubjectPage: React.FC<ISubjectPageProps> = ({
         <div className={listStyles.button_container}>
           <button className={buttons.animated_border_button} onClick={() => setCS(true)}>
             <span>Create subject</span>
+          </button>
+        </div>
+        <div className={listStyles.button_container}>
+          <button className={buttons.animated_border_button}
+                  onClick={() =>
+                    subject?.teamId ? history.push(`/team/${subject.teamId}`) : history.push("/dashboard")
+                  }
+          >
+            <span>Back to teams</span>
           </button>
         </div>
       </div>

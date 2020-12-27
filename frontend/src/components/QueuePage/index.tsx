@@ -14,11 +14,12 @@ import lists from '../../components/styles/lists.module.sass';
 import buttons from '../../components/styles/buttons.module.sass';
 import inputs from '../../components/styles/inputs.module.sass';
 import { connect, ConnectedProps } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 const QueuePage: React.FC<IQueuePageProps> = ({
   userId, queue, members, loadQueue, turnIn,
   update, loadMembers, isLoading }) => {
+  const history = useHistory();
   const params: any = useParams();
   const [turnedIn, setTurnedIn] = useState<boolean>(false);
   const [eq, setEQ] = useState<boolean>(false);
@@ -51,7 +52,18 @@ const QueuePage: React.FC<IQueuePageProps> = ({
       {isLoading
         ? <Loader />
         : <div className={styles.queue_data}>
-            <span className={containers.dark_item_title}>{queue?.title}</span>
+            <div className={styles.title_container}>
+              <span className={containers.dark_item_title}>{queue?.title}</span>
+              <div className={styles.button_container}>
+                <button className={buttons.animated_border_button}
+                        onClick={() =>
+                          queue?.subjectId ? history.push(`/subject/${queue.subjectId}`) : history.push("/dashboard")
+                        }
+                >
+                  <span>Back to teams</span>
+                </button>
+              </div>
+            </div>
             <span className={`${containers.description} ${styles.date_c}`}>
             Created at
             <span className={styles.date}>{queue?.creationDate?.toLocaleString()}</span>
@@ -93,24 +105,23 @@ const QueuePage: React.FC<IQueuePageProps> = ({
         <div className={containers.two_columns}>
           {isLoading
             ? <Loader />
-            : <div className={containers.vertical_actions_panel}>
-                {turnedIn
-                  ? <button className={`${buttons.button_simple} ${buttons.blue_simple}`}>Unturn</button>
-                  : (queue?.closingDate
-                      ? <span className={`${buttons.button_simple} ${buttons.disabled}`}>Too late</span>
-                      : <div className={containers.vertical_actions_panel}>
-                          <input type="number" className={inputs.input_standard}
-                                 onChange={event => setNewSN(Number.parseInt(event.target.value))}
-                                 defaultValue={newSN.toString()}
-                          />
-                          <button className={`${buttons.button_simple} ${buttons.blue_simple} ${styles.field}`}
-                                  onClick={() => turnIn({ queueId: queue?.id, userId })}>
-                            Turn in
-                          </button>
-                        </div>
-                  )
-                }
-              </div>
+            : turnedIn
+                ? <div className={containers.vertical_actions_panel}>
+                    <button className={`${buttons.button_simple} ${buttons.blue_simple}`}>Unturn</button>
+                  </div>
+                : (queue?.closingDate
+                    ? <span className={`${buttons.button_simple} ${buttons.disabled}`}>Too late</span>
+                    : <div className={containers.vertical_actions_panel}>
+                        <input type="number" className={`${inputs.input_standard} ${styles.input}`}
+                               onChange={event => setNewSN(Number.parseInt(event.target.value))}
+                               defaultValue={newSN.toString()}
+                        />
+                        <button className={`${buttons.button_simple} ${buttons.blue_simple} ${styles.field}`}
+                                onClick={() => turnIn({ queueId: queue?.id, userId, sequenceNumber: newSN })}>
+                          Turn in
+                        </button>
+                      </div>
+                )
           }
           {isLoading
             ? <Loader />

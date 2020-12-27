@@ -26,7 +26,8 @@ public class QueueDetailsController {
     @PostMapping
     @ApiOperation("create new queue details - actually take a turn")
     public ResponseEntity<QueueDetailsResponse> createNewQueueDetails(@RequestBody QueueDetailsRequest request) {
-        QueueDetails newQueueDetails = service.createNewQueueDetails(mapper.queueDetailsRequestToQueueDetails(request));
+        QueueDetails mapped = mapper.queueDetailsRequestToQueueDetails(request);
+        QueueDetails newQueueDetails = service.createNewQueueDetails(mapped);
         return new ResponseEntity<>(mapper.queueDetailsToQueueDetailsResponse(newQueueDetails), HttpStatus.CREATED);
     }
 
@@ -40,9 +41,9 @@ public class QueueDetailsController {
     @DeleteMapping("/{userId}/{queueId}")
     @ApiOperation("delete someone from turn - remove some queue details object")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeFromQueue(@PathVariable(name = "userId") String userid,
+    public void removeFromQueue(@PathVariable(name = "userId") String userId,
                                 @PathVariable(name = "queueId") String queueId) {
-        service.deleteQueueDetailsById(Long.parseLong(userid), Long.parseLong(queueId));
+        service.deleteQueueDetailsById(Long.parseLong(userId), Long.parseLong(queueId));
     }
 
     @GetMapping("/{queueId}")

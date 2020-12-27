@@ -58,6 +58,7 @@ public class AuthService {
                     .secure(this.appProperties.isSecureCookie())
                     .build();
             AfterLoginDTO afterLogin = AfterLoginDTO.builder()
+                .id(user.getUserId())
                 .fullName(user.getFullName())
                 .username(user.getUsername())
                 .email(user.getEmail())
