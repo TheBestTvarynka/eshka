@@ -6,12 +6,14 @@ import styles from './styles.module.sass';
 import { useHistory } from 'react-router-dom';
 import buttons from '../../components/styles/buttons.module.sass';
 import containers from '../../components/styles/containers.module.sass';
-import lists from '../../components/styles/lists.module.sass';
 import JoinTeamWindow from '../../components/JoinTeamWindow';
+import TeamManagePage from '../../components/TreamManagePage';
+import { updateTeamRoutine } from '../../sagas/team/routines';
 
-const Dashboard: React.FC<IDashboardProps> = ({ teams, loadTeams }) => {
+const Dashboard: React.FC<IDashboardProps> = ({ teams, loadTeams, updateTeam }) => {
   const history = useHistory();
   const [jw, setJW] = useState<boolean>(false);
+  const [ct, setCT] = useState<boolean>(false);
 
   useEffect(() => {
     loadTeams();
@@ -32,12 +34,23 @@ const Dashboard: React.FC<IDashboardProps> = ({ teams, loadTeams }) => {
             <span>Join</span>
           </button>
         </div>
+        <div className={styles.button_container}>
+          <button className={buttons.animated_border_button} onClick={() => setCT(true)}>
+            <span>Create</span>
+          </button>
+        </div>
         {jw && <JoinTeamWindow onClose={() => setJW(false)}
                                onSuccess={() => {
                                  setJW(false);
                                  if (loadTeams) loadTeams();
                                }}
         /> }
+        {ct && <TeamManagePage onClose={() => setCT(false)}
+                               onSubmit={data => {
+                                 updateTeam(data);
+                                 setCT(false);
+                               }}
+        />}
       </div>
       <span className={styles.section_title}>Last events & updates:</span>
       <div className={styles.events_container}>
@@ -61,7 +74,8 @@ const mapStateToProps = (appState: IAppState) => ({
 });
 
 const mapDispatchToProps = {
-  loadTeams: loadTeamsRoutine
+  loadTeams: loadTeamsRoutine,
+  updateTeam: updateTeamRoutine
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
