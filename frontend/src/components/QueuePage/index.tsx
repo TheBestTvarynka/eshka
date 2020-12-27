@@ -60,7 +60,7 @@ const QueuePage: React.FC<IQueuePageProps> = ({
                           queue?.subjectId ? history.push(`/subject/${queue.subjectId}`) : history.push("/dashboard")
                         }
                 >
-                  <span>Back to teams</span>
+                  <span>Back to queues</span>
                 </button>
               </div>
             </div>
