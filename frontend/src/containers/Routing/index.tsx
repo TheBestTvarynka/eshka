@@ -10,7 +10,6 @@ import QueuePage from '../../components/QueuePage';
 import Dashboard from '../Dashboard';
 
 const Routing: FC = () => {
-
   return (
     <>
       <Switch>

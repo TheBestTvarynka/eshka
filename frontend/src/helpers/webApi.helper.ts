@@ -17,7 +17,7 @@ function formatArgs(args: { [key: string]: string }): string {
 
 function getFetchUrl(args: IRequestArgs) {
   console.log(process.env.BACKEND_HOST);
-  return 'http://localhost:8080' + args.endpoint + (args.args ? `?${formatArgs(args.args)}` : '');
+  return `http://34.71.12.27` + args.endpoint + (args.args ? `?${formatArgs(args.args)}` : '');
 }
 
 function getFetchArgs(args: IRequestArgs): RequestInit {
