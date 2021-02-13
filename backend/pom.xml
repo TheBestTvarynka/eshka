@@ -13,6 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>eshka</name>
     <description>Platform that helps organize students</description>
+    <packaging>jar</packaging>
 
     <properties>
         <java.version>14</java.version>
@@ -20,10 +21,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>9.4.1211</version>
-        </dependency>
+	    <groupId>org.postgresql</groupId>
+	    <artifactId>postgresql</artifactId>
+	    <version>42.2.18</version>
+	</dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -112,6 +113,11 @@
             <artifactId>mapstruct-processor</artifactId>
             <version>1.2.0.Final</version>
         </dependency>
+	<dependency>
+	    <groupId>com.google.cloud.sql</groupId>
+	    <artifactId>postgres-socket-factory</artifactId>
+	    <version>1.2.0</version>
+	</dependency>
     </dependencies>
 
     <build>
@@ -119,6 +125,17 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <classifier>spring-boot</classifier>
+                    <mainClass>com.eshka.EshkaApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

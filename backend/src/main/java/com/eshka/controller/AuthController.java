@@ -18,6 +18,11 @@ public class AuthController {
         this.authService = authService;
     }
 
+    @GetMapping("/health")
+    public ResponseEntity<String> health() {
+        return ResponseEntity.ok().body("200. All good.");
+    }
+
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<AfterLoginDTO> login(@RequestBody LoginDTO credentials) {

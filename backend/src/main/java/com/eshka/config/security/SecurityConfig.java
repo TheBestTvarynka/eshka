@@ -64,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     cust.deleteCookies(AuthCookieFilter.COOKIE_NAME);
                 })
                 .authorizeRequests(cust -> {
-                    cust.antMatchers("/auth/login", "/auth/register")
+                    cust.antMatchers("/auth/login", "/auth/register", "/auth/health")
                             .permitAll()
                             .anyRequest()
                             .authenticated();
