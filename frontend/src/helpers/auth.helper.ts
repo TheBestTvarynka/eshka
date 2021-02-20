@@ -1,9 +1,9 @@
 import Cookies from 'js-cookie';
 
 const createAuthHelper = () => {
-  const COOKIE_NAME = 'Authentication';
+  const COOKIE_NAME = 'SessionCookies';
 
-  let token: string | null | undefined = Cookies.get('Authentication')
+  let token: string | null | undefined = Cookies.get('SessionCookies')
     ? Cookies.get(COOKIE_NAME)
     : null;
 
@@ -24,7 +24,7 @@ const createAuthHelper = () => {
 
   const setToken = (newToken: typeof token) => {
     if (newToken) {
-      Cookies.set(COOKIE_NAME, newToken, { path: '/', domain: 'localhost:3000' });
+      Cookies.set(COOKIE_NAME, newToken, { path: '/', domain: 'eshka-lcmhz73rka-uc.a.run.app' });
     } else {
       Cookies.remove(COOKIE_NAME);
     }

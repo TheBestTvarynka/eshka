@@ -20,7 +20,7 @@ import org.springframework.web.filter.GenericFilterBean;
 
 @Log4j2
 public class AuthCookieFilter extends GenericFilterBean {
-    public final static String COOKIE_NAME = "Authentication";
+    public final static String COOKIE_NAME = "SessionCookies";
 
     private UserSessionRepository sessionRepository;
 
