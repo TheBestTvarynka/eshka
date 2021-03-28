@@ -36,7 +36,7 @@ test('team creation', async () => {
         console.log(JSON.stringify(teams));
         expect(teams.map(team => team.split('\n')[0])).toContain(name);
     } catch (err) {
-        throw err;
+        console.log(err);
     } finally {
         driver.close();
     }
@@ -72,7 +72,7 @@ test('team editing', async () => {
     } catch (err) {
         throw err;
     } finally {
-        driver.close();
+        console.log(err);
     }
 });
 
@@ -104,7 +104,7 @@ test('join link generation', async () => {
     } catch (err) {
         throw err;
     } finally {
-        driver.close();
+        console.log(err);
     }
 });
 
@@ -128,7 +128,7 @@ test('team joining', async () => {
         console.log(JSON.stringify(teams));
         expect(teams.map(team => team.split('\n')[0])).toContain('testTeam');
     } catch (err) {
-        throw err;
+        console.log(err);
     } finally {
         driver.close();
     }
@@ -159,7 +159,7 @@ test('register form validation', async () => {
         expect(emailError).toBe('Email not valid');
         expect(passwordError).toBe('passwords do not match');
     } catch (err) {
-        throw err;
+        console.log(err);
     } finally {
         driver.close();
     }
