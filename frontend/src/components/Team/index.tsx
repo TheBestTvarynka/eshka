@@ -76,19 +76,19 @@ const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading, updateTeam, cre
               </g>
             </g>
           </svg>
-          <span>Manage</span>
+          <span id="edit_team">Manage</span>
         </button>
         <button className={`${buttons.button_simple} ${buttons.green_simple}`} onClick={() => setCT(true)}>
           <img src="https://img.icons8.com/material/50/000000/plus-math--v2.png" alt=""/>
-          <span>Team</span>
+          <span id="add_team">Team</span>
         </button>
         <button className={`${buttons.button_simple} ${buttons.green_simple}`} onClick={() => setCS(true)}>
           <img src="https://img.icons8.com/material/50/000000/plus-math--v2.png" alt=""/>
-          <span>Subject</span>
+          <span id="add_subject">Subject</span>
         </button>
         <button className={`${buttons.button_simple} ${buttons.green_simple}`} onClick={() => setIP(true)}>
           <img src="https://img.icons8.com/material/50/000000/plus-math--v2.png" alt=""/>
-          <span>Invite</span>
+          <span id="invite">Invite</span>
         </button>
         <button className={`${buttons.button_simple} ${buttons.red_simple}`} onClick={() => setCW(true)}>
           <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
@@ -102,7 +102,7 @@ const Team: React.FC<ITeamProps> = ({ team, loadTeam, isLoading, updateTeam, cre
               </g>
             </g>
           </svg>
-          <span>Leave</span>
+          <span id="leave">Leave</span>
         </button>
       </div>
       {cw && <ConfirmationWindow title="Confirm leaving"

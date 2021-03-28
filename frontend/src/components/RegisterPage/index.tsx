@@ -83,23 +83,23 @@ const RegisterPage: React.FC<IRegisterProps> = ({ isLoading, register }) => {
         <form className={`${styles.column} ${styles.login_column}`}>
           <span>Register</span>
           <label>Username {usernameError && <span className={styles.error}>{usernameError}</span>}</label>
-          <input className={inputs.input_standard} placeholder="e. g. cap.map" onChange={event =>
+          <input className={inputs.input_standard} name="username" placeholder="e. g. cap.map" onChange={event =>
             handleChange(event.target.value, usernameRegex, ' not valid', setUsername, setUsernameError)
           }/>
           <label>Full Name {nameError && <span className={styles.error}>{nameError}</span>}</label>
-          <input className={inputs.input_standard} placeholder="Max Pugachov" onChange={event =>
+          <input className={inputs.input_standard} name="full_name" placeholder="Max Pugachov" onChange={event =>
             handleChange(event.target.value, fullNameRegex, ' not valid', setName, setNameError)
           }/>
           <label>Email {emailError && <span className={styles.error}>{emailError}</span>}</label>
-          <input className={inputs.input_standard} placeholder="exmaple@email.com" onChange={event =>
+          <input className={inputs.input_standard} name="email" placeholder="exmaple@email.com" onChange={event =>
             handleChange(event.target.value, emailRegex, ' not valid', setEmail, setEmailError)
           }/>
           <label>Password</label>
-          <input className={inputs.input_standard} type="password" onChange={event =>
+          <input className={inputs.input_standard} name="password" type="password" onChange={event =>
             validatePasswords(event.target.value, passwordRepeat, setPassword, setPasswordError)
           }/>
           <label>Repeat password</label>
-          <input className={inputs.input_standard} type="password"
+          <input className={inputs.input_standard} name="password_repeat" type="password"
                  onChange={event =>
                    validatePasswords(event.target.value, password, setPasswordRepeat, setPasswordError)
                  }

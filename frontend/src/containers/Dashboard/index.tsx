@@ -31,12 +31,12 @@ const Dashboard: React.FC<IDashboardProps> = ({ teams, loadTeams, updateTeam }) 
         )}
         <div className={styles.button_container}>
           <button className={buttons.animated_border_button} onClick={() => setJW(true)}>
-            <span>Join</span>
+            <span id="join_to_team">Join</span>
           </button>
         </div>
         <div className={styles.button_container}>
           <button className={buttons.animated_border_button} onClick={() => setCT(true)}>
-            <span>Create</span>
+            <span id="create_team">Create</span>
           </button>
         </div>
         {jw && <JoinTeamWindow onClose={() => setJW(false)}

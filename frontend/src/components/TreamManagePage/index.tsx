@@ -38,8 +38,8 @@ const TeamManagePage: React.FC<ITeamManagePageProps> = ({ team, onSubmit, onClos
                   onChange={event => setDescription(event.target.value)}
         />
         <div className={containers.actions_panel}>
-          <button className={`${buttons.button} ${buttons.grey}`} onClick={() => onClose()}>Cancel</button>
-          <button className={`${buttons.button} ${buttons.green}`}
+          <button className={`${buttons.button} ${buttons.grey}`} onClick={() => onClose()} id="cancel">Cancel</button>
+          <button className={`${buttons.button} ${buttons.green}`} id="submit"
                   onClick={() => onSubmit({ id: team?.id, name, description })}>
             {team ? 'Update' : 'Create'}
           </button>

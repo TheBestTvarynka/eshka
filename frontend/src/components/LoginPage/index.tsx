@@ -48,17 +48,17 @@ const LoginPage: React.FC<LoginPageProps> = ({ id, isLoading, login }) => {
         <form className={`${styles.column} ${styles.login_column}`}>
           <span>Login into Eshka</span>
           <label>Username</label>
-          <input className={inputs.input_standard} placeholder="cap_map"
+          <input className={inputs.input_standard} placeholder="cap_map" id="username"
                  onChange={handleUsernameChange}
           />
           {usernameError && <label className={styles.error}>{usernameError}</label>}
           <label>Password</label>
-          <input className={inputs.input_standard} type="password"
+          <input className={inputs.input_standard} type="password" id="password"
                  onChange={event => setPassword(event.target.value)}
           />
           {isLoading
             ? <Loader />
-            : <button onClick={handleLogin}>Sign in</button>
+            : <button onClick={handleLogin} id="login_button">Sign in</button>
           }
         </form>
       </div>

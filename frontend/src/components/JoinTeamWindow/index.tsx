@@ -51,8 +51,8 @@ const JoinTeamWindow: React.FC<IJoinTeamWindowProps> = ({ onSuccess, onClose }) 
         {loading
           ? <Loader />
           : <div className={containers.actions_panel}>
-              <button onClick={onClose} className={`${buttons.button} ${buttons.grey}`}>Cancel</button>
-              <button onClick={handleJoin} className={`${buttons.button} ${buttons.green}`}>Join</button>
+              <button onClick={onClose} className={`${buttons.button} ${buttons.grey}`} id="cancel">Cancel</button>
+              <button onClick={handleJoin} className={`${buttons.button} ${buttons.green}`} id="join_to_the_team">Join</button>
             </div>
         }
       </form>
